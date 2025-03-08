@@ -1,10 +1,10 @@
-package fr.n7.tomsquat;
+package fr.n7.hagymont;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TomsquatApplicationTests {
+class HagymontApplicationTests {
 
 	@Test
 	void contextLoads() {

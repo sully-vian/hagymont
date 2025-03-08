@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.n7</groupId>
-	<artifactId>tomsquat</artifactId>
+	<artifactId>hagymont</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>tomsquat</name>
+	<name>hagymont</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -49,6 +49,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>hagymont</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

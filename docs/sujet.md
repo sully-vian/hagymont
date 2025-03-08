@@ -16,7 +16,7 @@ paginate: true
 
 ## Rappel: MVC
 
-![alt text](./mvc.png)
+![mvc](./img/mvc.png)
 
 ---
 
