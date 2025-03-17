@@ -1,5 +1,6 @@
 # ignore target directory
 target/
+.env
 
 # LaTeX
 *.aux
