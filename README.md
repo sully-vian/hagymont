@@ -1,12 +1,16 @@
 # HaGymont
 
-Pour build:
+Pour build et lancer le projet:
 
 ```bash
 ./mvnw clean package
 ```
 
-Ensuite copier le war dans le dossier webapps de votre installation Tomcat.
+On accède ensuite à la racine [http://localhost:8080](http://localhost:8080).
+
+Un petit usage de l'API de Google à [http://localhost:8080/Serv](http://localhost:8080/Serv).
+
+Vous pouvez accéder à la page d'erreur en écrivant une URL qui n'existe pas [http://localhost:8080/rferj](http://localhost:8080/rferj) ou en écrivant des guillemets dans la zone de texte de la page d'IA (errur interne, affichage de la pile d'erreurs).
 
 ## Plan de développement
 
@@ -31,7 +35,7 @@ Pour montrer au prof qu'on sait faire usage d'une API et surtout parce que **ça
 
 ### Fichier `.env`
 
-Pour communiquer avec l'API IA, il faut une clef d'API. **Cette clef doit rester secrète** pour éviter de se faire bloquer à causes des abus de randoms d'internet qui nous l'auraient piquée. Pour ce faire, nous auront chacun un fichier `.env` dans le dossier `src/main/resources` qui contiendra la clef d'API. Ce fichier est ignoré dans le `.gitignore` pour éviter de partager la clef sur GitHub.
+Pour communiquer avec l'API IA, il faut une clef d'API. **Cette clef doit rester secrète** pour éviter de se faire bloquer à causes des abus de randoms d'internet qui nous l'auraient piquée. Pour ce faire, nous auront chacun un fichier `.env` qui contiendra la clef d'API. Ce fichier est ignoré dans le `.gitignore` pour éviter de partager la clef sur GitHub.
 
 J'ai eu ma clef **gratuitement**, je sais pas si elle est limitée en nombre de requêtes. Si c'est le cas, il faudra peut-être en créer une autre.
 
@@ -55,7 +59,7 @@ Pour communiquer avec l'API, il faut écrire une requête POST de la forme:
 https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY
 ```
 
-en remplaçant `GEMINI_API_KEY` par la clef d'API spécifiée dans le fichier `.env` dans le dossier `src/main/resources`.
+en remplaçant `GEMINI_API_KEY` par la clef d'API spécifiée dans le fichier `.env`.
 
 ### Réponse
 
