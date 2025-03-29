@@ -1,0 +1,188 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstname;
+    private String secondname;
+
+    @Enumerated(EnumType.STRING)
+    private UserGender gender;
+
+    public enum UserGender {
+        M, F
+    }
+
+    @Enumerated(EnumType.STRING)
+    private UserType type;
+
+    public enum UserType {
+        admin, classic, premium, coach
+    }
+
+    private LocalDate birthdate; // "yyyy-MM-dd"
+    private String phone;
+    
+
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
+    private String login;
+
+    @Column(crypt = true) // password encryption
+    private String password;
+
+    @OneToOne(
+        mappedBy = "user",
+        cascade = CascadeType.ALL, // all operations on the user will be propagated to the card
+        optional = true // true means that the user can exist without a card
+    )
+    private Card card;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "coach")
+    private List<Course> coursesCreated = new ArrayList<>();
+
+
+
+
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getSecondname() {
+        return secondname;
+    }
+
+    public void setSecondname(String secondname) {
+        this.secondname = secondname;
+    }
+
+    public UserGender getGender() {
+        return gender;
+    }
+
+    public void setGender(UserGender gender) {
+        this.gender = gender;
+    }
+
+    public UserType getType() {
+        return type;
+    }
+
+    public void setType(UserType type) {
+        this.type = type;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Course> getCoursesCreated() {
+        return coursesCreated;
+    }
+ 
+    public void setCoursesCreated(List<Course> coursesCreated) {
+        this.coursesCreated = coursesCreated;
+    }
+    
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setUser(this); // set the user of the order to this user
+    }
+
+    public void removeOrder(Order order) {
+        orders.remove(order);
+        order.setUser(null); // set the user of the order to null
+    }
+
+    public void addCourseCreated(Course course) {
+        coursesCreated.add(course);
+        course.setCoach(this); // set the coach of the course to this user
+    }
+    public void removeCourseCreated(Course course) {
+        coursesCreated.remove(course);
+        course.setCoach(null); // set the coach of the course to null
+    }
+    public void clearCoursesCreated() {
+        for (Course course : coursesCreated) {
+            course.setCoach(null); // set the coach of the course to null
+        }
+        coursesCreated.clear();
+    }
+
+}
