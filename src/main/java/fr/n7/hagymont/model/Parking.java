@@ -1,16 +1,19 @@
+package fr.n7.hagymont.model;
+
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 public class Parking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int capacity;
 
     @OneToOne
-    @JoinColumn(name = "club_id")//FK: club_id
+    @JoinColumn(name = "club_id", unique = true)//FK: club_id
     private Club club;
 
     @OneToMany(mappedBy = "parking")
@@ -54,8 +57,5 @@ public class Parking {
         reservations.remove(reservation);
         reservation.setParking(null);
     }
-
-    
-
 
 }

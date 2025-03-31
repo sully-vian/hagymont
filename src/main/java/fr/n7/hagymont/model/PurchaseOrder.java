@@ -1,33 +1,31 @@
-public import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+package fr.n7.hagymont.model;
 
-
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
-public class Order {
+public class PurchaseOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
     private String created_at;
-    private String adress;
+    private String address;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // FK
+    @JoinColumn(name = "user_id")
     private User user;
 
-
     @ManyToOne
-    @JoinColumn(name = "product_id") // FK
+    @JoinColumn(name = "product_id")
     private Product product;
 
-
-    // getters and setters 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -52,12 +50,12 @@ public class Order {
         this.created_at = created_at;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public User getUser() {
@@ -75,5 +73,4 @@ public class Order {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
 }

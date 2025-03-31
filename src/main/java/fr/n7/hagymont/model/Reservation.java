@@ -1,12 +1,15 @@
+package fr.n7.hagymont.model;
+
+import fr.n7.hagymont.model.Card;
+import fr.n7.hagymont.model.Course;
+
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Reservation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +20,6 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "card_id", unique = true) // FK: card_id
     private Card card;
-    
 
     @ManyToOne
     @JoinColumn(name = "course_id") // FK: course_id
@@ -63,17 +65,13 @@ public class Reservation {
     public Card getCard() {
         return card;
     }
- 
+
     public void setCard(Card card) {
         this.card = card;
     }
 
     public Course getCourse() {
         return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
     }
 
     public Parking getParking() {
@@ -85,13 +83,12 @@ public class Reservation {
     }
 
     public void setCourse(Course course) {
-            if (this.course != null) {
-                this.course.getReservations().remove(this);
-            }
-            this.course = course;
-            if (course != null) {
-                course.getReservations().add(this);
-            }
+        if (this.course != null) {
+            this.course.getReservations().remove(this);
+        }
+        this.course = course;
+        if (course != null) {
+            course.getReservations().add(this);
         }
     }
-    
+}

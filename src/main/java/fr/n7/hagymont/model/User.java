@@ -1,7 +1,9 @@
+package fr.n7.hagymont.model;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import jakarta.persistence.*;
 
 @Entity
 public class User {
@@ -28,7 +30,6 @@ public class User {
 
     private LocalDate birthdate; // "yyyy-MM-dd"
     private String phone;
-    
 
     @Column(unique = true)
     private String email;
@@ -36,24 +37,21 @@ public class User {
     @Column(unique = true)
     private String login;
 
-    @Column(crypt = true) // password encryption
+    @Column(unique = true)
     private String password;
 
     @OneToOne(
-        mappedBy = "user",
-        cascade = CascadeType.ALL, // all operations on the user will be propagated to the card
-        optional = true // true means that the user can exist without a card
+            mappedBy = "user",
+            cascade = CascadeType.ALL, // all operations on the user will be propagated to the card
+            optional = true // true means that the user can exist without a card
     )
     private Card card;
 
     @OneToMany(mappedBy = "user")
-    private List<Order> orders = new ArrayList<>();
+    private List<PurchaseOrder> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "coach")
     private List<Course> coursesCreated = new ArrayList<>();
-
-
-
 
     // Getters and setters
     public Long getId() {
@@ -144,28 +142,28 @@ public class User {
         this.card = card;
     }
 
-    public List<Order> getOrders() {
+    public List<PurchaseOrder> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<PurchaseOrder> orders) {
         this.orders = orders;
     }
 
     public List<Course> getCoursesCreated() {
         return coursesCreated;
     }
- 
+
     public void setCoursesCreated(List<Course> coursesCreated) {
         this.coursesCreated = coursesCreated;
     }
-    
-    public void addOrder(Order order) {
+
+    public void addOrder(PurchaseOrder order) {
         orders.add(order);
         order.setUser(this); // set the user of the order to this user
     }
 
-    public void removeOrder(Order order) {
+    public void removeOrder(PurchaseOrder order) {
         orders.remove(order);
         order.setUser(null); // set the user of the order to null
     }
@@ -174,10 +172,12 @@ public class User {
         coursesCreated.add(course);
         course.setCoach(this); // set the coach of the course to this user
     }
+
     public void removeCourseCreated(Course course) {
         coursesCreated.remove(course);
         course.setCoach(null); // set the coach of the course to null
     }
+
     public void clearCoursesCreated() {
         for (Course course : coursesCreated) {
             course.setCoach(null); // set the coach of the course to null

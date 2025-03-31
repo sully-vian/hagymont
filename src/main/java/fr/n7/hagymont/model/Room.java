@@ -1,9 +1,12 @@
+package fr.n7.hagymont.model;
+
 import java.util.ArrayList;
 import java.util.List;
-
+import jakarta.persistence.*;
 
 @Entity
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,7 +18,6 @@ public class Room {
 
     @OneToMany(mappedBy = "room") // 1 room can have many courses
     private final List<Course> courses = new ArrayList<>();  // Initialize the list 
-
 
     // Getters and setters
     public Long getId() {
@@ -37,9 +39,11 @@ public class Room {
     public Club getClub() {
         return club;
     }
+
     public void setClub(Club club) {
         this.club = club;
     }
+
     public List<Course> getCourses() {
         return courses;
     }
@@ -52,6 +56,6 @@ public class Room {
     public void removeCourse(Course course) {
         courses.remove(course);
         course.setRoom(null);
-    } 
+    }
 
 }

@@ -1,15 +1,12 @@
-public import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+package fr.n7.hagymont.model;
+
 import java.util.List;
+import jakarta.persistence.*;
 import java.util.ArrayList;
-
-
 
 @Entity
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,11 +15,9 @@ public class Product {
     private int stock;
 
     @OneToMany(mappedBy = "product")
-    private List<Order> orders = new ArrayList<>();
+    private List<PurchaseOrder> orders = new ArrayList<>();
 
-
-
-    // getters和setters方法
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -55,23 +50,17 @@ public class Product {
         this.stock = stock;
     }
 
-    public List<Order> getOrders() {
+    public List<PurchaseOrder> getOrders() {
         return orders;
     }
 
-    public void addOrder(Order order) {
+    public void addOrder(PurchaseOrder order) {
         orders.add(order);
         order.setProduct(this);
     }
 
-    public void removeOrder(Order order) {
+    public void removeOrder(PurchaseOrder order) {
         orders.remove(order);
         order.setProduct(null);
     }
-
-
-
-
-
-    
 }

@@ -1,10 +1,12 @@
+package fr.n7.hagymont.model;
+
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 @Entity
 public class Card {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,14 +14,12 @@ public class Card {
     private String start_date;
     private String expiration_date;
 
-   
     @OneToOne
     @JoinColumn(name = "user_id", unique = true) // FK: user_id
-    private User user;  
+    private User user;
 
     @OneToMany(mappedBy = "card")
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
-
 
     // getters and setters
     public Long getId() {
@@ -45,9 +45,11 @@ public class Card {
     public void setExpirationDate(String expiration_date) {
         this.expiration_date = expiration_date;
     }
+
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -55,22 +57,22 @@ public class Card {
     public List<Reservation> getReservations() {
         return reservations;
     }
+
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
         reservation.setCard(this);
     }
+
     public void removeReservation(Reservation reservation) {
         reservations.remove(reservation);
         reservation.setCard(null);
     }
+
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }
 }
-
-
-
-

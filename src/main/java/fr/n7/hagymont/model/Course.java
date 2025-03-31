@@ -1,10 +1,13 @@
+package fr.n7.hagymont.model;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import jakarta.persistence.*;
 
 @Entity
 public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +22,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
-    
+
     @ManyToOne
     @JoinColumn(name = "coach_id", nullable = false)  // 外键不可空
     private User coach;
@@ -80,7 +83,7 @@ public class Course {
     public User getCoach() {
         return coach;
     }
- 
+
     public void setCoach(User coach) {
         this.coach = coach;
     }
@@ -103,7 +106,5 @@ public class Course {
         }
         reservations.clear();
     }
-
-
 
 }
