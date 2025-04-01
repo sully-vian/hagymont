@@ -2,7 +2,14 @@ package fr.n7.hagymont.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Room {
@@ -13,7 +20,7 @@ public class Room {
     private String type;
 
     @ManyToOne
-    @JoinColumn(name = "club_id", unique = true) // FK: club_id
+    @JoinColumn(name = "club_id") // FK: club_id
     private Club club;
 
     @OneToMany(mappedBy = "room") // 1 room can have many courses
