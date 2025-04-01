@@ -2,6 +2,9 @@
 target/
 .env
 
+# ignore database files
+data/
+
 # LaTeX
 *.aux
 *.fdb_latexmk
@@ -13,3 +16,5 @@ target/
 *.toc
 *.nlo
 
+# vscode
+.vscode/

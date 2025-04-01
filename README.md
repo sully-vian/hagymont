@@ -3,7 +3,7 @@
 Pour build et lancer le projet:
 
 ```bash
-./mvnw clean package
+./mvnw clean spring-boot:run
 ```
 
 On accède ensuite à la racine [http://localhost:8080](http://localhost:8080).
@@ -29,6 +29,15 @@ Pour cette partie, il faudra concevoir la base de données et les classes Java (
 
 Dans cette partie, ya du backend aussi en fait, les appels à l'API REST se feront ici. il faudra aussi gérer les formulaires et les pages (css si on a le temps).
 
+## Dépendances
+
+1. **Dotenv** (`dotenv-java`) pour charger les variables d'environnement (la clef API notamment) depuis le fichier `.env`.
+2. **Spring Boot Starter Web** (`spring-boot-starter-web`) pour créer une API REST.
+3. **Tomcat Embed Jasper** (`tomcat-embed-jasper`) pour le moteur de template JSP.
+4. **Spring Boot Starter Data JPA** (`spring-boot-starter-data-jpa`) pour la gestion de la base de données.
+5. **HSQLDB** (`hsqldb`) pour la base de données en mémoire
+6. **Spring Boot Starter Test** (`spring-boot-starter-test`) pour les tests unitaires et d'intégration.
+
 ## API IA
 
 Pour montrer au prof qu'on sait faire usage d'une API et surtout parce que **ça fait cool**, on va utiliser l'API IA de Google pour générer des phrases de motivation sur la page d'accueil.
@@ -39,65 +48,4 @@ Pour communiquer avec l'API IA, il faut une clef d'API. **Cette clef doit rester
 
 J'ai eu ma clef **gratuitement**, je sais pas si elle est limitée en nombre de requêtes. Si c'est le cas, il faudra peut-être en créer une autre.
 
-### Requête
-
-Pour communiquer avec l'API, il faut écrire une requête POST de la forme:
-
-```json
-{
-    "contents": [{
-        "parts": [{
-            "text": "combien font 23 - 22 ?"
-        }]
-    }]
-}
-```
-
-à l'adresse
-
-```http
-https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY
-```
-
-en remplaçant `GEMINI_API_KEY` par la clef d'API spécifiée dans le fichier `.env`.
-
-### Réponse
-
-Les réponses de l'API ressemblent à ça:
-
-```json
-{
-  "candidates": [
-    {
-      "content": {
-        "parts": [
-          {
-            "text": "23 - 22 = 1\n"
-          }
-        ],
-        "role": "model"
-      },
-      "finishReason": "STOP",
-      "avgLogprobs": -0.00040897452272474765
-    }
-  ],
-  "usageMetadata": {
-    "promptTokenCount": 9,
-    "candidatesTokenCount": 10,
-    "totalTokenCount": 19,
-    "promptTokensDetails": [
-      {
-        "modality": "TEXT",
-        "tokenCount": 9
-      }
-    ],
-    "candidatesTokensDetails": [
-      {
-        "modality": "TEXT",
-        "tokenCount": 10
-      }
-    ]
-  },
-  "modelVersion": "gemini-2.0-flash"
-}
-```
+La doc complète de l'API Gemini est [ici](https://aistudio.google.com/apikey)
