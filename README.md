@@ -49,3 +49,19 @@ Pour communiquer avec l'API IA, il faut une clef d'API. **Cette clef doit rester
 J'ai eu ma clef **gratuitement**, je sais pas si elle est limitée en nombre de requêtes. Si c'est le cas, il faudra peut-être en créer une autre.
 
 La doc complète de l'API Gemini est [ici](https://aistudio.google.com/apikey)
+
+### mysql
+
+commande:
+
+mysql -u root -p
+
+(password:123456)
+
+SHOW DATABASES;
+
+USE hagymont;
+
+SHOW TABLES;
+
+CHECK TABLE xxx;
