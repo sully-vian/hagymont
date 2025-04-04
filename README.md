@@ -50,7 +50,7 @@ J'ai eu ma clef **gratuitement**, je sais pas si elle est limitée en nombre de 
 
 La doc complète de l'API Gemini est [ici](https://aistudio.google.com/apikey)
 
-### mysql
+## mysql
 
 commande:
 
@@ -65,3 +65,17 @@ USE hagymont;
 SHOW TABLES;
 
 CHECK TABLE xxx;
+
+## Clean up occupied port
+
+#### Linux/macOS
+
+sudo lsof -i :8081        #Finding PID （8081:The port we are using which we can set in application.properties)
+sudo kill -9 <PID><PID>                # Replace with the actual PID
+
+#### Windows
+
+netstat -ano | findstr :8081  # Finding PID
+taskkill /F /PID <PID>        # Replace with the actual PID
+
+1
