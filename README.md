@@ -35,7 +35,7 @@ Dans cette partie, ya du backend aussi en fait, les appels à l'API REST se fero
 2. **Spring Boot Starter Web** (`spring-boot-starter-web`) pour créer une API REST.
 3. **Tomcat Embed Jasper** (`tomcat-embed-jasper`) pour le moteur de template JSP.
 4. **Spring Boot Starter Data JPA** (`spring-boot-starter-data-jpa`) pour la gestion de la base de données.
-5. **HSQLDB** (`hsqldb`) pour la base de données en mémoire
+5. **MySQL Connector/J** (`mysql-connector-j`) pour la connexion à MySQL.
 6. **Spring Boot Starter Test** (`spring-boot-starter-test`) pour les tests unitaires et d'intégration.
 
 ## API IA
