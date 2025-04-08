@@ -18,7 +18,7 @@ public class PurchaseOrder {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "user_login", referencedColumnName = "login")
+    @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
 
     @ManyToOne

@@ -66,7 +66,7 @@ SHOW TABLES;
 
 CHECK TABLE xxx;
 
-## Clean up occupied port
+### Clean up occupied port
 
 #### Linux/macOS
 
@@ -78,4 +78,6 @@ sudo kill -9 <PID><PID>                # Replace with the actual PID
 netstat -ano | findstr :8081  # Finding PID
 taskkill /F /PID <PID>        # Replace with the actual PID
 
-1
+### Spring Security Authentication
+
+Super [vidéo](https://youtu.be/_GSHvvken2k?si=SRKGmpoO03O13oRm) sur Spring Security pour comprendre l'authentification.

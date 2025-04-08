@@ -8,7 +8,7 @@ import fr.n7.hagymont.model.PurchaseOrder;
 
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
 
-    List<PurchaseOrder> findByUser_Login(String userLogin);
+    List<PurchaseOrder> findByUser_Username(String username);
 
     List<PurchaseOrder> findByProductId(Long productId);
 }

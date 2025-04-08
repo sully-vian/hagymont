@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.n7.hagymont.model.Course;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface CourseRepository extends JpaRepository<Course, String> {
 
-    List<Course> findByCoach_Login(String coachLogin);
+    List<Course> findByCoachUsername(String username);
 
     List<Course> findByRoomId(Long roomId);
 

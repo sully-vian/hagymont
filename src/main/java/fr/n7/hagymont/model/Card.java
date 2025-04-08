@@ -22,7 +22,7 @@ public class Card {
     private String expiration_date;
 
     @OneToOne
-    @JoinColumn(name = "user_login", referencedColumnName = "login", unique = true) // FK: user_login
+    @JoinColumn(name = "username", referencedColumnName = "username", unique = true)
     private User user;
 
     @OneToMany(mappedBy = "card")

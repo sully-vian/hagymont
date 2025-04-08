@@ -1,4 +1,4 @@
-INSERT INTO user (firstname, secondname, gender, type, birthdate, phone, email, login, password)
+INSERT INTO user (firstname, secondname, gender, type, birthdate, phone, email, username, password)
   VALUES
     ('Pierre', 'Dupont', 'M', 'classic', '2000-04-17', '0612345678', 'pierre.dupont@gmail.com', 'pierrot1704', 'mdp1234'),
     ('Paul', 'Dupont', 'M', 'premium', '1985-02-28', '0612345689', 'paul.dupont@gmail.com', 'passionMuscu', 'mdp1234'),
@@ -6,7 +6,7 @@ INSERT INTO user (firstname, secondname, gender, type, birthdate, phone, email, 
     ('Sarah', 'Dupuit', 'F', 'coach', '2004-12-10', '0612345777', 'sarah2345@gmail.com', 'SarahFitness', 'mdp1234'),
     ('Ginette', 'Lebel', 'F', 'classic', '1969-09-05', '0612345456', 'ginette.lebel@gmail.com', 'GinetteLebel', 'mdp1234');
 
-INSERT INTO card (type, start_date, expiration_date, user_login)
+INSERT INTO card (type, start_date, expiration_date, username)
   VALUES
     ('classic', '2025-03-01', '2026-03-01', 'pierrot1704'),
     ('premium', '2024-09-04', '2025-09-04', 'passionMuscu'),
@@ -22,7 +22,7 @@ INSERT INTO product (name, price, stock)
     ('T-shirt gym bleu - M', 12.99, 42),
     ('T-shirt gym bleu - L', 12.99, 39);
 
-INSERT INTO purchase_order (quantity, created_at, address, user_login, product_id)
+INSERT INTO purchase_order (quantity, created_at, address, username, product_id)
   VALUES
     (1, '2025-03-17', '3 rue de la poste 31000 Toulouse', 'pierrot1704', 2),
     (2, '2025-03-29', '19 rue du moulin 31300 Toulouse', 'SarahFitness', 4),
@@ -50,7 +50,7 @@ INSERT INTO parking (capacity, club_id)
     (20, 1),
     (35, 3);
 
-INSERT INTO course (type, date, start_time, end_time, room_id, coach_login)
+INSERT INTO course (type, date, start_time, end_time, room_id, coach_username)
   VALUES
     ('cardio fit', '2025-04-10', '15', '16', 3, 'jm1267'),
     ('cardio fit', '2025-04-12', '15', '16', 3, 'jm1267'),

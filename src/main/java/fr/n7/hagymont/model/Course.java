@@ -31,7 +31,7 @@ public class Course {
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
 
     @ManyToOne
-    @JoinColumn(name = "coach_login", referencedColumnName = "login", nullable = false)  // FK: coach_id
+    @JoinColumn(name = "coach_username", referencedColumnName = "username", nullable = false)  // FK: coach_id
     private User coach;
 
     // getters and setters

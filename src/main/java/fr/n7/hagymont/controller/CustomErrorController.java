@@ -20,6 +20,7 @@ public class CustomErrorController implements ErrorController {
 
         int statusCode = response.getStatus();
         Throwable throwable = (Throwable) request.getAttribute("jakarta.servlet.error.exception");
+        String requestPath = (String) request.getAttribute("jakarta.servlet.error.request_uri"); // Retrieve the request path
 
         String stackTrace = null;
         if (throwable != null) {
@@ -30,6 +31,7 @@ public class CustomErrorController implements ErrorController {
 
         request.setAttribute("statusCode", statusCode);
         request.setAttribute("stackTrace", stackTrace);
+        request.setAttribute("requestPath", requestPath); // Pass the request path to the JSP
         request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
     }
 }
