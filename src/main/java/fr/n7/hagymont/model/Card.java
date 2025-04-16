@@ -1,8 +1,15 @@
 package fr.n7.hagymont.model;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Card {
@@ -15,7 +22,7 @@ public class Card {
     private String expiration_date;
 
     @OneToOne
-    @JoinColumn(name = "user_id", unique = true) // FK: user_id
+    @JoinColumn(name = "username", referencedColumnName = "username", unique = true)
     private User user;
 
     @OneToMany(mappedBy = "card")

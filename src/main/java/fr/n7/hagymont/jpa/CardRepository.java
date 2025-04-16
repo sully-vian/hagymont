@@ -1,10 +1,12 @@
 package fr.n7.hagymont.jpa;
 
-import fr.n7.hagymont.model.Card;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
-public interface CardRepository extends JpaRepository<Card, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Optional<Card> findByUserId(Long userId);
+import fr.n7.hagymont.model.Card;
+
+public interface CardRepository extends JpaRepository<Card, String> {
+
+    Optional<Card> findByUser_Username(String username);
 }

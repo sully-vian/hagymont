@@ -12,7 +12,7 @@
     <groupId>fr.n7</groupId>
     <artifactId>hagymont</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>hagymont</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -48,24 +48,18 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- HSQL Database -->
+        <!-- MySQL Driver -->
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <!-- <scope>runtime</scope> -->
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
+            <scope>runtime</scope>
         </dependency>
 
-        <!-- Actuator -->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency> -->
-
-        <!-- Tomcat -->
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency> -->
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <!-- Test -->
         <dependency>

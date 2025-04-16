@@ -3,7 +3,14 @@ package fr.n7.hagymont.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Course {
@@ -24,7 +31,7 @@ public class Course {
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
 
     @ManyToOne
-    @JoinColumn(name = "coach_id", nullable = false)  // 外键不可空
+    @JoinColumn(name = "coach_username", referencedColumnName = "username", nullable = false)  // FK: coach_id
     private User coach;
 
     // getters and setters

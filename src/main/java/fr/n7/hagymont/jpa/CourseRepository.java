@@ -1,14 +1,14 @@
 package fr.n7.hagymont.jpa;
 
-import fr.n7.hagymont.model.Course;
 import java.util.List;
-import jakarta.persistence.*;
-import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+import fr.n7.hagymont.model.Course;
 
-    List<Course> findByCoachId(Long coachId);
+public interface CourseRepository extends JpaRepository<Course, String> {
+
+    List<Course> findByCoachUsername(String username);
 
     List<Course> findByRoomId(Long roomId);
 
