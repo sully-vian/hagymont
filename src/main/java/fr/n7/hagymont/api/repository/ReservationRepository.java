@@ -1,8 +1,11 @@
-package fr.n7.hagymont.jpa;
+package fr.n7.hagymont.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import fr.n7.hagymont.api.model.Reservation;
+
 import java.util.List;
-import fr.n7.hagymont.model.Reservation;
+
 import jakarta.persistence.*;
 import java.util.ArrayList;
 

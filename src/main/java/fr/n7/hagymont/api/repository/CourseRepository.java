@@ -1,10 +1,10 @@
-package fr.n7.hagymont.jpa;
+package fr.n7.hagymont.api.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import fr.n7.hagymont.model.Course;
+import fr.n7.hagymont.api.model.Course;
 
 public interface CourseRepository extends JpaRepository<Course, String> {
 

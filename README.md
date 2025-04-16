@@ -1,16 +1,12 @@
 # HaGymont
 
-Pour build et lancer le projet:
+Pour rebuild et lancer le projet:
 
 ```bash
 ./mvnw clean spring-boot:run
 ```
 
-On accède ensuite à la racine [http://localhost:8080](http://localhost:8080).
-
-Un petit usage de l'API de Google à [http://localhost:8080/Serv](http://localhost:8080/Serv).
-
-Vous pouvez accéder à la page d'erreur en écrivant une URL qui n'existe pas [http://localhost:8080/rferj](http://localhost:8080/rferj) ou en écrivant des guillemets dans la zone de texte de la page d'IA (errur interne, affichage de la pile d'erreurs).
+Les logs sont accesibles sur la console et dans le fichier [`hagymont.log`](hagymont.log).
 
 ## Plan de développement
 
@@ -21,13 +17,14 @@ Le projet peut se découper en deux parties principales:
 
 Il faut en premier dspécifier l'interface entre ces deux parties. Qu'on puisse ensuite bosser en parallèle sur un modèle commun.
 
-### Base de données et API REST
+## Architecture
 
-Pour cette partie, il faudra concevoir la base de données et les classes Java (JPA) pour l'abstractiser. Ensuite, il faudra créer les contrôleurs REST pour relier tout ça au front-end.
+Les sources java sont séparées en plusieurs packages:
 
-### Front-end
-
-Dans cette partie, ya du backend aussi en fait, les appels à l'API REST se feront ici. il faudra aussi gérer les formulaires et les pages (css si on a le temps).
+- `api`: les classes liées à l'API REST de la base de données (`controller`, `model`, `repository`)
+- `controller`: les classses de contrôle des requêtes
+- `security`: les classes liées à la sécurité et l'authentification
+- `service`: les autres classes propres à une fonctionnalité (comme l'API Gemini par ex)
 
 ## Dépendances
 
@@ -37,6 +34,16 @@ Dans cette partie, ya du backend aussi en fait, les appels à l'API REST se fero
 4. **Spring Boot Starter Data JPA** (`spring-boot-starter-data-jpa`) pour la gestion de la base de données.
 5. **MySQL Connector/J** (`mysql-connector-j`) pour la connexion à MySQL.
 6. **Spring Boot Starter Test** (`spring-boot-starter-test`) pour les tests unitaires et d'intégration.
+
+## Authentification
+
+Les pages en `/Serv` sont protégées par une authentification. Vous êtes automatiquement redirigés vers la page de connexion si vous essayez d'accéder à une page protégée sans être authentifié. Là, il faut rentrer un pseudo et mdp (voir la base de données).
+
+En fait, le controlleur de Sécurité fait une requête GET à `http://localhost:<port>/api/auth/<username>`. Cette requête renvoie le pseudo et le mdp. On copare ensuite le mdp donné par l'utilisateur avec celui de la base de données.
+
+C'est pas sécurisé du tout parce que n'importe qui peut faie une requête get syr l'api derrière.
+
+Super [vidéo](https://youtu.be/_GSHvvken2k?si=SRKGmpoO03O13oRm) sur Spring Security pour comprendre l'authentification.
 
 ## API IA
 
@@ -77,7 +84,3 @@ sudo kill -9 <PID><PID>                # Replace with the actual PID
 
 netstat -ano | findstr :8081  # Finding PID
 taskkill /F /PID <PID>        # Replace with the actual PID
-
-### Spring Security Authentication
-
-Super [vidéo](https://youtu.be/_GSHvvken2k?si=SRKGmpoO03O13oRm) sur Spring Security pour comprendre l'authentification.

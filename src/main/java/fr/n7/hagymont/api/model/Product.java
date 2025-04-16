@@ -1,4 +1,4 @@
-package fr.n7.hagymont.model;
+package fr.n7.hagymont.api.model;
 
 import java.util.List;
 import jakarta.persistence.*;

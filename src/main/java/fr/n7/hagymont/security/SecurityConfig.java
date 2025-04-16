@@ -43,28 +43,4 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder().encode("password")) // Mot de passe encodé.
-                .roles("USER") // Rôle utilisateur.
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("admin")) // Mot de passe encodé.
-                .roles("ADMIN") // Rôle administrateur.
-                .build();
-
-        userDetailsService.createUser(user); // Ajoute l'utilisateur.
-        userDetailsService.createUser(admin); // Ajoute l'administrateur.
-        return userDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

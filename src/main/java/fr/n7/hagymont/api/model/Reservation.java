@@ -1,10 +1,9 @@
-package fr.n7.hagymont.model;
-
-import fr.n7.hagymont.model.Card;
-import fr.n7.hagymont.model.Course;
+package fr.n7.hagymont.api.model;
 
 import java.time.LocalDate;
 
+import fr.n7.hagymont.api.model.Card;
+import fr.n7.hagymont.api.model.Course;
 import jakarta.persistence.*;
 
 @Entity

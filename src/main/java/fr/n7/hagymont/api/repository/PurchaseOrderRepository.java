@@ -1,10 +1,10 @@
-package fr.n7.hagymont.jpa;
+package fr.n7.hagymont.api.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import fr.n7.hagymont.model.PurchaseOrder;
+import fr.n7.hagymont.api.model.PurchaseOrder;
 
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
 

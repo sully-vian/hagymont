@@ -1,11 +1,12 @@
-package fr.n7.hagymont.jpa;
+package fr.n7.hagymont.api.repository;
 
-import fr.n7.hagymont.model.Room;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import fr.n7.hagymont.api.model.Room;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 

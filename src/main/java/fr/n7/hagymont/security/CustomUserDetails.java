@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import fr.n7.hagymont.model.User;
+import fr.n7.hagymont.api.model.User;
 
 public class CustomUserDetails implements UserDetails {
 
