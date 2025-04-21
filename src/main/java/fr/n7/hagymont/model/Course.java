@@ -1,6 +1,7 @@
 package fr.n7.hagymont.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +20,10 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String type;
-    private LocalDate date;
-    private String start_time;
-    private String end_time;
+    private LocalDate start_time;
+    private LocalDate end_time;
+    private int capacity;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "room_id") //FK: room_id
@@ -51,28 +53,22 @@ public class Course {
         this.type = type;
     }
 
-    public String getDate() {
-        return date != null ? date.toString() : null;
-    }
-
-    public void setDate(String date) {
-        this.date = LocalDate.parse(date);
-    }
-
     public String getStartTime() {
-        return start_time;
+        return start_time != null ? start_time.toString() : null;
     }
 
     public void setStarTime(String start_time) {
-        this.start_time = start_time;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        this.start_time = LocalDate.parse(start_time,formatter);
     }
 
     public String getEndTime() {
-        return end_time;
+        return end_time != null ? end_time.toString() : null;
     }
 
     public void setEndTime(String end_time) {
-        this.end_time = end_time;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        this.end_time = LocalDate.parse(end_time, formatter);
     }
 
     public List<Reservation> getReservations() {
@@ -93,6 +89,22 @@ public class Course {
 
     public void setCoach(User coach) {
         this.coach = coach;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public void addReservation(Reservation reservation) {

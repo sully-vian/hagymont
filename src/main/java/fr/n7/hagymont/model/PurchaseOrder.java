@@ -14,15 +14,13 @@ public class PurchaseOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
-    private String created_at;
-    private String address;
 
     @ManyToOne
-    @JoinColumn(name = "username", referencedColumnName = "username")
-    private User user;
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private OrderBasket order;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     // Getters and Setters
@@ -42,28 +40,12 @@ public class PurchaseOrder {
         this.quantity = quantity;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public OrderBasket getOrderBasket() {
+        return order;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(OrderBasket order) {
+        this.order = order;
     }
 
     public Product getProduct() {

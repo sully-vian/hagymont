@@ -1,8 +1,15 @@
 package fr.n7.hagymont.model;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Club {
@@ -18,12 +25,8 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
 
-    // one club have one parking (1:1)
-    @OneToOne(
-            mappedBy = "club",
-            cascade = CascadeType.ALL,
-            optional = true)//optional = true means that the parking can be null
-    private Parking parking;
+    @Column(nullable = true)
+    private int parking_capacity;
 
     public Club() {
     }
@@ -67,17 +70,11 @@ public class Club {
         room.setClub(null);
     }
 
-    public Parking getParking() {
-        return parking;
+    public int getParkingCapacity() {
+        return parking_capacity;
     }
 
-    public void setParking(Parking parking) {
-        if (this.parking != null) {
-            this.parking.setClub(null);
-        }
-        this.parking = parking;
-        if (parking != null) {
-            parking.setClub(this);
-        }
+    public void setParkingCapacity(int capacity) {
+        this.parking_capacity = capacity;
     }
 }

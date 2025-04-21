@@ -2,9 +2,13 @@ package fr.n7.hagymont.model;
 
 import java.time.LocalDate;
 
-import fr.n7.hagymont.model.Card;
-import fr.n7.hagymont.model.Course;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Reservation {
@@ -14,20 +18,20 @@ public class Reservation {
     private Long id;
     private String status;
     private LocalDate date;
-    private double price;
+    
+    
+    @Column(nullable = true)
+    private int parking_space;
 
     @ManyToOne
-    @JoinColumn(name = "card_id", unique = true) // FK: card_id
-    private Card card;
+    @JoinColumn(name = "user_id", unique = true) // FK: card_id
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "course_id") // FK: course_id
     private Course course;
 
-    @ManyToOne
-    @JoinColumn(name = "parking_id") // FK: parking_id
-    private Parking parking;
-
+    
     // getters and setters
     public Long getId() {
         return id;
@@ -53,32 +57,25 @@ public class Reservation {
         this.date = LocalDate.parse(date);
     }
 
-    public double getPrice() {
-        return price;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Card getCard() {
-        return card;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Course getCourse() {
         return course;
     }
 
-    public Parking getParking() {
-        return parking;
+    public int getParkingSpace() {
+        return parking_space;
     }
 
-    public void setParking(Parking parking) {
-        this.parking = parking;
+    public void setParkingSpace(int parking_space) {
+        this.parking_space = parking_space;
     }
 
     public void setCourse(Course course) {

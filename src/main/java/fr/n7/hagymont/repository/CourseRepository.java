@@ -1,5 +1,6 @@
 package fr.n7.hagymont.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface CourseRepository extends JpaRepository<Course, String> {
     List<Course> findByRoomId(Long roomId);
 
     List<Course> findByType(String type);
+
+    List<Course> findByPriceBetween(double minPrice, double maxPrice);
 }

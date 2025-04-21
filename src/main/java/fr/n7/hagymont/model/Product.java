@@ -1,8 +1,13 @@
 package fr.n7.hagymont.model;
 
-import java.util.List;
-import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -13,6 +18,7 @@ public class Product {
     private String name;
     private double price;
     private int stock;
+    private String description;
 
     @OneToMany(mappedBy = "product")
     private List<PurchaseOrder> orders = new ArrayList<>();
@@ -63,4 +69,13 @@ public class Product {
         orders.remove(order);
         order.setProduct(null);
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

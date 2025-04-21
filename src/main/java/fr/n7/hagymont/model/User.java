@@ -4,14 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -25,6 +23,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserGender gender;
+
 
     public enum UserGender {
         M, F
@@ -45,15 +44,13 @@ public class User {
 
     private String password;
 
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL, // all operations on the user will be propagated to the card
-            optional = true // true means that the user can exist without a card
-    )
-    private Card card;
+    @Column(nullable = true)
+    private LocalDate card_start;
+    @Column(nullable = true)
+    private LocalDate card_end;
 
     @OneToMany(mappedBy = "user")
-    private List<PurchaseOrder> orders = new ArrayList<>();
+    private List<OrderBasket> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "coach")
     private List<Course> coursesCreated = new ArrayList<>();
@@ -131,19 +128,27 @@ public class User {
         this.password = password;
     }
 
-    public Card getCard() {
-        return card;
+    public String getCard_end() {
+        return card_end!=null ? card_end.toString() : null;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
+    public void setCard_end(String card_end) {
+        this.card_end = LocalDate.parse(card_end);
     }
 
-    public List<PurchaseOrder> getOrders() {
+    public String getCard_start() {
+        return card_start!=null ? card_start.toString() : null;
+    }
+
+    public void setCard_start(String card_start) {
+        this.card_start = LocalDate.parse(card_start);
+    }
+
+    public List<OrderBasket> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<PurchaseOrder> orders) {
+    public void setOrders(List<OrderBasket> orders) {
         this.orders = orders;
     }
 
@@ -155,7 +160,7 @@ public class User {
         this.coursesCreated = coursesCreated;
     }
 
-    public void addOrder(PurchaseOrder order) {
+    public void addOrder(OrderBasket order) {
         orders.add(order);
         order.setUser(this); // set the user of the order to this user
     }
