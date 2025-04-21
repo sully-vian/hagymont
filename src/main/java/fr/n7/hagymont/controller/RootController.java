@@ -1,21 +1,23 @@
 package fr.n7.hagymont.controller;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-@Controller
+@RestController
+@RequestMapping("/")
 public class RootController {
 
-    // prints "You are at the root of the website to the page"
-    @GetMapping("/")
-    public void root(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.getWriter().println("You are at the root of the website");
+    private final String WELCOME_MESSAGE = "Welcome to the Hagymont API!";
+
+    // Pour tout type de requête HTTP, afficher le message de bienvenue
+    @RequestMapping
+    public ResponseEntity<Map<String, String>> welcome() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", WELCOME_MESSAGE);
+        return ResponseEntity.ok(response);
     }
 }

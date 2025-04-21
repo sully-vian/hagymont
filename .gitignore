@@ -2,6 +2,9 @@
 target/
 .env
 
+
+*.gz
+
 # ignore database files
 data/
 

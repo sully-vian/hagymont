@@ -30,7 +30,7 @@ Les sources java sont séparées en plusieurs packages:
 
 1. **Dotenv** (`dotenv-java`) pour charger les variables d'environnement (la clef API notamment) depuis le fichier `.env`.
 2. **Spring Boot Starter Web** (`spring-boot-starter-web`) pour créer une API REST.
-3. **Tomcat Embed Jasper** (`tomcat-embed-jasper`) pour le moteur de template JSP.
+3. **Spring Boot DevTools** (`spring-boot-devtools`) pour le rechargement automatique des classes lors du développement.
 4. **Spring Boot Starter Data JPA** (`spring-boot-starter-data-jpa`) pour la gestion de la base de données.
 5. **MySQL Connector/J** (`mysql-connector-j`) pour la connexion à MySQL.
 6. **Spring Boot Starter Test** (`spring-boot-starter-test`) pour les tests unitaires et d'intégration.
@@ -44,10 +44,6 @@ En fait, le controlleur de Sécurité fait une requête GET à `http://localhost
 C'est pas sécurisé du tout parce que n'importe qui peut faie une requête get syr l'api derrière.
 
 Super [vidéo](https://youtu.be/_GSHvvken2k?si=SRKGmpoO03O13oRm) sur Spring Security pour comprendre l'authentification.
-
-## API IA
-
-Pour montrer au prof qu'on sait faire usage d'une API et surtout parce que **ça fait cool**, on va utiliser l'API IA de Google pour générer des phrases de motivation sur la page d'accueil.
 
 ### Fichier `.env`
 
