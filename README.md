@@ -6,7 +6,7 @@ Pour rebuild et lancer le projet:
 ./mvnw clean spring-boot:run
 ```
 
-Les logs sont accesibles sur la console et dans le fichier [`hagymont.log`](hagymont.log).
+Les logs sont accesibles sur la console et dans le fichier [`target/hagymont.log`](target/hagymont.log).
 
 ## Plan de développement
 
