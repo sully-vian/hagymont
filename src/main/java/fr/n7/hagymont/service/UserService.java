@@ -1,6 +1,8 @@
 package fr.n7.hagymont.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.model.User.UserGender;
 import fr.n7.hagymont.repository.UserRepository;
+import fr.n7.hagymont.model.User.UserType;
 
 @Service
 public class UserService {
@@ -27,45 +30,58 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUsername(String username, User user) {
-        if (userRepository.existsById(username)) {
-            return null;
-        }
-        user.setUsername(username);
-        return userRepository.save(user);
-    }
-
-    public User updateGender(UserGender gender, User user) {
-        user.setGender(gender);
-        return userRepository.save(user);
-    }
-
-    public User updateType(fr.n7.hagymont.model.User.UserType type, User user) {
-        user.setType(type);
-        return userRepository.save(user);
-    }
-
-    public User updatePhone(String phone, User user) {
-        user.setPhone(phone);
-        return userRepository.save(user);
-    }
-
-    public User updateEmail(String email, User user) {
-        user.setEmail(email);
-        return userRepository.save(user);
-    }
-
-    public User updatePassword(String password, User user) {
-        user.setPassword(password);
-        return userRepository.save(user);
-    }
-
     public boolean deleteUserByUsername(String username) {
         if (!userRepository.existsById(username)) {
             return false;
         }
         userRepository.deleteById(username);
         return true;
+    }
+
+    public User updateUser(String username, Map<String, Object> updates) {
+        User user = userRepository.findById(username).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "firstname":
+                    user.setFirstname((String) value);
+                    break;
+                case "secondname":
+                    user.setSecondname((String) value);
+                    break;
+                case "gender":
+                    user.setGender(UserGender.valueOf((String) value));
+                    break;
+                case "type":
+                    user.setType(UserType.valueOf((String) value));
+                    break;
+                case "birthdate":
+                    user.setBirthdate(LocalDate.parse((String) value));
+                    break;
+                case "phone":
+                    user.setPhone((String) value);
+                    break;
+                case "email":
+                    user.setEmail((String) value);
+                    break;
+                case "password":
+                    user.setPassword((String) value);
+                    break;
+                case "card_start":
+                    user.setCard_start(LocalDate.parse((String) value));
+                    break;
+                case "card_end":
+                    user.setCard_end(LocalDate.parse((String) value));
+                    break;
+                // TODO: traiter les orders et les cours
+                default:
+                    break;
+            }
+        });
+
+        return userRepository.save(user);
     }
 
 }

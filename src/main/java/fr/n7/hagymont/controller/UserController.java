@@ -1,6 +1,7 @@
 package fr.n7.hagymont.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.n7.hagymont.model.User;
-import fr.n7.hagymont.model.User.UserGender;
-import fr.n7.hagymont.model.User.UserType;
 import fr.n7.hagymont.service.UserService;
 
 @RestController
@@ -33,7 +32,7 @@ public class UserController {
 
     // GET /users/{username} - récupérer un utilisateur par son nom d'utilisateur
     @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+    public ResponseEntity<User> getUser(@PathVariable String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -49,71 +48,17 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<String> deleteUserByUsername(@PathVariable String username) {
+    public ResponseEntity<String> deleteUser(@PathVariable String username) {
         boolean delete = userService.deleteUserByUsername(username);
-        if (delete){
+        if (delete) {
             return ResponseEntity.ok(username + " has been deleted");
         }
         return ResponseEntity.status(404).body(username + " has not been found");
     }
 
-    @PatchMapping
-    public ResponseEntity<User> updateUsername(@PathVariable String username, @PathVariable String newUsername){
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        User newUser = userService.updateUsername(newUsername, user);
-        return ResponseEntity.status(200).body(newUser);
-    }
-
-    @PatchMapping
-    public ResponseEntity<User> updateGender(@PathVariable String username, @PathVariable UserGender newGender){
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        User newUser = userService.updateGender(newGender, user);
-        return ResponseEntity.status(200).body(newUser);
-    }
-
-    @PatchMapping
-    public ResponseEntity<User> updateType(@PathVariable String username, @PathVariable UserType newType){
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        User newUser = userService.updateType(newType, user);
-        return ResponseEntity.status(200).body(newUser);
-    }
-
-    @PatchMapping
-    public ResponseEntity<User> updatePhone(@PathVariable String username, @PathVariable String newPhone){
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        User newUser = userService.updatePhone(newPhone, user);
-        return ResponseEntity.status(200).body(newUser);
-    }
-
-    @PatchMapping
-    public ResponseEntity<User> updateEmail(@PathVariable String username, @PathVariable String newEmail){
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        User newUser = userService.updateEmail(newEmail, user);
-        return ResponseEntity.status(200).body(newUser);
-    }
-
-    @PatchMapping
-    public ResponseEntity<User> updatePassword(@PathVariable String username, @PathVariable String newPassword){
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        User newUser = userService.updatePassword(newPassword, user);
-        return ResponseEntity.status(200).body(newUser);
+    @PatchMapping("/{username}")
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
+        User updatedUser = userService.updateUser(username, updates);
+        return ResponseEntity.status(200).body(updatedUser);
     }
 }
