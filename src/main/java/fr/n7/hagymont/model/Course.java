@@ -26,14 +26,14 @@ public class Course {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "room_id") //FK: room_id
+    @JoinColumn(name = "room_id") // FK: room_id
     private Room room;
 
     @OneToMany(mappedBy = "course")
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
 
     @ManyToOne
-    @JoinColumn(name = "coach_username", referencedColumnName = "username", nullable = false)  // FK: coach_id
+    @JoinColumn(name = "coach_username", referencedColumnName = "username", nullable = false) // FK: coach_id
     private User coach;
 
     // getters and setters
@@ -59,7 +59,7 @@ public class Course {
 
     public void setStarTime(String start_time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        this.start_time = LocalDate.parse(start_time,formatter);
+        this.start_time = LocalDate.parse(start_time, formatter);
     }
 
     public String getEndTime() {

@@ -33,7 +33,7 @@ public class OrderBasket {
     }
 
     public String getCreated_at() {
-        return created_at!=null ? created_at.toString() : null;
+        return created_at != null ? created_at.toString() : null;
     }
 
     public void setCreated_at(String created_at) {

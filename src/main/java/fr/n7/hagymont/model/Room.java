@@ -24,7 +24,7 @@ public class Room {
     private Club club;
 
     @OneToMany(mappedBy = "room") // 1 room can have many courses
-    private final List<Course> courses = new ArrayList<>();  // Initialize the list 
+    private final List<Course> courses = new ArrayList<>(); // Initialize the list
 
     // Getters and setters
     public Long getId() {

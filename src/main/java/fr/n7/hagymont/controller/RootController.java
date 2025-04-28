@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
 public class RootController {
 
     private final String WELCOME_MESSAGE = "Welcome to the Hagymont API!";
 
     // Pour tout type de requête HTTP, afficher le message de bienvenue
-    @RequestMapping
+    @RequestMapping("/")
     public ResponseEntity<Map<String, String>> welcome() {
         Map<String, String> response = new HashMap<>();
         response.put("message", WELCOME_MESSAGE);

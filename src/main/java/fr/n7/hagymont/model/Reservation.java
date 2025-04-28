@@ -18,8 +18,7 @@ public class Reservation {
     private Long id;
     private String status;
     private LocalDate date;
-    
-    
+
     @Column(nullable = true)
     private int parking_space;
 
@@ -31,7 +30,6 @@ public class Reservation {
     @JoinColumn(name = "course_id") // FK: course_id
     private Course course;
 
-    
     // getters and setters
     public Long getId() {
         return id;
@@ -56,7 +54,6 @@ public class Reservation {
     public void setDate(String date) {
         this.date = LocalDate.parse(date);
     }
-
 
     public User getUser() {
         return user;

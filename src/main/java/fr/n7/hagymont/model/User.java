@@ -24,7 +24,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserGender gender;
 
-
     public enum UserGender {
         M, F
     }
@@ -46,6 +45,7 @@ public class User {
 
     @Column(nullable = true)
     private LocalDate card_start;
+
     @Column(nullable = true)
     private LocalDate card_end;
 
@@ -128,20 +128,20 @@ public class User {
         this.password = password;
     }
 
-    public String getCard_end() {
-        return card_end!=null ? card_end.toString() : null;
+    public LocalDate getCard_end() {
+        return card_end;
     }
 
-    public void setCard_end(String card_end) {
-        this.card_end = LocalDate.parse(card_end);
+    public void setCard_end(LocalDate card_end) {
+        this.card_end = card_end;
     }
 
-    public String getCard_start() {
-        return card_start!=null ? card_start.toString() : null;
+    public LocalDate getCard_start() {
+        return card_start;
     }
 
-    public void setCard_start(String card_start) {
-        this.card_start = LocalDate.parse(card_start);
+    public void setCard_start(LocalDate card_start) {
+        this.card_start = card_start;
     }
 
     public List<OrderBasket> getOrders() {

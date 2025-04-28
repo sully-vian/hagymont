@@ -21,7 +21,7 @@ public class Club {
     private String name;
     private String address;
 
-    //one club have many rooms (1:N)
+    // one club have many rooms (1:N)
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
 
