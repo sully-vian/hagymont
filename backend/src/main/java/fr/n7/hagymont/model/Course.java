@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
+@JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class Course {
 
     @Id
@@ -22,8 +26,8 @@ public class Course {
     private String type;
     private LocalDate start_time;
     private LocalDate end_time;
-    private int capacity;
-    private double price;
+    private Integer capacity;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "room_id") // FK: room_id
@@ -91,19 +95,19 @@ public class Course {
         this.coach = coach;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

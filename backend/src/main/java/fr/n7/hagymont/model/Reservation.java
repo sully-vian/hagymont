@@ -2,6 +2,9 @@ package fr.n7.hagymont.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+@JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class Reservation {
 
     @Id
@@ -20,7 +24,7 @@ public class Reservation {
     private LocalDate date;
 
     @Column(nullable = true)
-    private int parking_space;
+    private Integer parking_space; // Integer et pas int pour pouvoir le mettre à null
 
     @ManyToOne
     @JoinColumn(name = "user_id", unique = true) // FK: card_id
@@ -67,11 +71,11 @@ public class Reservation {
         return course;
     }
 
-    public int getParkingSpace() {
+    public Integer getParkingSpace() {
         return parking_space;
     }
 
-    public void setParkingSpace(int parking_space) {
+    public void setParkingSpace(Integer parking_space) {
         this.parking_space = parking_space;
     }
 

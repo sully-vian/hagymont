@@ -1,5 +1,8 @@
 package fr.n7.hagymont.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,12 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+@JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class PurchaseOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -32,11 +36,11 @@ public class PurchaseOrder {
         this.id = id;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

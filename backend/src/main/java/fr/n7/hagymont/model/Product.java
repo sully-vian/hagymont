@@ -3,6 +3,9 @@ package fr.n7.hagymont.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,14 +13,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
+@JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private double price;
-    private int stock;
+    private Double price;
+    private Integer stock;
     private String description;
 
     @OneToMany(mappedBy = "product")
@@ -40,19 +44,19 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
