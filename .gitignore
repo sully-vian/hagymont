@@ -1,13 +1,3 @@
-# ignore target directory
-target/
-.env
-
-
-*.gz
-
-# ignore database files
-data/
-
 # LaTeX
 *.aux
 *.fdb_latexmk
