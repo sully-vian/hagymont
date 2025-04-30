@@ -20,7 +20,7 @@ public class PurchaseOrderController {
         return ResponseEntity.status(201).body(createdOrder);
     }
 
-    // Modifier la quantité
+    // Modifier la quantité d'un produit dans le panier
     @PatchMapping("/{id}")
     public ResponseEntity<PurchaseOrder> updateQuantity(
             @PathVariable Long id,
