@@ -69,14 +69,26 @@ SHOW TABLES;
 
 CHECK TABLE xxx;
 
-### Clean up occupied port
+## Clean up occupied port
 
-#### Linux/macOS
+### Linux/macOS
 
-sudo lsof -i :8081        #Finding PID （8081:The port we are using which we can set in application.properties)
-sudo kill -9 <PID><PID>                # Replace with the actual PID
+#### Finding PID （8081:The port we are using which we can set in application.properties)
 
-#### Windows
+sudo lsof -i :8081
 
-netstat -ano | findstr :8081  # Finding PID
-taskkill /F /PID <PID>        # Replace with the actual PID
+#### Replace with the actual PID
+
+sudo kill -9 <PID><PID>
+
+### Windows
+
+#### Finding PID
+
+netstat -ano | findstr :8081
+
+<PID>
+
+#### Replace with the actual PID
+
+taskkill /F /PID <PID>
