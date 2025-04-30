@@ -12,8 +12,10 @@ import java.util.ArrayList;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     List<Reservation> findByUser_Username(String username);
-    
-    List<Reservation> findByCourseId(Long courseId);
+
+    List<Reservation> findByid(Long id);
 
     List<Reservation> findByStatus(String status);
+
+    boolean existsByUserAndCourse(User user, Course course);
 }
