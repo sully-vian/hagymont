@@ -1,7 +1,0 @@
-
-# ignore target directory
-target/
-.env
-
-# ignore database files
-data/
