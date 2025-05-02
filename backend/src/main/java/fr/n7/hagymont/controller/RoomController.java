@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import fr.n7.hagymont.model.Room;
 import fr.n7.hagymont.service.RoomService;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class RoomController {
 
     // GET /rooms/{id} - User consulte une salle par son ID
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getRoomById(@PathVariable Integer roomId) {
+    public ResponseEntity<Room> getRoomById(@PathVariable Long roomId) {
         Room room = roomService.getRoomById(roomId);
         if (room == null) {
             return ResponseEntity.notFound().build();
@@ -41,7 +42,7 @@ public class RoomController {
 
     // DELETE /rooms/{id} - Supprimer la chambre (admin)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRoom(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteRoom(@PathVariable Long id) {
         boolean deleted = roomService.deleteRoom(id);
         return deleted ? ResponseEntity.ok("Room deleted")
                 : ResponseEntity.notFound().build();
@@ -50,7 +51,7 @@ public class RoomController {
     // PATCH /rooms/{id} - Modifier l'info (admin)
     @PatchMapping("/{roomId}")
     public ResponseEntity<?> updateRoom(
-            @PathVariable Integer roomId,
+            @PathVariable Long roomId,
             @RequestBody Map<String, Object> updates) {
         try {
             Room updatedRoom = roomService.updateRoom(roomId, updates);

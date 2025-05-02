@@ -61,7 +61,7 @@ public class Course {
         return start_time != null ? start_time.toString() : null;
     }
 
-    public void setStarTime(String start_time) {
+    public void setStartTime(String start_time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.start_time = LocalDate.parse(start_time, formatter);
     }

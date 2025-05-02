@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -30,20 +31,17 @@ public class ReservationService {
     }
 
     // Récupérer les réservations d'un utilisateur
-    public List<Reservation> getReservationsByUser(String userId) {
-        if (!UserRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User not found: " + userId);
-        }
-        return reservationRepository.findByUser_Username(userId);
+    public List<Reservation> getReservationsByUser(String username) {
+        return Optional.of(reservationRepository.findByUser_Username(username)).orElseThrow(() -> new ResourceNotFoundException("User not found"));;
     }
 
     // Créer une réservation
     public Reservation createReservation(Reservation reservation) {
         // Valider l'existence de l'utilisateur et du cours
-        User user = userRepository.findById(reservation.getUser().getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Course course = courseRepository.findById(reservation.getCourse().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+        User user = Optional.of(reservation.getUser())
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Course course = Optional.of(reservation.getCourse())
+                        .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         // Vérifier si l'utilisateur a déjà réservé ce cours (contrainte unique)
         if (reservationRepository.existsByUserAndCourse(user, course)) {

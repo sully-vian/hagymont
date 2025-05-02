@@ -3,7 +3,7 @@ package fr.n7.hagymont.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findById(username).orElse(null);
+        return Optional.of(userRepository.findByUsername(username)).orElse(null);
     }
 
     public User createUser(User user) {
@@ -31,15 +31,15 @@ public class UserService {
     }
 
     public boolean deleteUserByUsername(String username) {
-        if (!userRepository.existsById(username)) {
+        if (!userRepository.existsByUsername(username)) {
             return false;
         }
-        userRepository.deleteById(username);
+        userRepository.deleteByUsername(username);
         return true;
     }
 
     public User updateUser(String username, Map<String, Object> updates) {
-        User user = userRepository.findById(username).orElse(null);
+        User user = Optional.of(userRepository.findByUsername(username)).orElse(null);
         if (user == null) {
             return null;
         }

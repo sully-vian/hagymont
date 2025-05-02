@@ -3,6 +3,8 @@ package fr.n7.hagymont.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.n7.hagymont.model.Reservation;
+import fr.n7.hagymont.model.User;
+import fr.n7.hagymont.model.Course;
 
 import java.util.List;
 

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderBasketService {
@@ -23,18 +25,19 @@ public class OrderBasketService {
     // Créer un panier
     public OrderBasket createOrderBasket(OrderBasket orderBasket) {
         // Vérifier l'existence de l'utilisateur
-        User user = userRepository.findByUsername(orderBasket.getUser().getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Optional<User> userOptional = Optional.of(userRepository.findByUsername(orderBasket.getUser().getUsername()));
+        User user = userOptional.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         orderBasket.setUser(user);
-        orderBasket.setCreated_at(LocalDate.now());
+        orderBasket.setCreated_at(LocalDate.now().toString());
         orderBasket.setStatus("pending"); // Statut initial
         return orderBasketRepository.save(orderBasket);
     }
 
-    // Récupérer un panier par ID
-    public OrderBasket getOrderBasketById(Long id) {
-        return orderBasketRepository.findById(id).orElse(null);
+    // Récupérer un panier par User
+    public List<OrderBasket> getOrderBasketByUser(String username) {
+        List<OrderBasket> order = Optional.of(orderBasketRepository.findByUser_Username(username)).orElse(null);
+        return order;
     }
 
     // Mettre à jour le panier
@@ -63,7 +66,6 @@ public class OrderBasketService {
         basket.setStatus("confirmed");
         return orderBasketRepository.save(basket);
     }
-}
 
 // Supprimer un panier
 public boolean deleteOrderBasket(Long id) {

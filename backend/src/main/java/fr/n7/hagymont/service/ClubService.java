@@ -13,7 +13,7 @@ public class ClubService {
     @Autowired
     private ClubRepository clubRepository;
 
-    public Club getClubById(Integer id) {
+    public Club getClubById(Long id) {
         return clubRepository.findById(id).orElse(null);
     }
 
@@ -28,7 +28,7 @@ public class ClubService {
         return clubRepository.save(club);
     }
 
-    public boolean deleteClub(Integer id) {
+    public boolean deleteClub(Long id) {
         if (clubRepository.existsById(id)) {
             clubRepository.deleteById(id);
             return true;
@@ -36,7 +36,7 @@ public class ClubService {
         return false;
     }
 
-    public Club updateClub(Integer id, Map<String, Object> updates) {
+    public Club updateClub(Long id, Map<String, Object> updates) {
         Club club = clubRepository.findById(id).orElse(null);
         if (club != null) {
             updates.forEach((key, value) -> {

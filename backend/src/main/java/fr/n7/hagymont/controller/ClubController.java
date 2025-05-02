@@ -17,7 +17,7 @@ public class ClubController {
 
     // GET /clubs/{id} - voir un club par son id
     @GetMapping("/{id}")
-    public ResponseEntity<Club> getClub(@PathVariable Integer clubId) {
+    public ResponseEntity<Club> getClub(@PathVariable Long clubId) {
         Club club = clubService.getClubById(clubId);
         if (club == null) {
             return ResponseEntity.notFound().build();
@@ -41,7 +41,7 @@ public class ClubController {
 
     // DELETE /clubs/{id} - Supprimer le club (admin)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClub(@PathVariable Integer clubId) {
+    public ResponseEntity<String> deleteClub(@PathVariable Long clubId) {
         boolean deleted = clubService.deleteClub(clubId);
         return deleted ? ResponseEntity.ok("Club deleted")
                 : ResponseEntity.notFound().build();
@@ -50,9 +50,9 @@ public class ClubController {
     // PATCH /clubs/{id} - Modifier les informations du club (admin)
     @PatchMapping("/{id}")
     public ResponseEntity<Club> updateClub(
-            @PathVariable Integer clubId,
+            @PathVariable Long clubId,
             @RequestBody Map<String, Object> updates) {
-        Club updatedClub = clubService.updateClub(id, updates);
+        Club updatedClub = clubService.updateClub(clubId, updates);
         return updatedClub != null ? ResponseEntity.ok(updatedClub)
                 : ResponseEntity.notFound().build();
     }

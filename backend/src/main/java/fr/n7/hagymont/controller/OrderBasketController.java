@@ -25,8 +25,8 @@ public class OrderBasketController {
 
     // GET /order-baskets - récupérer tous les paniers
     @GetMapping("/user/{username}")
-    public List<OrderBasket> getOrderBasketsByUser(@PathVariable String username) {
-        return orderBasketService.getOrderBasketsByUser(username);
+    public List<OrderBasket> getOrderBasketByUser(@PathVariable String username) {
+        return orderBasketService.getOrderBasketByUser(username);
     }
 
     //mise à jour d'un panier

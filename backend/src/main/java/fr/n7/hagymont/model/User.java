@@ -169,7 +169,7 @@ public class User {
         order.setUser(this); // set the user of the order to this user
     }
 
-    public void removeOrder(PurchaseOrder order) {
+    public void removeOrder(OrderBasket order) {
         orders.remove(order);
         order.setUser(null); // set the user of the order to null
     }

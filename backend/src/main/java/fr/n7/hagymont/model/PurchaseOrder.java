@@ -48,7 +48,7 @@ public class PurchaseOrder {
         return order;
     }
 
-    public void setUser(OrderBasket order) {
+    public void setOrderBasket(OrderBasket order) {
         this.order = order;
     }
 

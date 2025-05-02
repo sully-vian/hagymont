@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -29,7 +30,7 @@ public class CourseService {
 
     // GET /courses - User consulte les cours disponibles (filtre)
     public List<Course> getAvailableCourses(String type) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         return courseRepository.findByTypeAndStartTimeAfter(type, now);
     }
 
@@ -41,7 +42,8 @@ public class CourseService {
     // POST /courses - Coach crée un nouveau cours
     public Course createCourse(Course course) {
         // Vérifier si la salle et le coach existent
-        validateRoomAndCoach(course.getRoom().getId(), course.getCoach().getUsername());
+        validateRoom(course.getRoom().getId());
+        validateCoach(course.getCoach().getUsername());
         return courseRepository.save(course);
     }
 
@@ -56,20 +58,20 @@ public class CourseService {
 
     // PATCH /courses/{id} - Coach modifie les informations d'un cours
     // Vérifier si la salle et le coach existent
-    public Course modifierCours(Long id, Map<String, Object> modifications) {
-        Course cours = coursRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+    public Course updateCourse(Long id, Map<String, Object> updates) throws ResourceNotFoundException{
+        Optional<Course> courseOptional = courseRepository.findById(id);
+        Course course = courseOptional.orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         updates.forEach((key, value) -> {
             switch (key) {
                 case "type":
-                    course.setType((String) value);
+                    course.setType(value.toString());
                     break;
                 case "startTime":
-                    course.setStartTime(parseDate((String) value));
+                    course.setStartTime(value.toString());
                     break;
                 case "endTime":
-                    course.setEndTime(parseDate((String) value));
+                    course.setEndTime(value.toString());
                     break;
                 case "capacity":
                     course.setCapacity((Integer) value);
@@ -78,13 +80,12 @@ public class CourseService {
                     course.setPrice((Double) value);
                     break;
                 case "roomId":
-                    Room room = roomRepository.findById((Long) value)
-                            .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+                    Optional<Room> roomOptional = roomRepository.findById((Long) value);
+                    Room room = roomOptional.orElseThrow(() -> new ResourceNotFoundException("Room not found"));
                     course.setRoom(room);
                     break;
                 case "coachUsername":
-                    User coach = userRepository.findByUsername((String) value)
-                            .orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
+                    User coach = Optional.of(userRepository.findByUsername(value.toString())).orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
                     if (coach.getType() != User.UserType.coach) {
                         throw new IllegalArgumentException("this user is not a coach");
                     }
@@ -97,7 +98,7 @@ public class CourseService {
     }
 
     // Convertir une chaîne en LocalDate
-    private LocalDate parserDate(String dateStr) {
+    private LocalDate parseDate(String dateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(dateStr, formatter);
     }
@@ -111,8 +112,7 @@ public class CourseService {
 
     // Valider l'existence du coach and son type
     private void validateCoach(String username) {
-        User coach = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Coach not found with username: " + username));
+        User coach = Optional.of(userRepository.findByUsername(username)).orElseThrow(() -> new ResourceNotFoundException("Coach not found with username: " + username));
         if (coach.getType() != User.UserType.coach) {
             throw new IllegalArgumentException("This user is not a coach");
         }

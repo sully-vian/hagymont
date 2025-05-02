@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.service.CourseService;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -48,10 +49,15 @@ public class CourseController {
     @PatchMapping("/{id}")
     public ResponseEntity<Course> updateCourse(
             @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {
-        Course updatedCourse = courseService.updateCourse(id, updates);
-        return updatedCourse != null
+            @RequestBody Map<String, Object> updates) {     
+        try {
+            Course updatedCourse = courseService.updateCourse(id, updates);
+            return updatedCourse != null
                 ? ResponseEntity.ok(updatedCourse)
                 : ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            
+        }               
+
     }
 }

@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.n7.hagymont.model.User;
 
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByType(User.UserType type);
 
     User findByUsername(String username);
+
+    Boolean existsByUsername(String username);
+
+    Void deleteByUsername(String username);
 }
