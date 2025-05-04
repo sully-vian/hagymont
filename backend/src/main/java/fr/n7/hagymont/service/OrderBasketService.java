@@ -1,10 +1,10 @@
 package fr.n7.hagymont.service;
 
-import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.OrderBasket;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.repository.OrderBasketRepository;
 import fr.n7.hagymont.repository.UserRepository;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class OrderBasketService {
     private UserRepository userRepository;
 
     // Créer un panier
-    public OrderBasket createOrderBasket(OrderBasket orderBasket) {
+    public OrderBasket createOrderBasket(OrderBasket orderBasket) throws ResourceNotFoundException {
         // Vérifier l'existence de l'utilisateur
         Optional<User> userOptional = Optional.of(userRepository.findByUsername(orderBasket.getUser().getUsername()));
         User user = userOptional.orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -41,7 +41,7 @@ public class OrderBasketService {
     }
 
     // Mettre à jour le panier
-    public OrderBasket updateOrderBasket(Long id, Map<String, Object> updates) {
+    public OrderBasket updateOrderBasket(Long id, Map<String, Object> updates) throws ResourceNotFoundException {
         OrderBasket basket = orderBasketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("OrderBasket not found"));
 
@@ -60,7 +60,7 @@ public class OrderBasketService {
     }
 
     // Valider le panier
-    public OrderBasket validateOrderBasket(Long id) {
+    public OrderBasket validateOrderBasket(Long id) throws ResourceNotFoundException {
         OrderBasket basket = orderBasketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Panier not found"));
         basket.setStatus("confirmed");

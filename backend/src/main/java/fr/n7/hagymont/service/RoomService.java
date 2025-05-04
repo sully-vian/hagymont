@@ -42,15 +42,18 @@ public class RoomService {
         return false;
     }
 
-    public Room updateRoom(Long roomId, Map<String, Object> updates) {
+    public Room updateRoom(Long roomId, Map<String, Object> updates) throws ResourceNotFoundException{
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found with ID: " + roomId));
-        updates.forEach((key, value) -> {
+        for (Map.Entry<String, Object> entry : updates.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+        
             switch (key) {
                 case "type":
                     room.setType((String) value);
                     break;
-                case "club"://FK
+                case "club": // FK
                     Long clubId = (Long) value;
                     Club club = clubRepository.findById(clubId)
                             .orElseThrow(() -> new ResourceNotFoundException("Club not found with ID: " + clubId));
@@ -59,7 +62,7 @@ public class RoomService {
                 default:
                     break;
             }
-        });
+        }
 
         return roomRepository.save(room);
     }

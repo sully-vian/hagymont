@@ -2,6 +2,7 @@ package fr.n7.hagymont.controller;
 
 import fr.n7.hagymont.model.OrderBasket;
 import fr.n7.hagymont.service.OrderBasketService;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,13 @@ public class OrderBasketController {
 
     // POST /order-baskets - Créer un nouveau panier
     @PostMapping
-    public ResponseEntity<OrderBasket> createOrderBasket(@RequestBody OrderBasket orderBasket) {
-        OrderBasket createdBasket = orderBasketService.createOrderBasket(orderBasket);
-        return ResponseEntity.status(201).body(createdBasket);
+    public ResponseEntity<?> createOrderBasket(@RequestBody OrderBasket orderBasket) {      
+        try {
+            OrderBasket createdBasket = orderBasketService.createOrderBasket(orderBasket);
+            return ResponseEntity.status(201).body(createdBasket);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
     }
 
     // GET /order-baskets - récupérer tous les paniers
@@ -31,13 +36,18 @@ public class OrderBasketController {
 
     //mise à jour d'un panier
     @PatchMapping("/{id}")
-    public ResponseEntity<OrderBasket> updateOrderBasket(
+    public ResponseEntity<?> updateOrderBasket(
             @PathVariable Long id,
             @RequestBody Map<String, Object> updates) {
-        OrderBasket updatedBasket = orderBasketService.updateOrderBasket(id, updates);
-        return updatedBasket != null
+        
+        try {
+            OrderBasket updatedBasket = orderBasketService.updateOrderBasket(id, updates);
+            return updatedBasket != null
                 ? ResponseEntity.ok(updatedBasket)
                 : ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

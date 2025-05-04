@@ -1,12 +1,12 @@
 package fr.n7.hagymont.service;
 
-import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Reservation;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.repository.ReservationRepository;
 import fr.n7.hagymont.repository.UserRepository;
 import fr.n7.hagymont.repository.CourseRepository;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +31,12 @@ public class ReservationService {
     }
 
     // Récupérer les réservations d'un utilisateur
-    public List<Reservation> getReservationsByUser(String username) {
-        return Optional.of(reservationRepository.findByUser_Username(username)).orElseThrow(() -> new ResourceNotFoundException("User not found"));;
+    public List<Reservation> getReservationsByUser(String username) {//throws ResourceNotFoundException{
+        return reservationRepository.findByUser_Username(username);//.orElseThrow(() -> new ResourceNotFoundException("User not found"));;
     }
 
     // Créer une réservation
-    public Reservation createReservation(Reservation reservation) {
+    public Reservation createReservation(Reservation reservation) throws ResourceNotFoundException {
         // Valider l'existence de l'utilisateur et du cours
         User user = Optional.of(reservation.getUser())
                         .orElseThrow(() -> new ResourceNotFoundException("User not found"));

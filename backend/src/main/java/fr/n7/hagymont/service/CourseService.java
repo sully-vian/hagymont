@@ -1,12 +1,12 @@
 package fr.n7.hagymont.service;
 
-import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.model.Room;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.repository.CourseRepository;
 import fr.n7.hagymont.repository.RoomRepository;
 import fr.n7.hagymont.repository.UserRepository;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class CourseService {
     }
 
     // POST /courses - Coach crée un nouveau cours
-    public Course createCourse(Course course) {
+    public Course createCourse(Course course) throws ResourceNotFoundException {
         // Vérifier si la salle et le coach existent
         validateRoom(course.getRoom().getId());
         validateCoach(course.getCoach().getUsername());
@@ -62,7 +62,10 @@ public class CourseService {
         Optional<Course> courseOptional = courseRepository.findById(id);
         Course course = courseOptional.orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
-        updates.forEach((key, value) -> {
+        for (Map.Entry<String, Object> entry : updates.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+        
             switch (key) {
                 case "type":
                     course.setType(value.toString());
@@ -80,19 +83,20 @@ public class CourseService {
                     course.setPrice((Double) value);
                     break;
                 case "roomId":
-                    Optional<Room> roomOptional = roomRepository.findById((Long) value);
-                    Room room = roomOptional.orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+                    Room room = roomRepository.findById((Long) value)
+                            .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
                     course.setRoom(room);
                     break;
                 case "coachUsername":
-                    User coach = Optional.of(userRepository.findByUsername(value.toString())).orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
+                    User coach = Optional.of(userRepository.findByUsername(value.toString()))
+                            .orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
                     if (coach.getType() != User.UserType.coach) {
                         throw new IllegalArgumentException("this user is not a coach");
                     }
                     course.setCoach(coach);
                     break;
             }
-        });
+        }
 
         return courseRepository.save(course);
     }
@@ -104,7 +108,7 @@ public class CourseService {
     }
 
     // Valider l'existence de la salle 
-    private void validateRoom(Long id) {
+    private void validateRoom(Long id) throws ResourceNotFoundException{
         if (!roomRepository.existsById(id)) {
             throw new ResourceNotFoundException("Room not found with ID: " + id);
         }
@@ -112,9 +116,11 @@ public class CourseService {
 
     // Valider l'existence du coach and son type
     private void validateCoach(String username) {
-        User coach = Optional.of(userRepository.findByUsername(username)).orElseThrow(() -> new ResourceNotFoundException("Coach not found with username: " + username));
-        if (coach.getType() != User.UserType.coach) {
-            throw new IllegalArgumentException("This user is not a coach");
+        User coach = userRepository.findByUsername(username);
+        if (!(coach == null)){
+            if (coach.getType() != User.UserType.coach) {
+                throw new IllegalArgumentException("this user is not a coach");
+            }
         }
     }
 }

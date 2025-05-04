@@ -32,9 +32,13 @@ public class CourseController {
 
     // POST /courses - Coach crée un nouveau cours
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        Course createdCourse = courseService.createCourse(course);
-        return ResponseEntity.status(201).body(createdCourse);
+    public ResponseEntity<?> createCourse(@RequestBody Course course) {
+        try {
+            Course createdCourse = courseService.createCourse(course);
+            return ResponseEntity.status(201).body(createdCourse);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
     }
 
     // DELETE /courses/{id} - Coach supprime un cours
@@ -47,17 +51,16 @@ public class CourseController {
 
     // PATCH /courses/{id} - Coach modifie les informations d'un cours
     @PatchMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(
+    public ResponseEntity<?> updateCourse(
             @PathVariable Long id,
             @RequestBody Map<String, Object> updates) {     
         try {
             Course updatedCourse = courseService.updateCourse(id, updates);
             return updatedCourse != null
-                ? ResponseEntity.ok(updatedCourse)
-                : ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            
-        }               
-
+            ? ResponseEntity.ok(updatedCourse)
+            : ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
     }
 }

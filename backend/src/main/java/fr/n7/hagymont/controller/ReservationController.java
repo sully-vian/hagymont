@@ -2,6 +2,7 @@ package fr.n7.hagymont.controller;
 
 import fr.n7.hagymont.model.Reservation;
 import fr.n7.hagymont.service.ReservationService;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +25,24 @@ public class ReservationController {
     // Récupérer les réservations d'un utilisateur
     @GetMapping("/utilisateur/{userId}")
     public List<Reservation> getReservationsByUser(@PathVariable String userId) {
+        //try {
         return reservationService.getReservationsByUser(userId);
+        //} catch (ResourceNotFoundException ex) {
+        //    return ResponseEntity.status(404).body(ex.getMessage());
+        //}
+        
     }
 
     // Créer une réservation
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        Reservation createdReservation = reservationService.createReservation(reservation);
-        return ResponseEntity.status(201).body(createdReservation);
+    public ResponseEntity<?> createReservation(@RequestBody Reservation reservation) {
+        try {
+            Reservation createdReservation = reservationService.createReservation(reservation);
+            return ResponseEntity.status(201).body(createdReservation);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
+        
     }
 
     // Supprimer une réservation par ID

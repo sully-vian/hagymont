@@ -2,6 +2,7 @@ package fr.n7.hagymont.controller;
 
 import fr.n7.hagymont.model.PurchaseOrder;
 import fr.n7.hagymont.service.PurchaseOrderService;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +16,27 @@ public class PurchaseOrderController {
 
     // POST /purchase-orders - Ajouter un produit au panier
     @PostMapping
-    public ResponseEntity<PurchaseOrder> addProductToBasket(@RequestBody PurchaseOrder purchaseOrder) {
-        PurchaseOrder createdOrder = purchaseOrderService.createPurchaseOrder(purchaseOrder);
-        return ResponseEntity.status(201).body(createdOrder);
+    public ResponseEntity<?> addProductToBasket(@RequestBody PurchaseOrder purchaseOrder) {
+        try {
+            PurchaseOrder createdOrder = purchaseOrderService.createPurchaseOrder(purchaseOrder);
+            return ResponseEntity.status(201).body(createdOrder);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
     }
 
     // Modifier la quantité d'un produit dans le panier
     @PatchMapping("/{id}")
-    public ResponseEntity<PurchaseOrder> updateQuantity(
+    public ResponseEntity<?> updateQuantity(
             @PathVariable Long id,
             @RequestBody Integer newQuantity) {
-        PurchaseOrder updatedOrder = purchaseOrderService.updateQuantity(id, newQuantity);
-        return updatedOrder != null ? ResponseEntity.ok(updatedOrder) : ResponseEntity.notFound().build();
+        
+        try {
+            PurchaseOrder updatedOrder = purchaseOrderService.updateQuantity(id, newQuantity);
+            return updatedOrder != null ? ResponseEntity.ok(updatedOrder) : ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(ex.getMessage());
+        }
     }
 
     // Retirer un produit du panier
