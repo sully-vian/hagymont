@@ -17,6 +17,11 @@ import jakarta.persistence.ManyToOne;
 @Entity
 @JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class Reservation {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String status;
     private LocalDate date;
     private Double price;
