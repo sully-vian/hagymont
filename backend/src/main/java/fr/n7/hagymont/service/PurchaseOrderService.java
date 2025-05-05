@@ -1,15 +1,16 @@
 package fr.n7.hagymont.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.OrderBasket;
 import fr.n7.hagymont.model.Product;
 import fr.n7.hagymont.model.PurchaseOrder;
 import fr.n7.hagymont.repository.OrderBasketRepository;
 import fr.n7.hagymont.repository.ProductRepository;
 import fr.n7.hagymont.repository.PurchaseOrderRepository;
-import fr.n7.hagymont.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.Optional;
+
 @Service
 public class PurchaseOrderService {
 
@@ -23,7 +24,7 @@ public class PurchaseOrderService {
     private OrderBasketRepository orderBasketRepository;
 
     // Ajouter un produit au panier
-    public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) throws ResourceNotFoundException{
+    public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) throws ResourceNotFoundException {
         // Vérifier l'existence du panier et du produit
         OrderBasket basket = orderBasketRepository.findById(purchaseOrder.getOrderBasket().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("PerchaseOrder not found"));

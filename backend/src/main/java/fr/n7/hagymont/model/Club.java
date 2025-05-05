@@ -29,8 +29,9 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
 
-    @Column(nullable = true)
-    private int parking_capacity;
+    // integer et pas int sinon c'est pas nullable
+    @Column(name = "parking_capacity")
+    private Integer parkingCapacity;
 
     public Club() {
     }
@@ -74,11 +75,11 @@ public class Club {
         room.setClub(null);
     }
 
-    public int getParkingCapacity() {
-        return parking_capacity;
+    public Integer getParkingCapacity() {
+        return parkingCapacity;
     }
 
-    public void setParkingCapacity(int capacity) {
-        this.parking_capacity = capacity;
+    public void setParkingCapacity(Integer parkingCapacity) {
+        this.parkingCapacity = parkingCapacity;
     }
 }

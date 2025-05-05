@@ -1,7 +1,6 @@
 package fr.n7.hagymont.model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
@@ -17,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 @JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class Reservation {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,8 +25,8 @@ public class Reservation {
     private LocalDate date;
     private Double price;
 
-    @Column(nullable = true)
-    private int parking_capacity;
+    @Column(name = "num_parking_spaces", nullable = false)
+    private Integer numParkingSpaces;
 
     @ManyToOne
     @JoinColumn(name = "course_id") // FK: course_id
@@ -61,12 +60,12 @@ public class Reservation {
         this.price = price;
     }
 
-    public int getParking_capacity() {
-        return parking_capacity;
+    public Integer getNumParkingSpaces() {
+        return numParkingSpaces;
     }
 
-    public void setParking_capacity(int parking_capacity) {
-        this.parking_capacity = parking_capacity;
+    public void setNumParkingSpaces(Integer numParkingSpaces) {
+        this.numParkingSpaces = numParkingSpaces;
     }
 
     public Course getCourse() {
@@ -84,6 +83,5 @@ public class Reservation {
     public void setUser(User user) {
         this.user = user;
     }
-    
-    
+
 }

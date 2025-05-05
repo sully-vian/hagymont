@@ -43,15 +43,15 @@ INSERT INTO room (type, club_id)
     ('cardio', 3);
 
 
-INSERT INTO course (type, start_time, end_time, room_id, coach_username, capacity, price)
+INSERT INTO course (category, start_time, end_time, room_id, coach_username, capacity, price)
   VALUES
-    ('cardio fit', '2025-04-10 15:00', '2025-04-10 16:00', 3, 'jm1267', 10, 5.99),
-    ('cardio fit', '2025-04-12 15:00', '2025-04-12 16:00', 3, 'jm1267', 10, 5.99),
+    ('cardio_fit', '2025-04-10 15:00', '2025-04-10 16:00', 3, 'jm1267', 10, 5.99),
+    ('cardio_fit', '2025-04-12 15:00', '2025-04-12 16:00', 3, 'jm1267', 10, 5.99),
     ('renforcement', '2025-04-20 15:00', '2025-04-20 16:00', 1, 'SarahFitness', 15, 6.99),
     ('natation', '2025-04-10 14:30', '2025-04-10 15:30', 2, 'SarahFitness', 5, 7.99);
 
-INSERT INTO reservation (status, date, user_id, course_id, parking_space)
+INSERT INTO reservation (status, date, user_id, course_id, num_parking_spaces)
   VALUES
     ('confirme', '2025-03-10', 'pierrot1704', 1, 1),
     ('annule', '2025-03-10', 'passionMuscu', 2, 0),
-    ('confirme', '2025-04-01', 'GinetteLebel', 4, NULL);
+    ('confirme', '2025-04-01', 'GinetteLebel', 4, 0);

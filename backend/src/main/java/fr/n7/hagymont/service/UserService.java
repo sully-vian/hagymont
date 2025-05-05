@@ -70,10 +70,10 @@ public class UserService {
                     user.setPassword((String) value);
                     break;
                 case "card_start":
-                    user.setCard_start(LocalDate.parse((String) value));
+                    user.setCardStart(LocalDate.parse((String) value));
                     break;
                 case "card_end":
-                    user.setCard_end(LocalDate.parse((String) value));
+                    user.setCardEnd(LocalDate.parse((String) value));
                     break;
                 // TODO: traiter les orders et les cours
                 default:

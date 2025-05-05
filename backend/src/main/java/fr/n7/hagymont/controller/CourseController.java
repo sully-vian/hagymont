@@ -16,11 +16,15 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    // GET /courses - User consulte les cours disponibles (filtre)
-    @GetMapping("/available")
-    public List<Course> getAvailableCourses(
-            @RequestParam(required = false) String typeFilter) {
-        return courseService.getAvailableCourses(typeFilter);
+    // GET /courses/available - User consulte tous les cours disponibles avec une
+    // catégorie
+    @GetMapping("/available/{category}")
+    public ResponseEntity<?> getAvailableCourses(@PathVariable String category) {
+        List<Course> courses = courseService.getAvailableCourses(category.toUpperCase());
+        if (courses.isEmpty()) {
+            return ResponseEntity.status(404).body("No available courses found for category: " + category);
+        }
+        return ResponseEntity.ok(courses);
     }
 
     // GET /courses/coach/{coachUsername} - Coach consulte ses propres cours
@@ -53,12 +57,12 @@ public class CourseController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCourse(
             @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {     
+            @RequestBody Map<String, Object> updates) {
         try {
             Course updatedCourse = courseService.updateCourse(id, updates);
             return updatedCourse != null
-            ? ResponseEntity.ok(updatedCourse)
-            : ResponseEntity.notFound().build();
+                    ? ResponseEntity.ok(updatedCourse)
+                    : ResponseEntity.notFound().build();
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());
         }

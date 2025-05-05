@@ -1,14 +1,16 @@
 package fr.n7.hagymont.model;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,9 +25,19 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String type;
-    private LocalDate start_time;
-    private LocalDate end_time;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    public enum Category {
+        SALSA, YOGA, CARDIO_FIT, ZUMBA, STEP, PILATES, NATATION, RENFORCEMENT
+    }
+
+    @Column(name = "startTime", nullable = false)
+    private LocalDateTime startTime;
+
+    @Column(name = "endTime", nullable = false)
+    private LocalDateTime endTime;
     private Integer capacity;
     private Double price;
 
@@ -49,30 +61,28 @@ public class Course {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getStartTime() {
-        return start_time != null ? start_time.toString() : null;
+    public LocalDateTime getStartTime() {
+        return this.startTime;
     }
 
-    public void setStartTime(String start_time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        this.start_time = LocalDate.parse(start_time, formatter);
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public String getEndTime() {
-        return end_time != null ? end_time.toString() : null;
+    public LocalDateTime getEndTime() {
+        return this.endTime;
     }
 
-    public void setEndTime(String end_time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        this.end_time = LocalDate.parse(end_time, formatter);
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public List<Reservation> getReservations() {

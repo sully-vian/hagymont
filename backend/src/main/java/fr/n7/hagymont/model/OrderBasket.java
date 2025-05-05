@@ -1,7 +1,8 @@
 package fr.n7.hagymont.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +16,9 @@ public class OrderBasket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate created_at;
+
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
     private String address;
     private String status;
 
@@ -32,12 +35,12 @@ public class OrderBasket {
         this.id = id;
     }
 
-    public String getCreated_at() {
-        return created_at != null ? created_at.toString() : null;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = LocalDate.parse(created_at);
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getAddress() {

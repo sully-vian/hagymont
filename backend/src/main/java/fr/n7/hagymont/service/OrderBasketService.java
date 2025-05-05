@@ -8,7 +8,7 @@ import fr.n7.hagymont.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class OrderBasketService {
         User user = userOptional.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         orderBasket.setUser(user);
-        orderBasket.setCreated_at(LocalDate.now().toString());
+        orderBasket.setCreatedAt(LocalDateTime.now());
         orderBasket.setStatus("pending"); // Statut initial
         return orderBasketRepository.save(orderBasket);
     }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,14 +38,14 @@ public class ProductController {
     }
 
     // GET /products/name?contains={chaine} - récupérer tous les produits contenant une certaine chaine dans le name
-    @RequestMapping(method = RequestMethod.GET, value = "/name")
+    @GetMapping("/name")
     public List<Product> getProductContaining(@RequestParam Map<String, String> customQuery) {
         String chaine = customQuery.get("contains");
         return productService.getProductsContaining(chaine);
     }
 
     // GET /products?min={val1}&max={val2} - récupérer tous les produits contenant une certaine chaine dans le name
-    @RequestMapping(method = RequestMethod.GET, value = "/price")
+    @GetMapping("/price")
     public List<Product> getProductsByPrice(@RequestParam Map<String, String> customQuery) {
         int min = Integer.parseInt(customQuery.get("min"));
         int max = Integer.parseInt(customQuery.get("max"));

@@ -21,7 +21,7 @@ public class PurchaseOrder {
 
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private OrderBasket order;
+    private OrderBasket orderBasket;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -45,11 +45,11 @@ public class PurchaseOrder {
     }
 
     public OrderBasket getOrderBasket() {
-        return order;
+        return orderBasket;
     }
 
-    public void setOrderBasket(OrderBasket order) {
-        this.order = order;
+    public void setOrderBasket(OrderBasket orderBasket) {
+        this.orderBasket = orderBasket;
     }
 
     public Product getProduct() {

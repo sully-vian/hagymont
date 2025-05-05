@@ -32,6 +32,7 @@ public class User {
         M, F
     }
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserType type;
 
@@ -39,19 +40,21 @@ public class User {
         admin, classic, premium, coach
     }
 
+    @Column(nullable = false)
     private LocalDate birthdate; // "yyyy-MM-dd"
     private String phone;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = true)
-    private LocalDate card_start;
+    @Column(name = "card_start")
+    private LocalDate cardStart;
 
-    @Column(nullable = true)
-    private LocalDate card_end;
+    @Column(name = "card_end")
+    private LocalDate cardEnd;
 
     @OneToMany(mappedBy = "user")
     private List<OrderBasket> orders = new ArrayList<>();
@@ -132,20 +135,20 @@ public class User {
         this.password = password;
     }
 
-    public LocalDate getCard_end() {
-        return card_end;
+    public LocalDate getCardEnd() {
+        return cardEnd;
     }
 
-    public void setCard_end(LocalDate card_end) {
-        this.card_end = card_end;
+    public void setCardEnd(LocalDate cardEnd) {
+        this.cardEnd = cardEnd;
     }
 
-    public LocalDate getCard_start() {
-        return card_start;
+    public LocalDate getCardStart() {
+        return cardStart;
     }
 
-    public void setCard_start(LocalDate card_start) {
-        this.card_start = card_start;
+    public void setCardStart(LocalDate cardStart) {
+        this.cardStart = cardStart;
     }
 
     public List<OrderBasket> getOrders() {

@@ -1,20 +1,20 @@
 package fr.n7.hagymont.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.model.Room;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.repository.CourseRepository;
 import fr.n7.hagymont.repository.RoomRepository;
 import fr.n7.hagymont.repository.UserRepository;
-import fr.n7.hagymont.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -29,9 +29,13 @@ public class CourseService {
     private UserRepository userRepository;
 
     // GET /courses - User consulte les cours disponibles (filtre)
-    public List<Course> getAvailableCourses(String type) {
-        LocalDate now = LocalDate.now();
-        return courseRepository.findByTypeAndStartTimeAfter(type, now);
+    public List<Course> getAvailableCourses(String categoryName) {
+        Course.Category category = Course.Category.valueOf(categoryName);
+        if (category == null) {
+            return List.of();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        return courseRepository.findByCategoryAndStartTimeAfter(category, now);
     }
 
     // GET /courses/coach/{coachUsername}- Coach consulte ses propres cours
@@ -58,23 +62,23 @@ public class CourseService {
 
     // PATCH /courses/{id} - Coach modifie les informations d'un cours
     // Vérifier si la salle et le coach existent
-    public Course updateCourse(Long id, Map<String, Object> updates) throws ResourceNotFoundException{
+    public Course updateCourse(Long id, Map<String, Object> updates) throws ResourceNotFoundException {
         Optional<Course> courseOptional = courseRepository.findById(id);
         Course course = courseOptional.orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         for (Map.Entry<String, Object> entry : updates.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-        
+
             switch (key) {
                 case "type":
-                    course.setType(value.toString());
+                    course.setCategory(Course.Category.valueOf((String) value));
                     break;
                 case "startTime":
-                    course.setStartTime(value.toString());
+                    course.setStartTime((LocalDateTime) value);
                     break;
                 case "endTime":
-                    course.setEndTime(value.toString());
+                    course.setEndTime((LocalDateTime) value);
                     break;
                 case "capacity":
                     course.setCapacity((Integer) value);
@@ -101,14 +105,8 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    // Convertir une chaîne en LocalDate
-    private LocalDate parseDate(String dateStr) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(dateStr, formatter);
-    }
-
-    // Valider l'existence de la salle 
-    private void validateRoom(Long id) throws ResourceNotFoundException{
+    // Valider l'existence de la salle
+    private void validateRoom(Long id) throws ResourceNotFoundException {
         if (!roomRepository.existsById(id)) {
             throw new ResourceNotFoundException("Room not found with ID: " + id);
         }
@@ -117,7 +115,7 @@ public class CourseService {
     // Valider l'existence du coach and son type
     private void validateCoach(String username) {
         User coach = userRepository.findByUsername(username);
-        if (!(coach == null)){
+        if (!(coach == null)) {
             if (coach.getType() != User.UserType.coach) {
                 throw new IllegalArgumentException("this user is not a coach");
             }

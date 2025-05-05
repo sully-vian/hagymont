@@ -8,9 +8,6 @@ import fr.n7.hagymont.model.Course;
 
 import java.util.List;
 
-import jakarta.persistence.*;
-import java.util.ArrayList;
-
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     List<Reservation> findByUser_Username(String username);
