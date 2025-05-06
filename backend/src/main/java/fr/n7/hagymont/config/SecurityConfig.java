@@ -1,4 +1,4 @@
-package fr.n7.hagymont.config;
+/*package fr.n7.hagymont.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,3 +21,4 @@ public class SecurityConfig {
     }
 
 }
+    */

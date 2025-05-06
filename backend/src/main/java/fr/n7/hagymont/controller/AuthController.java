@@ -1,14 +1,25 @@
 package fr.n7.hagymont.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.n7.hagymont.config.JwtProvider;
 import fr.n7.hagymont.model.User;
+import fr.n7.hagymont.service.UserService;
 import fr.n7.hagymont.repository.UserRepository;
+import fr.n7.hagymont.service.UserServiceImplementation;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,19 +27,100 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+    /*
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+ */
+   
+    @Autowired
+    private UserServiceImplementation customUserDetails;
+    
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<AuthResponse> getUserByUsername(@PathVariable String username) {
-        User user = userRepository.findByUsername(username);
 
-        if (user == null) {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user)  {
+        String username = user.getUsername();
+        String password = user.getPassword();
+        String firstname = user.getFirstname();
+        String secondname = user.getSecondname();
+        User.UserType role = user.getType();
+
+        User isUsernameExist = userRepository.findByUsername(username);
+        if (isUsernameExist != null) {
+            //throw new Exception("Email Is Already Used With Another Account");
+
         }
+        User createdUser = new User();
+        createdUser.setUsername(username);
+        createdUser.setFirstname(firstname);
+        createdUser.setSecondname(secondname);
+        createdUser.setType(role);
+        createdUser.setPassword(password);
+        
+        User savedUser = userRepository.save(createdUser);
+          userRepository.save(savedUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username,password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = JwtProvider.generateToken(authentication);
 
-        AuthResponse response = new AuthResponse();
-        response.setUsername(user.getUsername());
-        response.setPassword(user.getPassword());
 
-        return ResponseEntity.ok(response);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(token);
+        authResponse.setMessage("Register Success");
+        authResponse.setStatus(true);
+        return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.OK);
+
     }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> signin(@RequestBody User loginRequest) {
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+
+        System.out.println(username+"-------"+password);
+
+        Authentication authentication = authenticate(username,password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = JwtProvider.generateToken(authentication);
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setMessage("Login success");
+        authResponse.setJwt(token);
+        authResponse.setStatus(true);
+
+        return new ResponseEntity<>(authResponse,HttpStatus.OK);
+    }
+
+
+
+    private Authentication authenticate(String username, String password) {
+
+        System.out.println(username+"---++----"+password);
+
+        UserDetails userDetails = customUserDetails.loadUserByUsername(username);
+
+        System.out.println("Sig in in user details"+ userDetails);
+
+        if(userDetails == null) {
+            System.out.println("Sign in details - null" + userDetails);
+
+            throw new BadCredentialsException("Invalid username and password");
+        }
+        //if(!passwordEncoder.matches(password,userDetails.getPassword())) {
+        if(!password.equals(userDetails.getPassword())) {
+            System.out.println("Sign in userDetails - password mismatch"+userDetails);
+
+            throw new BadCredentialsException("Invalid password");
+
+        }
+        return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+
+    }
+
+
+
 }

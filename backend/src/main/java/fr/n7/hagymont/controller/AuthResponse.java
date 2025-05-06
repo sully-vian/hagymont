@@ -1,24 +1,36 @@
 package fr.n7.hagymont.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthResponse {
+    private String jwt;
+    private String message;
+    private Boolean status;
 
-    private String username;
-    private String password;
-
-    public String getUsername() {
-        return username;
+    public String getJwt() {
+        return jwt;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
-    public String getPassword() {
-        return password;
+    public String getMessage() {
+        return message;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }
