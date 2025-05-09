@@ -50,6 +50,7 @@ function Signin() {
 
   const validateForm = () => {
     const newErrors = {};
+    if (!formData.gender) newErrors.gender = 'Gender selection is required';
     if (!formData.username) newErrors.username = 'Username is required';
     if (!formData.email) newErrors.email = 'Email is required';
     if (!formData.password) newErrors.password = 'Password is required';
@@ -113,47 +114,68 @@ function Signin() {
         }}
       />
 
-      {/* 左上角Logo */}
+      {/* Logo */}
     <div className="gym-logo">
       <span className="logo-text">HaGymont</span>
       <span className="logo-subtext">FITNESS CLUB</span>
     </div>
     
-    {/* 表单容器 */}
+    {/* form */}
     <div className="signin-container">
         <div className="form-wrapper">
           <h2 className="form-main-title">Create Account</h2>
           
           <form onSubmit={handleSubmit}>
-            {/* 性别选择 */}
+            {/* gender */}
             <div className="form-section">
-              <label className="form-label"><strong>Gender *</strong></label>
-              <div className="gender-options">
-                <div className="gender-option">
-                  <input
-                    type="radio"
-                    id="male"
-                    name="gender"
-                    value="M"
-                    checked={formData.gender === 'M'}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="male">Male</label>
-                </div>
-                <div className="gender-option">
-                  <input
-                    type="radio"
-                    id="female"
-                    name="gender"
-                    value="F"
-                    checked={formData.gender === 'F'}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="female">Female</label>
-                </div>
-              </div>
+            <label className="form-label"><strong>Gender *</strong></label>
+<div className="gender-options">
+  {/* Male */}
+  <div className="gender-option">
+    <input
+      type="radio"
+      id="male"
+      name="gender"
+      value="M"
+      checked={formData.gender === 'M'}
+      onChange={handleChange}
+    />
+    <label htmlFor="male">Male</label>
+  </div>
+  
+  {/* Female */}
+  <div className="gender-option">
+    <input
+      type="radio"
+      id="female"
+      name="gender"
+      value="F"
+      checked={formData.gender === 'F'}
+      onChange={handleChange}
+    />
+    <label htmlFor="female">Female</label>
+  </div>
+
+  {/* Neutral */}
+  <div className="gender-option">
+    <input
+      type="radio"
+      id="neutral"
+      name="gender"
+      value="N"
+      checked={formData.gender === 'N'}
+      onChange={handleChange}
+    />
+    <label htmlFor="neutral">Neutral</label>
+  </div>
+</div>
+              {errors.gender && 
+    <div className="invalid-feedback d-block">
+      {errors.gender}
+    </div>
+              }
             </div>
-            {/* 用户名 */}
+            {/* username */}
         <div className="mb-3">
           <label className="form-label"><strong>Username *</strong></label>
           <input
@@ -166,7 +188,7 @@ function Signin() {
           {errors.username && <div className="invalid-feedback">{errors.username}</div>}
         </div>
 
-        {/* 邮箱 */}
+        {/* email */}
         <div className="mb-3">
           <label className="form-label"><strong>Email *</strong></label>
           <input
@@ -179,7 +201,7 @@ function Signin() {
           {errors.email && <div className="invalid-feedback">{errors.email}</div>}
         </div>
 
-        {/* 密码 */}
+        {/* password */}
         <div className="mb-3">
           <label className="form-label"><strong>Password *</strong></label>
           <input
@@ -192,7 +214,7 @@ function Signin() {
           {errors.password && <div className="invalid-feedback">{errors.password}</div>}
         </div>
 
-        {/* 确认密码 */}
+        {/* confirm password */}
         <div className="mb-3">
           <label className="form-label"><strong>Confirm Password *</strong></label>
           <input
@@ -205,7 +227,7 @@ function Signin() {
           {errors.passwordConfirm && <div className="invalid-feedback">{errors.passwordConfirm}</div>}
         </div>
 
-        {/* 姓名 */}
+        {/* name */}
         <div className="row mb-3">
           <div className="col">
             <label className="form-label">First Name</label>
@@ -249,7 +271,7 @@ function Signin() {
           </div>
         </div>
 
-        {/* 生日 */}
+        {/* birthday */}
         <div className="mb-3">
           <label className="form-label"><strong>Birthdate *</strong></label>
           <input
@@ -262,7 +284,7 @@ function Signin() {
           {errors.birthdate && <div className="invalid-feedback">{errors.birthdate}</div>}
         </div>
 
-        {/* 电话 */}
+        {/* Telephone */}
         <div className="mb-3">
           <label className="form-label">Phone</label>
           <input
@@ -276,7 +298,7 @@ function Signin() {
           <div className="form-text">Format: 10 digits</div>
         </div>
 
-        {/* 通信偏好 */}
+        {/* Communication */}
         <div className="mb-4">
           <div className="form-check">
             <input
