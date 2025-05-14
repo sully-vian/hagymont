@@ -2,11 +2,13 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import Login from './auth/Login';
 import Signin from './auth/Signin';
 import NotFound from './errors/NotFound';
+import Club from './pages/Club';
 import Home from './pages/Home';
 import Basket from './shop/Basket';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
+
 
 
 function App() {
@@ -20,6 +22,12 @@ function App() {
         {/* Authentication-related routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
+
+        {/* Club-related routes */}
+
+        <Route path="/club" element={<Club />} />
+
+        {/* About page */}
         
         {/* Nested routes for products */}
         <Route path="/products" element={<Shop />}>

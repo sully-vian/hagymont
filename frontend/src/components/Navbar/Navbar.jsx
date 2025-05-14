@@ -1,40 +1,62 @@
-import { FaDumbbell } from "react-icons/fa"; // 👈 新图标
+// Navbar.jsx
+import { useEffect, useState } from "react";
+import { FaDumbbell } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
-import Profile from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
+import Profile from "../../assets/profile.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
 
-  const handleShop = () => {
-    navigate('/products');
-  }
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
 
-  const handleHome = () => {
-    navigate('/home');
-  }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="py-4 lg:py-6">
-      <div className="container flex justify-between items-center">
+    <div
+      className={`sticky top-0 z-50 transition-shadow duration-300 bg-white/70 backdrop-blur ${
+        scrolled ? "shadow-md" : ""
+      }`}
+    >
+      <div className="container flex justify-between items-center px-4 py-4 lg:py-6">
         <div className="flex items-center gap-2">
           <FaDumbbell className="text-3xl text-primary animate-bounce" />
           <p className="text-3xl lg:text-4xl font-semibold">
             Ha<span className="text-primary">Gym</span>ont
-            </p>
-            </div>
+          </p>
+        </div>
 
-
-        {/* Menu section */}
         <div className="flex justify-center items-center gap-10">
           <ul className="flex gap-8">
-            <li className="hover:border-b-2 border-primary uppercase cursor-default"
-                onClick={() => {handleHome()}}>Home</li>
-            <li className="hover:border-b-2 border-primary uppercase cursor-default">Prices</li>
-            <li className="hover:border-b-2 border-primary uppercase cursor-default">About</li>
-            <li className="hover:border-b-2 border-primary uppercase cursor-default"
-                onClick={() => {handleShop()}}>Shop</li>
+            <li
+              className="hover:border-b-2 border-primary uppercase cursor-pointer"
+              onClick={() => navigate("/home")}
+            >
+              Home
+            </li>
+            <li
+              className="hover:border-b-2 border-primary uppercase cursor-pointer"
+              onClick={() => navigate("/club")}
+            >
+              Club
+            </li>
+            <li className="hover:border-b-2 border-primary uppercase cursor-default">
+              About
+            </li>
+            <li
+              className="hover:border-b-2 border-primary uppercase cursor-pointer"
+              onClick={() => navigate("/products")}
+            >
+              Shop
+            </li>
           </ul>
-          {/* login section */}
+
           <div className="flex gap-4 items-center">
             <img src={Profile} alt="Profile" className="w-10 rounded-full" />
             <IoIosArrowDown />
