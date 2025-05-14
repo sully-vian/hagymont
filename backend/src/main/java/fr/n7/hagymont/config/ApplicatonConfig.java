@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -27,9 +28,11 @@ public class ApplicatonConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        authorize -> authorize.requestMatchers("/auth/**", "/api/products**")
-                        .permitAll().anyRequest().authenticated())
-                .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+                        authorize -> authorize
+                        //.requestMatchers("/products/**")
+                        //.authenticated()
+                        .anyRequest().permitAll())
+                //.addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
                 //.httpBasic(Customizer.withDefaults())

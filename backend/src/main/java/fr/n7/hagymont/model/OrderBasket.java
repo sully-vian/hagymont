@@ -1,16 +1,25 @@
 package fr.n7.hagymont.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
+@JsonIdentityInfo(generator = PropertyGenerator.class, property = "id")
 public class OrderBasket {
 
     @Id
@@ -20,11 +29,27 @@ public class OrderBasket {
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
     private String address;
-    private String status;
+
+    public List<PurchaseOrder> getProducts() {
+        return products;
+    }
+
+
+    public enum StatusType {
+        pending, confirmed, shipped, completed
+    }
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusType status;
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
+
+    @OneToMany(mappedBy = "orderBasket")
+    private List<PurchaseOrder> products = new ArrayList<>();
+
 
     // Getters and Setters
     public Long getId() {
@@ -59,11 +84,11 @@ public class OrderBasket {
         this.user = user;
     }
 
-    public String getStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusType status) {
         this.status = status;
     }
 

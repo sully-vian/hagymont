@@ -8,17 +8,17 @@ INSERT INTO user (firstname, secondname, gender, type, birthdate, phone, email, 
 
 INSERT INTO product (name, price, stock, description)
   VALUES
-    ('Haltere 2kg', 14.99, 23, "Haltère professionnelle. Poids : 2kg Couleur : noir"),
-    ('Haltere 1kg', 10.99, 10, "Haltère professionnelle. Poids : 1kg Couleur : noir"),
-    ('T-shirt gym bleu - S', 12.99, 56, "T-shirt taille S. Matière : 100% coton Couleur : bleu"),
-    ('T-shirt gym bleu - M', 12.99, 42, "T-shirt taille M. Matière : 100% coton Couleur : vert"),
-    ('T-shirt gym bleu - L', 12.99, 39, "T-shirt taille L. Matière : 100% coton Couleur : bleu");
+    ('Dumbbells 2kg', 14.99, 23, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red"),
+    ('Dumbbells 1kg', 10.99, 10, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red"),
+    ('Blue T-shirt - S', 12.99, 56, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue"),
+    ('Blue T-shirt - M', 12.99, 42, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue"),
+    ('Blue T-shirt - L', 12.99, 39, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue");
 
 INSERT INTO order_basket (username, address, created_at, status)
   VALUES
-    ('pierrot1704', '3 rue de la poste 31000 Toulouse', '2025-03-17', 'En cours'),
-    ('SarahFitness', '19 rue du moulin 31300 Toulouse', '2025-03-29', 'Terminé'),
-    ('GinetteLebel', '19 bis avenue de la republique 32000 Auch', '2025-04-01', 'Panier');
+    ('pierrot1704', '3 rue de la poste 31000 Toulouse', '2025-03-17', 'shipped'),
+    ('SarahFitness', '19 rue du moulin 31300 Toulouse', '2025-03-29', 'completed'),
+    ('GinetteLebel', '19 bis avenue de la republique 32000 Auch', '2025-04-01', 'pending');
 
 INSERT INTO purchase_order (product_id, order_id, quantity)
   VALUES
