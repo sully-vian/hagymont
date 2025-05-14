@@ -54,7 +54,7 @@ public class RoomService {
                     room.setType((String) value);
                     break;
                 case "club": // FK
-                    Long clubId = (Long) value;
+                    Long clubId = Long.valueOf((Integer) value);
                     Club club = clubRepository.findById(clubId)
                             .orElseThrow(() -> new ResourceNotFoundException("Club not found with ID: " + clubId));
                     room.setClub(club);

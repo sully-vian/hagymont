@@ -19,7 +19,7 @@ import fr.n7.hagymont.model.Product;
 import fr.n7.hagymont.service.ProductService;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired

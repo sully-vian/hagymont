@@ -13,6 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @JsonIdentityInfo(generator = PropertyGenerator.class, property = "username")
@@ -56,12 +57,14 @@ public class User {
     @Column(name = "card_end")
     private LocalDate cardEnd;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<OrderBasket> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "coach")
     private List<Course> coursesCreated = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
     // Getters and setters
     public String getFirstname() {
         return firstname;

@@ -26,9 +26,9 @@ public class ApplicatonConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        authorize -> authorize.requestMatchers("/auth/**", "/api/products**")
-                        .permitAll().anyRequest().authenticated())
+                //.authorizeHttpRequests(
+                //        authorize -> authorize.requestMatchers("/auth/**", "/api/products**")
+                //        .permitAll().anyRequest().authenticated())
                 .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.model.User.UserGender;
@@ -30,7 +31,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean deleteUserByUsername(String username) {
+    @Transactional
+    public Boolean deleteUserByUsername(String username) {
         if (!userRepository.existsByUsername(username)) {
             return false;
         }

@@ -27,7 +27,7 @@ public class PurchaseOrderService {
     public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) throws ResourceNotFoundException {
         // Vérifier l'existence du panier et du produit
         OrderBasket basket = orderBasketRepository.findById(purchaseOrder.getOrderBasket().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("PerchaseOrder not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("orderBasket not found"));
         Product product = productRepository.findById(purchaseOrder.getProduct().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
