@@ -26,15 +26,22 @@ public class PurchaseOrderService {
     // Ajouter un produit au panier
     public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) throws ResourceNotFoundException {
         // Vérifier l'existence du panier et du produit
-        OrderBasket basket = orderBasketRepository.findById(purchaseOrder.getOrderBasket().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("PerchaseOrder not found"));
-        Product product = productRepository.findById(purchaseOrder.getProduct().getId())
+        Long basketId = purchaseOrder.getOrderBasket().getId();
+        Long productId = purchaseOrder.getProduct().getId();
+        OrderBasket basket = orderBasketRepository.findById(basketId)
+                .orElseThrow(() -> new ResourceNotFoundException("BasketOrder not found"));
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         // Vérifier le stock
-
         if (product.getStock() < purchaseOrder.getQuantity()) {
             throw new IllegalStateException("Stock is insufficient");
+        }
+        //Si le produit est deja dans le panier on change juste la quantité
+        PurchaseOrder purchaseExisting = purchaseOrderRepository.findByOrderBasketIdAndProductId(basketId, productId);
+        if (purchaseExisting!=null){
+            purchaseExisting.setQuantity(purchaseExisting.getQuantity() + purchaseOrder.getQuantity());
+            return purchaseOrderRepository.save(purchaseExisting);
         }
 
         purchaseOrder.setOrderBasket(basket);
@@ -62,8 +69,13 @@ public class PurchaseOrderService {
 
     // Supprimer un produit du panier
     public boolean deletePurchaseOrder(Long id) {
-        if (purchaseOrderRepository.existsById(id)) {
-            purchaseOrderRepository.deleteById(id);
+        PurchaseOrder purchase = purchaseOrderRepository.findById(id).orElse(null);
+        if (purchase!=null) {
+            OrderBasket order = purchase.getOrderBasket();
+            purchaseOrderRepository.delete(purchase);
+            if (order.getProducts().isEmpty()){
+                orderBasketRepository.delete(order);
+            }
             return true;
         }
         return false;

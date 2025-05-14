@@ -32,7 +32,6 @@ public class ProductService {
     }
 
     //Pour les admins
-    
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }

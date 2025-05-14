@@ -17,18 +17,28 @@ function Shop() {
     }
   };
 
+  const handleBasket = () => {
+    if (username==='Unknown'){
+      navigate('/');
+    }else{
+      navigate(`/basket`);
+    }
+  };
+
   return (
     <div className="Shop">
-      <h1>Boutique</h1>
-      <div className="Header">
-        <input type="search"
+      <h1>Shop</h1>
+      <div id="Header">
+        <div id="Searchbar">
+          <input type="search"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           onKeyDown={(e) => { if(e.key=== 'Enter') handleSearch();}}
-          placeholder="Rechercher un produit..."/>
-        <button onClick={handleSearch}>Rechercher</button>
-        <div className="Header" id="Price-filter">
-          <p>Filtrer par prix</p>
+          placeholder="Search for a product..."/>
+          <button onClick={handleSearch}>Search</button>
+        </div>
+        <div id="Price-filter">
+          <p>Filter by price</p>
           <input id="min" type="number" placeholder='min' min={0}
             value={minPrice}
             onChange={e => setMinPrice(e.target.value)}
@@ -40,9 +50,13 @@ function Shop() {
           ></input>
           <p> €</p>
         </div>
-        <div>{username}</div>
+        <div id="User-infos">
+          <p> {username}</p>
+          <button id="Basket_button"
+            onClick={handleBasket}>Basket</button>
+        </div>
       </div>
-      <div className="Body">
+      <div id="Body">
         <Outlet context={{minPrice, maxPrice}}/>
       </div>
     </div>

@@ -7,16 +7,17 @@ import Login from './authentification/Login';
 import Basket from './shop/Basket';
 import NotFound from './errors/NotFound';
 
+
 function App() {
   return (
-    <Router>
+      <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/basket" element={<Basket />} />
+        <Route path="/basket" restricted={true} element={<Basket/>}/>
         <Route path="/products" element={<Shop />}>
           <Route index element={<ProductList />} />
-          <Route path="name" element={<ProductList />} />
-          <Route path=":id" element={<ProductPage />} />
+          <Route path="name" element={<ProductList/>} />
+          <Route path=":id" element={<ProductPage/>} />
         </Route>
         <Route path="/error" element={<NotFound />} />
       </Routes>
