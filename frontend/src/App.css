@@ -1,3 +1,23 @@
+
+.app-container {
+  background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+              url('./assets/2.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(10px);
+}
+
+/* 保持原有动画 */
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
 .App {
   text-align: center;
 }

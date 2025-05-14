@@ -29,7 +29,7 @@ public class User {
     private UserGender gender;
 
     public enum UserGender {
-        M, F
+        M, F, N
     }
 
     @Column(nullable = false)
