@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Shop.css';
+import Navbar from '../components/Navbar/Navbar';
 
 function Shop() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +28,7 @@ function Shop() {
 
   return (
     <div className="Shop">
+      <Navbar />
       <h1>Shop</h1>
       <div id="Header">
         <div id="Searchbar">

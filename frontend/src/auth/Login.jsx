@@ -138,8 +138,12 @@ const Login = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      await userService.login(username, password);
-      navigate('/dashboard');
+      const response = userService.loginRequest('/auth/login', { username, password });
+      console.log('Connection réussie :', (await response).data.message);
+      console.log('Token :', (await response).data.jwt);
+      sessionStorage.setItem('token', (await response).data.jwt);
+      sessionStorage.setItem('username', username);
+      navigate('/home');
     } catch (err) {
       setError('Invalid username or password');
     } finally {
