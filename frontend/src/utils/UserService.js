@@ -6,6 +6,10 @@ class UserService {
     loginRequest(path, body){
         return axios.post(API_BASE_URL + path, body)
     }
+
+    signinRequest(path, body){
+        return axios.post(API_BASE_URL + path, body)
+    }
     
     getRequest(path){
         return axios.get(API_BASE_URL + path, {headers: {Authorization: 'Bearer ' + sessionStorage.getItem('token')}});

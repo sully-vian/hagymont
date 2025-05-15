@@ -140,7 +140,8 @@ const Login = () => {
     try {
       const response = userService.loginRequest('/auth/login', { username, password });
       console.log('Connection réussie :', (await response).data.message);
-      console.log('Token :', (await response).data.jwt);
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('username');
       sessionStorage.setItem('token', (await response).data.jwt);
       sessionStorage.setItem('username', username);
       navigate('/home');
