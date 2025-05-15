@@ -11,8 +11,8 @@ function Signin() {
     email: '',
     password: '',
     passwordConfirm: '',
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    secondname: '',
     gender: '',
     type: 'premium',
     birthdate: '',
@@ -75,20 +75,22 @@ function Signin() {
     try {
       const payload = {
         ...formData,
-        birthdate: new Date(formData.birthdate).toISOString(),
+        //birthdate: new Date(formData.birthdate).toISOString(),
         passwordConfirm: undefined
       };
 
-      await userService.signinRequest('/auth/signin', payload);
+      const response = userService.signinRequest('/auth/signup', payload);
+      console.log('Connection réussie :', (await response).data.message);
+      console.log('Token :', (await response).data.jwt);
       
       const loginRes = await userService.loginRequest('/auth/login', {
         username: formData.username,
         password: formData.password
       });
 
-      sessionStorage.setItem('token', loginRes.data.jwt);
+      sessionStorage.setItem('token', (await loginRes).data.jwt);
       sessionStorage.setItem('username', formData.username);
-      navigate('/products');
+      navigate('/home');
 
     } catch (error) {
       console.error('Registration failed:', error);
@@ -234,8 +236,8 @@ function Signin() {
             <input
               type="text"
               className="form-control"
-              name="firstName"
-              value={formData.firstName}
+              name="firstname"
+              value={formData.firstname}
               onChange={handleChange}
             />
           </div>
@@ -244,8 +246,8 @@ function Signin() {
             <input
               type="text"
               className="form-control"
-              name="lastName"
-              value={formData.lastName}
+              name="secondame"
+              value={formData.secondname}
               onChange={handleChange}
             />
           </div>
@@ -332,7 +334,7 @@ function Signin() {
           <div className="alert alert-danger mb-3">{errors.general}</div>
         )}
 
-        <button type="submit" className="btn btn-primary w-100">
+        <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>
           Register
         </button>
       </form>

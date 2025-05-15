@@ -24,7 +24,7 @@ function Basket() {
   };
 
   useEffect(() => {
-    UserService.getRequest(`/baskets/current/GinetteLebel`)
+    UserService.getRequest(`/baskets/current/${username}`)
     .then(response => {
       console.log(sessionStorage.getItem("token"))
       setBasket(response.data);
