@@ -18,10 +18,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* 顶部空隙，占位不随滚动消失 */}
       <div className="h-3 lg:h-4" />
-
-      {/* Sticky Navbar 本体 */}
       <div
         className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-sm ${
           scrolled ? "bg-white/30 shadow-md" : "bg-transparent"
@@ -36,7 +33,6 @@ const Navbar = () => {
             </p>
           </div>
 
-          {/* 菜单 + 头像 */}
           <div className="flex justify-center items-center gap-10">
             <ul className="flex gap-8 text-base font-medium">
               <li

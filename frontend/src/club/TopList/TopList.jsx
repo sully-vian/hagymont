@@ -1,9 +1,8 @@
-import Image1 from "../../assets/3.png";
-import Image2 from "../../assets/4.png";
-import Image3 from "../../assets/5.png";
-import BannerImg from "../../assets/fitness.png";
+import Image1 from "../../assets/gym2.png";
+import Image2 from "../../assets/gym3.png";
+import Image3 from "../../assets/gym4.png";
 
-// 三个体育俱乐部
+// 3 clubs
 const ClubData = [
   {
     image: Image1,
@@ -25,16 +24,8 @@ const ClubData = [
 const TopList = () => {
   return (
     <div className="container py-14 relative">
-     
 
-      {/* 右下角缩小版 Banner 图片 */}
-      <img
-        src={BannerImg}
-        alt="Fitness Banner"
-        className="absolute bottom-0 right-0 w-40 h-auto m-4 z-0 opacity-80"
-      />
-
-      {/* 卡片区 */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 z-20 relative">
         {ClubData.map((item, index) => (
           <div
