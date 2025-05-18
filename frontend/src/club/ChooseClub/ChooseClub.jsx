@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DefaultImage from "../../assets/club/club1.png";
+import DefaultImage from "../../assets/club/club.png";
 import UserService from "../../utils/UserService";
 
 
