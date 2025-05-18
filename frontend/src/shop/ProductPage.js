@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './ProductPage.css';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import UserService from '../utils/UserService';
+import './ProductPage.css';
 
 function ProductPage(){
   const { id } = useParams();
@@ -27,7 +27,7 @@ function ProductPage(){
       console.error('Erreur détectée :', error);
       navigate('/error', {"state":error.status});
     });
-  }, []);
+  }, [id, navigate]); 
 
   const handlePurchase = (productId) => {
     UserService.postRequest(`/baskets/add-product/${username}`, {
@@ -44,12 +44,22 @@ function ProductPage(){
     });
   };
 
-  if (!product) return <div className="loading-product"><p>Loading product page...</p></div>;
+  if (!product) {
+  return (
+    <div className="loading-product">
+      <p>Loading product page...</p>
+      <button onClick={() => navigate(-1)}>Return to Previous Page</button>
+    </div>
+  );
+}
   return (
     <div id="product-page">
       <div className="product-header">
         <div className="product-image">
-          <img src={getImage(product.id)} />
+          <img 
+            src={getImage(product.id)} 
+            alt={product.name || "Product image"} 
+          />
         </div>
         <div className="product-info">
           <div className="product-name">

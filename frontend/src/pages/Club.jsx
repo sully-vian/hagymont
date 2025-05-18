@@ -1,10 +1,10 @@
 import Background from '../club/Background/Background';
 import Banner from '../club/Banner/Banner';
+import ChooseClub from '../club/ChooseClub/ChooseClub';
 import Footer from '../club/Footer/Footer';
 import Head from '../club/Head/Head';
 import Navbar from '../club/Navbar/Navbar';
 import OurServices from '../club/OurServices/OurServices';
-import TopList from '../club/TopList/TopList';
 
 const Club = () => {
   return (
@@ -15,7 +15,7 @@ const Club = () => {
       <div className="relative z-10">
         <Navbar/>
         <Head />
-        <TopList />
+        <ChooseClub />
         <Banner />
         <OurServices />
         <Footer />

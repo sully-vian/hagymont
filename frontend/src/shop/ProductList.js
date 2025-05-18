@@ -23,13 +23,13 @@ function ProductList(){
   };
 
   const filteredProducts = products.filter((product) => {
-    let min = minPrice==='' ? 0 : minPrice
-    let max = maxPrice==='' ? Number.MAX_SAFE_INTEGER : maxPrice
-    return product.price >= min && product.price <= max;
-  });
+  const min = minPrice === '' ? 0 : parseFloat(minPrice) || 0;
+  const max = maxPrice === '' ? Infinity : parseFloat(maxPrice) || Infinity;
+  return product.price >= min && product.price <= max;
+});
 
   useEffect(() => {
-    const filter = searchTerm ? `/name?contains=${encodeURIComponent(searchTerm)}` : '';
+  const filter = searchTerm ? `/search?name=${encodeURIComponent(searchTerm)}` : '';
     UserService.getRequest(`/api/products${filter}`).then((response) => {
       setProducts(response.data);
     });

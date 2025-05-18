@@ -8,11 +8,15 @@ INSERT INTO user (firstname, secondname, gender, type, birthdate, phone, email, 
 
 INSERT INTO product (name, price, stock, description)
   VALUES
-    ('Dumbbells 2kg', 14.99, 23, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red"),
-    ('Dumbbells 1kg', 10.99, 10, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red"),
-    ('Blue T-shirt - S', 12.99, 56, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue"),
-    ('Blue T-shirt - M', 12.99, 42, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue"),
-    ('Blue T-shirt - L', 12.99, 39, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue");
+    ('Dumbbells 1kg', 10.99, 60, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red"),
+    ('Dumbbells 2kg', 14.99, 60, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red"),
+    ('Blue T-shirt - S', 29.99, 60, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue"),
+    ('Blue T-shirt - M', 29.99, 60, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue"),
+    ('Blue T-shirt - L', 29.99, 60, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue"),
+    ('Tung Tung Tung Sahur T-shirt - S', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration \nsize: S \nMaterial: 100% cotton \nColor: black"),
+    ('Tung Tung Tung Sahur T-shirt - M', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black"),
+    ('Tung Tung Tung Sahur T-shirt - L', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black");
+  
 
 INSERT INTO order_basket (username, address, created_at, status)
   VALUES
@@ -26,11 +30,24 @@ INSERT INTO purchase_order (product_id, order_id, quantity)
     (2, 3, 1),
     (1, 2, 1);
 
-INSERT INTO club (name, address, parking_capacity)
-  VALUES
-    ('Gym pour tous', '28 rue du dessus 31200 Toulouse', 30),
-    ('BasicSport', '10 avenue du pont 31400 Toulouse', NULL),
-    ('NeverQuit', '7 ter impasse des lilas 31000 Toulouse', 20);
+
+INSERT INTO club (name, address, parking_capacity) VALUES
+('Gym for all', '28 rue du dessus 31200 Toulouse', 45),
+('BasicSport', '10 avenue du pont 31400 Toulouse', NULL),
+('NeverQuit', '7 ter impasse des lilas 31000 Toulouse', 66),
+
+('ParisFit', '15 rue de Rivoli 75004 Paris', 50),
+('Louvre Gym', '3 boulevard de Sébastopol 75001 Paris', 40),
+('ZenBody Paris', '22 avenue des Champs-Élysées 75008 Paris', NULL),
+
+('Nice Move', '12 promenade des Anglais 06000 Nice', 25),
+('Azure Pulse', '8 rue Masséna 06000 Nice', 168),
+('Velvet Iron', '4 avenue Jean Médecin 06100 Nice', 60), 
+
+
+('LA Powerhouse', '102 Sunset Blvd, Los Angeles CA 90026', 100),
+('West Coast Gym', '55 Hollywood Blvd, Los Angeles CA 90028', 80),
+('BeachFit LA', '200 Ocean Ave, Santa Monica CA 90401', 200);
 
 INSERT INTO room (type, club_id)
   VALUES
