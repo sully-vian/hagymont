@@ -1,33 +1,55 @@
-import BannerImg from "../../assets/6.png";
+import BannerImg from "../../assets/exercice.png";
 
 const Banner = () => {
   return (
     <div className="container py-14">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* img section */}
-        <div className="flex justify-center items-center">
-          <img src={BannerImg} alt="HaGymont Banner" className="w-full h-auto rounded-lg" />
-        </div>
+      <div className="max-w-7xl mx-auto bg-white/20 dark:bg-gray-900/20 backdrop-blur-sm rounded-2xl p-10 shadow-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* img section */}
+          <div className="flex justify-center items-center">
+            <img
+              src={BannerImg}
+              alt="HaGymont Banner"
+              className="w-full h-auto rounded-lg max-w-[400px]"
+            />
 
-        {/* text section */}
-        <div className="flex flex-col justify-center">
-          <h1 className="text-4xl font-semibold text-gray-800">
-            HaGymont is <br /> <span className="text-rose-600">always your best gym choice</span>
-          </h1>
+          </div>
 
-          <p className="py-4 font-medium text-lg text-gray-700">
-            <span className="font-bold text-blue-600">HaGymont</span> is the world's premier luxury wellness center. We offer
-            state-of-the-art gyms, high-end spas, medical check-up centers, Chinese and Western medicine clinics, meditation spaces, 
-            <span className="text-green-500 font-semibold"> pickleball courts</span>, and cafes, all designed to support your health journey.
-          </p>
+          {/* text section */}
+          <div className="flex flex-col justify-center">
+            <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">
+              <span className="text-green-600">Experience</span> <br />
+              <span className="text-rose-600">Wellness</span> and{" "}
+              <span className="text-blue-600">Strength</span> with{" "}
+              <span className="text-black-600">HaGymont</span>
+            </h1>
 
-          <p className="font-medium text-lg text-gray-700">
-            Whether your goal is <span className="font-bold text-red-500">enhancement</span>, <span className="font-bold text-yellow-500">healing</span>, or <span className="font-bold text-orange-500">longevity</span>, HaGymont is here to guide you to a better, healthier lifestyle.
-          </p>
+            <p className="py-4 font-medium text-lg text-gray-700 dark:text-gray-300">
+              <span className="font-bold text-indigo-600">HaGymont</span> is
+              proudly present in over{" "}
+              <span className="text-rose-600 font-semibold">50 countries</span>{" "}
+              worldwide. Our clubs are established across vibrant cities in{" "}
+              <span className="text-purple-600 font-semibold">Europe</span>, dynamic
+              hubs in <span className="text-yellow-500 font-semibold">Asia</span>, as well as in{" "}
+              <span className="text-pink-500 font-semibold">Australia</span> and the Americas.
+              Wherever life takes you, HaGymont brings world-class wellness closer to home.
+            </p>
 
-          <p className="pt-4 font-semibold text-lg text-gray-600">
-            Our exclusive <span className="font-bold text-purple-500">café</span>, curated treatments, and luxurious <span className="text-pink-500">spa</span> are also open to the public with day passes, so everyone can experience the best in wellness.
-          </p>
+            <p className="font-medium text-lg text-gray-700 dark:text-gray-300">
+              We commit to delivering an exceptional, consistent experience that empowers you
+              to achieve your health goals—whether it’s{" "}
+              <span className="text-red-500 font-bold">performance</span>,{" "}
+              <span className="text-yellow-400 font-bold">recovery</span>, or{" "}
+              <span className="text-orange-500 font-bold">longevity</span>.
+            </p>
+
+            <p className="pt-4 font-semibold text-lg text-gray-600 dark:text-gray-400">
+              Our exclusive{" "}
+              <span className="font-bold text-purple-500">café</span>, signature treatments,
+              and luxurious <span className="text-pink-500">spa</span> services are open to the public with day passes,
+              inviting everyone to indulge in the art of wellness.
+            </p>
+          </div>
         </div>
       </div>
     </div>

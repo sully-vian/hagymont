@@ -48,7 +48,7 @@ const Navbar = () => {
                 Club
               </li>
               <li className="hover:border-b-2 border-primary uppercase cursor-default">
-                About
+                Course
               </li>
               <li
                 className="hover:border-b-2 border-primary uppercase cursor-pointer"

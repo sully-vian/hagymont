@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import { useNavigate, useLocation, useOutletContext } from 'react-router-dom';
-import './ProductList.css';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import UserService from '../utils/UserService';
+import './ProductList.css';
 
 function ProductList(){
   const [products, setProducts] = useState([]);
@@ -37,24 +37,26 @@ function ProductList(){
 
   return (
     <div id="shop-products-list">
-      {filteredProducts.length===0 ? (
+      {filteredProducts.length === 0 ? (
         <div className="empty-list">
-          <p>Aucun produit ne correspond à votre recherche...</p>
+          <p>No products match your search...</p>
         </div>
-      ) : ( filteredProducts.map(product =>
+      ) : (
+        filteredProducts.map(product =>
           <div className="product-item" key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
             <div className="product-image">
-              <img src={getImage(product.id)}></img>
+              <img src={getImage(product.id)} alt={product.name} />
             </div>
             <div className="product-name">
               <p>{product.name}</p>
             </div>
             <div className="product-stock">
               <p>{product.price}€</p>
-              <p>Stock : {product.stock}</p>
+              <p>Stock: {product.stock}</p>
             </div>
           </div>
-      ))}
+        )
+      )}
     </div>
   );
   }
