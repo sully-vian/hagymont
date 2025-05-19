@@ -9,6 +9,7 @@ import Basket from './shop/Basket';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
+import Profile from './pages/Profile';
 
 
 
@@ -24,6 +25,7 @@ function App() {
         {/* Authentication-related routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Club-related routes */}
 
@@ -41,8 +43,6 @@ function App() {
         {/* Other feature routes */}
         <Route path="/basket" element={<Basket />} />
 
-        
-        
         {/* Default redirection and 404 handling */}
         <Route path="/error" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/error" replace />} />
