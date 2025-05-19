@@ -18,8 +18,8 @@ public class RoomController {
 
     // GET /rooms/{id} - User consulte une salle par son ID
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getRoomById(@PathVariable Long roomId) {
-        Room room = roomService.getRoomById(roomId);
+    public ResponseEntity<Room> getRoomById(@PathVariable Long id) {
+        Room room = roomService.getRoomById(id);
         if (room == null) {
             return ResponseEntity.notFound().build();
         }
@@ -49,12 +49,12 @@ public class RoomController {
     }
 
     // PATCH /rooms/{id} - Modifier l'info (admin)
-    @PatchMapping("/{roomId}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateRoom(
-            @PathVariable Long roomId,
+            @PathVariable Long id,
             @RequestBody Map<String, Object> updates) {
         try {
-            Room updatedRoom = roomService.updateRoom(roomId, updates);
+            Room updatedRoom = roomService.updateRoom(id, updates);
             return ResponseEntity.ok(updatedRoom);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());

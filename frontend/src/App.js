@@ -34,7 +34,7 @@ function App() {
         {/* Nested routes for products */}
         <Route path="/products" element={<Shop />}>
           <Route index element={<ProductList />} />
-          <Route path="filter/:type" element={<ProductList />} />
+          <Route path="name" element={<ProductList />} />
           <Route path=":id" element={<ProductPage />} />
         </Route>
 

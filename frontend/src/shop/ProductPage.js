@@ -19,7 +19,7 @@ function ProductPage(){
   };
 
   useEffect(() => {
-    UserService.getRequest(`/api/products/${id}`)
+    UserService.getRequest(`/products/${id}`)
     .then(response => {
       setProduct(response.data);
     })

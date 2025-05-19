@@ -1,3 +1,4 @@
+
 package fr.n7.hagymont.config;
 
 import org.springframework.context.annotation.Bean;

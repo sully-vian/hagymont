@@ -1,3 +1,4 @@
+
 package fr.n7.hagymont.controller;
 
 import java.time.LocalDate;
@@ -134,7 +135,5 @@ public class AuthController {
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 
     }
-
-
 
 }

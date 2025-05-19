@@ -29,8 +29,8 @@ function ProductList(){
 });
 
   useEffect(() => {
-  const filter = searchTerm ? `/search?name=${encodeURIComponent(searchTerm)}` : '';
-    UserService.getRequest(`/api/products${filter}`).then((response) => {
+  const filter = searchTerm ? `/name?contains=${encodeURIComponent(searchTerm)}` : '';
+    UserService.getRequest(`/products${filter}`).then((response) => {
       setProducts(response.data);
     });
   }, [searchTerm]);

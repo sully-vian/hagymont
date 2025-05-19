@@ -1,3 +1,4 @@
+
 package fr.n7.hagymont.config;
 
 import java.util.Arrays;
