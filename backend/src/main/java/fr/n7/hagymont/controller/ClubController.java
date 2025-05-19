@@ -1,12 +1,22 @@
 package fr.n7.hagymont.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import fr.n7.hagymont.model.Club;
-import fr.n7.hagymont.service.ClubService;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.n7.hagymont.model.Club;
+import fr.n7.hagymont.service.ClubService;
 
 @RestController
 @RequestMapping("/clubs")
@@ -15,45 +25,49 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
-    // GET /clubs/{id} - voir un club par son id
+    // 获取单个俱乐部（修复路径变量名称）
     @GetMapping("/{id}")
-    public ResponseEntity<Club> getClub(@PathVariable Long id) {
-        Club club = clubService.getClubById(id);
-        if (club == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(club);
+    public ResponseEntity<Club> getClub(@PathVariable("id") Long clubId) {
+        Club club = clubService.getClubById(clubId);
+        return club != null ? ResponseEntity.ok(club) : ResponseEntity.notFound().build();
     }
 
-    // GET /clubs - voir tous les clubs existants
+    // 获取所有俱乐部（保留原有过滤功能）
     @GetMapping
     public List<Club> getAllClubs(
             @RequestParam(required = false) String addressFilter) {
         return clubService.getAllClubs(addressFilter);
     }
 
-    // POST /clubs - Créer un nouveau club (nécessite des droits administrateur)
+    // 新增：支持名称/地址联合搜索
+    @GetMapping("/search")
+    public List<Club> searchClubs(@RequestParam(required = false) String query) {
+        return clubService.searchClubs(query);
+    }
+
+    // 创建俱乐部（管理员功能）
     @PostMapping
     public ResponseEntity<Club> createClub(@RequestBody Club club) {
         Club createdClub = clubService.createClub(club);
         return ResponseEntity.status(201).body(createdClub);
     }
 
-    // DELETE /clubs/{id} - Supprimer le club (admin)
+    // 删除俱乐部（管理员功能）
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClub(@PathVariable Long id) {
-        boolean deleted = clubService.deleteClub(id);
-        return deleted ? ResponseEntity.ok("Club deleted")
+    public ResponseEntity<String> deleteClub(@PathVariable("id") Long clubId) {
+        return clubService.deleteClub(clubId)
+                ? ResponseEntity.ok("Club deleted")
                 : ResponseEntity.notFound().build();
     }
 
-    // PATCH /clubs/{id} - Modifier les informations du club (admin)
+    // 更新俱乐部信息（管理员功能）
     @PatchMapping("/{id}")
     public ResponseEntity<Club> updateClub(
-            @PathVariable Long id,
+            @PathVariable("id") Long clubId,
             @RequestBody Map<String, Object> updates) {
-        Club updatedClub = clubService.updateClub(id, updates);
-        return updatedClub != null ? ResponseEntity.ok(updatedClub)
+        Club updatedClub = clubService.updateClub(clubId, updates);
+        return updatedClub != null
+                ? ResponseEntity.ok(updatedClub)
                 : ResponseEntity.notFound().build();
     }
 }

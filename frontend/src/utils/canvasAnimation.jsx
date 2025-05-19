@@ -4,7 +4,7 @@ export const initBackground = (canvasRef) => {
   const ctx = canvas.getContext('2d');
   let animationFrame;
   
-  // 初始化数据
+  // Initialize data
   const particles = [];
   const data = {
     heartRate: Array(50).fill(80),
@@ -26,13 +26,13 @@ export const initBackground = (canvasRef) => {
     }
   }
 
-  // 窗口调整处理
+  // Window resize handler
   const resizeHandler = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   };
 
-  // 数据生成
+  // Data generation
   const generateData = () => {
     data.heartRate = [
       ...data.heartRate.slice(1),
@@ -50,7 +50,7 @@ export const initBackground = (canvasRef) => {
     data.calories += Math.random();
   };
 
-  // 绘制力量柱状图
+  // Draw strength bar chart
   const drawStrength = () => {
     const barWidth = canvas.width / data.strength.length;
     data.strength.forEach((v, i) => {
@@ -64,7 +64,7 @@ export const initBackground = (canvasRef) => {
     });
   };
 
-  // 绘制心率曲线
+  // Draw heart rate curve
   const drawHeartRate = () => {
     ctx.beginPath();
     ctx.strokeStyle = '#ff6b6b';
@@ -77,9 +77,9 @@ export const initBackground = (canvasRef) => {
     ctx.stroke();
   };
 
-  // 更新粒子系统
+  // Update particle system
   const updateParticles = () => {
-    // 过滤并更新粒子
+    // Filter and update particles
     for (let i = particles.length - 1; i >= 0; i--) {
       particles[i].update();
       if (particles[i].y <= 0) {
@@ -87,7 +87,7 @@ export const initBackground = (canvasRef) => {
       }
     }
 
-    // 生成新粒子
+    // Generate new particles
     if (particles.length < data.calories) {
       particles.push(new Particle(
         Math.random() * canvas.width,
@@ -96,7 +96,7 @@ export const initBackground = (canvasRef) => {
     }
   };
 
-  // 绘制粒子
+  // Draw particles
   const drawParticles = () => {
     particles.forEach(p => {
       ctx.beginPath();
@@ -106,7 +106,7 @@ export const initBackground = (canvasRef) => {
     });
   };
 
-  // 动画循环
+  // Animation loop
   const animate = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     generateData();
@@ -117,12 +117,12 @@ export const initBackground = (canvasRef) => {
     animationFrame = requestAnimationFrame(animate);
   };
 
-  // 初始化
+  // Initialization
   resizeHandler();
   window.addEventListener('resize', resizeHandler);
   animate();
 
-  // 返回清理函数
+  // Return cleanup function
   return () => {
     cancelAnimationFrame(animationFrame);
     window.removeEventListener('resize', resizeHandler);

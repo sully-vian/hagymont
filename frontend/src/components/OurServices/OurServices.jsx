@@ -31,7 +31,6 @@ const OurServices = () => {
           <p className="text-md font-semibold leading-6">
             2 Rue Charles Camichel<br />
             31000 Toulouse<br />
-            Phone: (33) 0534322000 <br />
           </p>
         </div>
 

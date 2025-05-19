@@ -3,8 +3,11 @@ package fr.n7.hagymont.service;
 import fr.n7.hagymont.model.OrderBasket;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.repository.OrderBasketRepository;
+import fr.n7.hagymont.repository.ProductRepository;
+import fr.n7.hagymont.repository.PurchaseOrderRepository;
 import fr.n7.hagymont.repository.UserRepository;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+
+import fr.n7.hagymont.model.OrderBasket.StatusType;
+import fr.n7.hagymont.model.Product;
+import fr.n7.hagymont.model.PurchaseOrder;
 
 @Service
 public class OrderBasketService {
@@ -22,53 +30,146 @@ public class OrderBasketService {
     @Autowired
     private UserRepository userRepository;
 
-    // Créer un panier
-    public OrderBasket createOrderBasket(OrderBasket orderBasket) throws ResourceNotFoundException {
-        // Vérifier l'existence de l'utilisateur
-        Optional<User> userOptional = Optional.of(userRepository.findByUsername(orderBasket.getUser().getUsername()));
-        User user = userOptional.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    @Autowired
+    private ProductRepository productRepository;
 
-        orderBasket.setUser(user);
-        orderBasket.setCreatedAt(LocalDateTime.now());
-        orderBasket.setStatus("pending"); // Statut initial
-        return orderBasketRepository.save(orderBasket);
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+
+    // Créer un panier pour un user
+    public OrderBasket createOrderBasket(String username) {
+        // Vérifier l'existence de l'utilisateur
+        User user = userRepository.findByUsername(username);
+        if (user==null){
+            return null;
+        }
+
+        OrderBasket newBasket = new OrderBasket();
+        newBasket.setCreatedAt(LocalDateTime.now());
+        newBasket.setStatus(StatusType.pending);
+        newBasket.setUser(user);
+        return orderBasketRepository.save(newBasket);
     }
 
-    // Récupérer un panier par User
+    // Récupérer toutes les commandes d'un User
     public List<OrderBasket> getOrderBasketByUser(String username) {
         List<OrderBasket> order = Optional.of(orderBasketRepository.findByUser_Username(username)).orElse(null);
         return order;
     }
 
-    // Mettre à jour le panier
-    public OrderBasket updateOrderBasket(Long id, Map<String, Object> updates) throws ResourceNotFoundException {
-        OrderBasket basket = orderBasketRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("OrderBasket not found"));
+    //Trouver le panier (commande non validée) d'un user
+    public OrderBasket findCurrentByUsername(String username) throws ResourceNotFoundException {
+        List<OrderBasket> orders = orderBasketRepository.findByUserUsernameAndStatus(username, StatusType.pending);
+        User user = userRepository.findByUsername(username);
+        if (user==null){
+            throw new ResourceNotFoundException("User doesn't exist");
+        }
+        if (orders.isEmpty()){
+            return null;
+        }else{
+            //Normalement on ne devrait jamais avoir plusieurs orders pending
+            return orders.get(0);
+        }
+    }
 
-        updates.forEach((key, value) -> {
-            switch (key) {
-                case "address":
-                    basket.setAddress((String) value);
-                    break;
-                case "status":
-                    basket.setStatus((String) value);
-                    break;
+    // Ajouter un produit au panier en cours d'un user
+    public OrderBasket addProductBasket(String username, Long productId, int quantity) throws ResourceNotFoundException {
+        // Vérifier l'existence du panier et du produit
+        OrderBasket basket = findCurrentByUsername(username);
+        if (basket == null){
+            basket = createOrderBasket(username);
+        }
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product==null){
+            throw new ResourceNotFoundException("product " + product + "wasn't found");
+        }
+        // Vérifier le stock
+        if (product.getStock() < quantity) {
+            throw new IllegalStateException("Stock is insufficient");
+        }
+        PurchaseOrder purchase;
+        //Si le produit est deja dans le panier on change juste la quantité
+        PurchaseOrder purchaseExisting = purchaseOrderRepository.findByOrderBasketIdAndProductId(basket.getId(), productId);
+        if (purchaseExisting!=null){
+            purchase = purchaseExisting;
+            quantity += purchaseExisting.getQuantity();
+        }else{
+            purchase = new PurchaseOrder();
+        }
+        purchase.setOrderBasket(basket);
+        purchase.setProduct(product);
+        purchase.setQuantity(quantity);
+        purchaseOrderRepository.save(purchase);
+        return basket;
+    }
+
+    // Modifier la quantité d'un produit dans une commande
+    public OrderBasket updateQuantity(Long basketId, Long productId, Integer newQuantity) throws ResourceNotFoundException {
+        OrderBasket basket = orderBasketRepository.findById(basketId)
+            .orElseThrow( () -> new ResourceNotFoundException("basket " + basketId + "wasn't found"));
+        productRepository.findById(productId)
+            .orElseThrow(() -> new ResourceNotFoundException("product " + productId + "wasn't found"));
+        
+        PurchaseOrder purchase = purchaseOrderRepository.findByOrderBasketIdAndProductId(basketId, productId);
+
+        if (newQuantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        // Vérifier le stock
+        if (purchase.getProduct().getStock() < newQuantity) {
+            throw new IllegalStateException("Stock is insufficient");
+        }
+
+        purchase.setQuantity(newQuantity);
+        purchaseOrderRepository.save(purchase);
+        return basket;
+    }
+
+    // Supprimer un produit dans une commande
+    public boolean deleteProduct(Long basketId, Long productId) throws ResourceNotFoundException{
+        OrderBasket basket = orderBasketRepository.findById(basketId)
+            .orElseThrow( () -> new ResourceNotFoundException("basket " + basketId + "wasn't found"));
+        productRepository.findById(productId)
+            .orElseThrow(() -> new ResourceNotFoundException("product " + productId + "wasn't found"));
+        
+        PurchaseOrder purchase = purchaseOrderRepository.findByOrderBasketIdAndProductId(basketId, productId);
+        if (purchase!=null) {
+            purchaseOrderRepository.delete(purchase);
+            if (basket.getProducts().isEmpty()){
+                orderBasketRepository.delete(basket);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Mettre à jour une commande
+    public OrderBasket updateOrderBasket(Long id, Map<String, Object> updates) {
+        OrderBasket basket = orderBasketRepository.findById(id).orElse(null);
+        if (basket==null){
+            return null;
+        }
+
+        updates.forEach(new BiConsumer<String, Object>() {
+            @Override
+            public void accept(String key, Object value) {
+                switch (key) {
+                    case "address":
+                        basket.setAddress((String) value);
+                        break;
+                    case "status":
+                        basket.setStatus(StatusType.valueOf((String) value));
+                        break;
+                }
             }
         });
 
         return orderBasketRepository.save(basket);
     }
 
-    // Valider le panier
-    public OrderBasket validateOrderBasket(Long id) throws ResourceNotFoundException {
-        OrderBasket basket = orderBasketRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Panier not found"));
-        basket.setStatus("confirmed");
-        return orderBasketRepository.save(basket);
-    }
-
-// Supprimer un panier
-public boolean deleteOrderBasket(Long id) {
+    // Supprimer une commande
+    public boolean deleteOrderBasket(Long id) {
         if (orderBasketRepository.existsById(id)) {
             orderBasketRepository.deleteById(id);
             return true;

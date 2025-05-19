@@ -41,7 +41,7 @@ public class User {
         admin, classic, premium, coach
     }
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private LocalDate birthdate; // "yyyy-MM-dd"
     private String phone;
 

@@ -1,11 +1,13 @@
 package fr.n7.hagymont.service;
 
-import fr.n7.hagymont.model.Club;
-import fr.n7.hagymont.repository.ClubRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.n7.hagymont.model.Club;
+import fr.n7.hagymont.repository.ClubRepository;
 
 @Service
 public class ClubService {
@@ -22,6 +24,15 @@ public class ClubService {
             return clubRepository.findByAddressContaining(addressFilter);
         }
         return clubRepository.findAll();
+    }
+
+    // searchClubs
+    public List<Club> searchClubs(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return clubRepository.findAll();
+        }
+        String searchTerm = query.toLowerCase().trim();
+        return clubRepository.searchClubs(searchTerm);
     }
 
     public Club createClub(Club club) {
