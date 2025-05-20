@@ -1,0 +1,8 @@
+.same-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  line-height: 1.5;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}

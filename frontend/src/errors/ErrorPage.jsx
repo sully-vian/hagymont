@@ -1,7 +1,7 @@
 function ErrorPage() {
     return (
       <div>
-        <h1>Une erreur est survenue</h1>
+        <h1>An error has occured !</h1>
         <a href="/"> Accueil</a>
       </div>
     );

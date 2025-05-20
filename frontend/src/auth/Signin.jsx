@@ -79,24 +79,24 @@ function Signin() {
         passwordConfirm: undefined
       };
 
-      const response = userService.signinRequest('/auth/signup', payload);
-      console.log('Connection réussie :', (await response).data.message);
-      console.log('Token :', (await response).data.jwt);
-      
-      const loginRes = await userService.loginRequest('/auth/login', {
-        username: formData.username,
-        password: formData.password
-      });
+      userService.signinRequest('/auth/signup', payload)
+      .then(response => {
+        console.log('Connection réussie :', response.data.message);
+      console.log('Token :', response.data.jwt);
 
-      sessionStorage.setItem('token', (await loginRes).data.jwt);
+      sessionStorage.setItem('token', response.data.jwt);
       sessionStorage.setItem('username', formData.username);
-      navigate('/home');
+      navigate(-1);
+      })
+      .catch(error => {
+        console.error('Registration failed:', error);
+        setErrors({
+          general: error.response.data || 'Registration failed. Please try again.'
+        });
+      });
 
     } catch (error) {
-      console.error('Registration failed:', error);
-      setErrors({
-        general: error.response?.data?.message || 'Registration failed. Please try again.'
-      });
+      console.error(error);
     }
   };
 
@@ -246,7 +246,7 @@ function Signin() {
             <input
               type="text"
               className="form-control"
-              name="secondame"
+              name="secondname"
               value={formData.secondname}
               onChange={handleChange}
             />
@@ -264,7 +264,7 @@ function Signin() {
                 value={formData.type}
                 onChange={handleChange}
               > 
-                <option value="admin">Just joined HaGymont(I don't want to become a member)</option>
+                <option value="extern">Extern (I don't want to become a member)</option>
                 <option value="classic">Classic</option>
                 <option value="premium">Premium</option>
                 <option value="coach">Coach</option>

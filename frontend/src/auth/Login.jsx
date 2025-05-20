@@ -144,7 +144,7 @@ const Login = () => {
       sessionStorage.removeItem('username');
       sessionStorage.setItem('token', (await response).data.jwt);
       sessionStorage.setItem('username', username);
-      navigate('/home');
+      navigate(-1);
     } catch (err) {
       setError('Invalid username or password');
     } finally {

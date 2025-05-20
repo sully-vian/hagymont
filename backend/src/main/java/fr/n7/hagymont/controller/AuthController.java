@@ -44,20 +44,26 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> createUserHandler(@RequestBody User user)  {
-        String username = user.getUsername();
-        String email = user.getEmail();
-        String password = user.getPassword();
-        String firstname = user.getFirstname();
-        String secondname = user.getSecondname();
-        User.UserType role = user.getType();
-        //LocalDate birthdate = user.getBirthdate();
-        String phone = user.getPhone();
-        User.UserGender gender = user.getGender();
+    public ResponseEntity<?> createUserHandler(@RequestBody Map<String, String> signupRequest)  {
+        String username = signupRequest.get("username");
+        String email = signupRequest.get("email");
+        String password = signupRequest.get("password");
+        String firstname = signupRequest.get("firstname");
+        String secondname = signupRequest.get("secondname");
+        String role = signupRequest.get("type");
+        String birthdate = signupRequest.get("birthdate");
+        String phone = signupRequest.get("phone");
+        String gender = signupRequest.get("gender");
 
         User isUsernameExist = userRepository.findByUsername(username);
         if (isUsernameExist != null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Username " + username + " already exist");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The username " + username + " is already used");
+
+        }
+
+        User isEmailExist = userRepository.findByEmail(email);
+        if (isEmailExist != null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(email + " is already associated with an account");
 
         }
         //TODO verifier email
@@ -67,12 +73,21 @@ public class AuthController {
         createdUser.setPassword(password);
         createdUser.setFirstname(firstname);
         createdUser.setSecondname(secondname);
-        createdUser.setType(role);
-        //
-        //createdUser.setBirthdate(birthdate);
+        createdUser.setType(User.UserType.valueOf(role));
+        createdUser.setBirthdate(LocalDate.parse((String) birthdate));
         createdUser.setPhone(phone);
-        createdUser.setGender(gender);
+        createdUser.setGender(User.UserGender.valueOf(gender));
 
+        if (role!="extern"){
+            createdUser.setCardStart(LocalDate.now());
+            //Par default 1 mois d'abonnement
+            createdUser.setCardEnd(LocalDate.now().plusMonths(1));
+        }else{
+            //Pas d'abonnement
+            createdUser.setCardStart(null);
+            createdUser.setCardEnd(null);
+        }
+        
         User savedUser = userRepository.save(createdUser);
           userRepository.save(savedUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(username,password);

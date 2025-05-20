@@ -2,7 +2,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import Login from './auth/Login';
 import Signin from './auth/Signin';
 import ErrorBoundary from './ErrorBoundary';
-import NotFound from './errors/NotFound';
+import ErrorPage from './errors/ErrorPage';
 import Club from './pages/Club';
 import Home from './pages/Home';
 import Basket from './shop/Basket';
@@ -44,7 +44,7 @@ function App() {
         <Route path="/basket" element={<Basket />} />
 
         {/* Default redirection and 404 handling */}
-        <Route path="/error" element={<NotFound />} />
+        <Route path="/error" element={<ErrorPage />} />
         <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
     </Router>

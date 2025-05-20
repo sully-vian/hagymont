@@ -58,7 +58,8 @@ const Navbar = () => {
           </ul>
 
           <div className="flex gap-4 items-center">
-            <img src={Profile} alt="Profile" className="w-10 rounded-full" />
+            <img src={Profile} alt="Profile" className="w-10 rounded-full" 
+            onClick={() => navigate("/profile")} />
             <IoIosArrowDown />
           </div>
         </div>

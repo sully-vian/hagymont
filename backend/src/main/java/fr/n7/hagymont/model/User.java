@@ -38,7 +38,7 @@ public class User {
     private UserType type;
 
     public enum UserType {
-        admin, classic, premium, coach
+        extern, classic, premium, coach, admin //extern -> just the shop, admin -> administrator of the website
     }
 
     //@Column(nullable = false)
