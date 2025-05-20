@@ -78,15 +78,15 @@ function Basket() {
   };
 
   const handleValidate = () => {
-    UserService.patchRequest(`/baskets/update/${basket.id}`, { status: "confirmed" })
-      .then(() => {
-        console.log("Validé !!");
-        actualise();
-      })
-      .catch(error => {
-        console.error('Erreur détectée :', error);
-        navigate('/error', { state: error.status });
-      });
+    navigate('/payment');
+    // UserService.patchRequest(`/baskets/update/${basket.id}`, { status: "confirmed" })
+    //   .then(() => {
+    //     console.log("Validé !!");
+    //   })
+    //   .catch(error => {
+    //     console.error('Erreur détectée :', error);
+    //     navigate('/error', { state: error.status });
+    //   });
   };
 
   return (

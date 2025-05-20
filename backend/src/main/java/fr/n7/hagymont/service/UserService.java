@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.n7.hagymont.exception.NotUniqueException;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.model.User.UserGender;
@@ -43,10 +44,19 @@ public class UserService {
         return true;
     }
 
-    public User updateUser(String username, Map<String, Object> updates) {
+    public User updateUser(String username, Map<String, Object> updates) throws NotUniqueException, ResourceNotFoundException {
         User user = Optional.of(userRepository.findByUsername(username)).orElse(null);
         if (user == null) {
-            return null;
+            throw new ResourceNotFoundException(username + "doesn't exist");
+        }
+        if (updates.containsKey("email")){
+            String email = (String) updates.get("email");
+            User existingUser = userRepository.findByEmail(email);
+            if (existingUser!=null && existingUser!=user){
+                throw new NotUniqueException(email + "is associated with another account");
+            }else{
+                user.setEmail(email);
+            }
         }
         updates.forEach(new BiConsumer<String, Object>() {
             @Override
@@ -69,10 +79,6 @@ public class UserService {
                         break;
                     case "phone":
                         user.setPhone((String) value);
-                        break;
-                    case "email":
-                        String email = (String) value;
-                        user.setEmail(email);
                         break;
                     case "password":
                         user.setPassword((String) value);

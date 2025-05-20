@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.core.status.Status;
+import fr.n7.hagymont.exception.NotUniqueException;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.service.UserService;
 
@@ -57,8 +61,14 @@ public class UserController {
     }
 
     @PatchMapping("/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
-        User updatedUser = userService.updateUser(username, updates);
-        return ResponseEntity.status(200).body(updatedUser);
+    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
+        try {
+            User updatedUser = userService.updateUser(username, updates);
+            return ResponseEntity.status(200).body(updatedUser);
+        } catch (NotUniqueException e) {
+            return ResponseEntity.status(505).body(e.getMessage());
+        }catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

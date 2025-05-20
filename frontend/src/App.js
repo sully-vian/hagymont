@@ -9,6 +9,7 @@ import Basket from './shop/Basket';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
+import Payment from './shop/Payment';
 import Profile from './pages/Profile';
 
 
@@ -42,6 +43,7 @@ function App() {
 
         {/* Other feature routes */}
         <Route path="/basket" element={<Basket />} />
+        <Route path="/payment" element={<Payment />} />
 
         {/* Default redirection and 404 handling */}
         <Route path="/error" element={<ErrorPage />} />

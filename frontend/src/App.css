@@ -56,8 +56,3 @@
     transform: rotate(360deg);
   }
 }
-
-.same-line {
-  display: flex;
-  flex-direction: column;
-}

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserService from '../utils/UserService';
 import Navbar from "../club/Navbar/Navbar";
 import './Profile.css';
-import userService from "../utils/UserService";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -11,6 +10,7 @@ const Profile = () => {
   const [user, setUser] = useState('');
   const [isModifying, setModyfing] = useState(false);
   const [text_button, setTextButton] = useState("Modify");
+  const [error, setError] = useState(null);
 
   const printDate = (date) => {
     return new Date(date).toLocaleDateString('fr-FR');
@@ -21,19 +21,48 @@ const Profile = () => {
   const handleModify = () => {
     setTextButton(!isModifying ? "Save changes" : "Modify");
     setModyfing(!isModifying);
-    if (isModifying){
+    if (isModifying && formPatch!==''){
       console.log(formPatch);
       UserService.patchRequest(`/users/${username}`, formPatch)
       .then(response => {
         setUser(response.data);
         setFormPatch('');
+        setTextButton(!isModifying ? "Save changes" : "Modify");
+        setModyfing(!isModifying);
+        setError(null);
       })
       .catch(error => {
+        //Restore user infos
+        UserService.getRequest(`/users/${username}`)
+        .then(response => {
+          setUser(response.data);
+          setFormPatch('');
+        })
+        .catch(error => {
+          //Gestion erreur get user
+          console.error('Erreur détectée :', error);
+          navigate('/error', {"state":error.status});
+        });
+        //Gestion erreur update
         console.error('Erreur détectée :', error);
-        navigate('/error', {"state":error.status});
+        if (error.status==404){
+          navigate("/error");
+        }else{
+          setError(error.response.data || 'Update failed. Please try again.');
+        }
       });
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer); // Nettoyage si error change avant la fin du timer
+    }
+  }, [error]);
 
   useEffect(() => {
     if (username==null){
@@ -72,14 +101,21 @@ const Profile = () => {
   
   return (
     <div className="relative min-h-screen">
-      <div className="relative z-10">
+      <div className="relative z-50">
         <Navbar/>
         <div>
           <h1>Your profile</h1>
-          <button onClick={handleModify}>{text_button}</button>
         </div>
         <div>
-          <h2>Personal infos</h2>
+          <div className="center flex gap-40 items-center ml-4 mb-6">
+            <h2>Personal infos</h2>
+            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+            onClick={handleModify}>{text_button}</button>
+          </div>
+          
+          {error && (
+          <div className="alert alert-danger mb-3">{error}</div>
+          )}
           <div className="same-line">
             <p>Username :</p>
             {/* Username cannot be changed */}
@@ -99,35 +135,35 @@ const Profile = () => {
               name="gender" 
               value="M" 
               disabled={!isModifying} 
-              checked={user.gender=="M"} 
+              checked={user.gender==="M"} 
               onChange={handleChange}
             ></input> Male</label>
             <label><input type="radio" 
               name="gender" 
               value="F" 
               disabled={!isModifying} 
-              checked={user.gender=="F"} 
+              checked={user.gender==="F"} 
               onChange={handleChange}
             ></input> Female</label>
             <label><input type="radio" 
               name="gender" 
               value="N" 
               disabled={!isModifying} 
-              checked={user.gender=="N"} 
+              checked={user.gender==="N"} 
               onChange={handleChange}
             ></input> Neutral</label>
           </div>
           <div className="same-line">
             <p>Birthdate :</p>
-            <input type="date" name="birthdate" value={user.birthdate} disabled={!isModifying}></input>
+            <input type="date" name="birthdate" value={user.birthdate} onChange={handleChange} disabled={!isModifying}></input>
           </div>
           <div className="same-line">
             <p>Email :</p>
-            <input type="text" name="email" value={user.email} disabled={!isModifying}></input>
+            <input type="text" name="email" value={user.email} onChange={handleChange} disabled={!isModifying}></input>
           </div>
           <div className="same-line">
             <p>Phone number :</p>
-            <input type="text" name="phone" value={user.phone} disabled={!isModifying}></input>
+            <input type="text" name="phone" value={user.phone} onChange={handleChange} disabled={!isModifying}></input>
           </div>
           <div className="same-line">
             <p>Subscription type :</p>
