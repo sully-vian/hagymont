@@ -38,10 +38,12 @@ public class ReservationService {
     // Créer une réservation
     public Reservation createReservation(Reservation reservation) throws ResourceNotFoundException {
         // Valider l'existence de l'utilisateur et du cours
-        User user = Optional.of(reservation.getUser())
+        String username = reservation.getUser().getUsername();
+        User user = Optional.of(userRepository.findByUsername(username))
                         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Course course = Optional.of(reservation.getCourse())
-                        .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+        Long courseId = reservation.getCourse().getId();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         // Vérifier si l'utilisateur a déjà réservé ce cours (contrainte unique)
         if (reservationRepository.existsByUserAndCourse(user, course)) {

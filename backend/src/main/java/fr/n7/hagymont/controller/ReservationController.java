@@ -23,10 +23,10 @@ public class ReservationController {
     }
 
     // Récupérer les réservations d'un utilisateur
-    @GetMapping("/utilisateur/{userId}")
-    public List<Reservation> getReservationsByUser(@PathVariable String userId) {
+    @GetMapping("/user/{username}")
+    public List<Reservation> getReservationsByUser(@PathVariable String username) {
         //try {
-        return reservationService.getReservationsByUser(userId);
+        return reservationService.getReservationsByUser(username);
         //} catch (ResourceNotFoundException ex) {
         //    return ResponseEntity.status(404).body(ex.getMessage());
         //}
