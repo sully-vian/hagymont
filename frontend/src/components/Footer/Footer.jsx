@@ -9,14 +9,15 @@ import {
 import { SiTiktok } from "react-icons/si";
 
 import { useNavigate } from "react-router-dom";
-import NatureVid from "../../assets/video/preview.mp4";
+import NatureVid from "../../assets/video/ski.mp4";
 import FooterLogo from "../../assets/x.jpg";
 
 const FooterLinks = [
   { title: "Home", link: "/" },
   { title: "Membership", link: "/#membership" },
+  { title: "Coach", link: "/#coach" },
   { title: "Fitness Meals", link: "/#fitness-meals" },
-  { title: "Club", link: "/Club" },
+  { title: "ChooseClub", link: "../../club/#chooseclub" },
   { title: "Course", link: "/Course" },
   { title: "Shop", link: "/products" },
 ];

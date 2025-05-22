@@ -1,4 +1,3 @@
-// Navbar.jsx
 import { useEffect, useState } from "react";
 import { FaDumbbell } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
@@ -13,58 +12,70 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div
-      className={`sticky top-0 z-50 transition-shadow duration-300 bg-white/70 backdrop-blur ${
-        scrolled ? "shadow-md" : ""
-      }`}
-    >
-      <div className="container flex justify-between items-center px-4 py-4 lg:py-6">
-        <div className="flex items-center gap-2">
-          <FaDumbbell className="text-3xl text-primary animate-bounce" />
-          <p className="text-3xl lg:text-4xl font-semibold">
-            Ha<span className="text-primary">Gym</span>ont
-          </p>
-        </div>
+    <>
+      <div className="h-3 lg:h-4" />
+      <div
+        className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-sm ${
+          scrolled ? "bg-white/30 shadow-md" : "bg-transparent"
+        }`}
+      >
+        <div className="container flex justify-between items-center px-4 py-2">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <FaDumbbell className="text-3xl text-primary animate-bounce" />
+            <p className="text-3xl lg:text-4xl font-bold text-black">
+              Ha
+              <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Gym
+              </span>
+              ont
+            </p>
+          </div>
 
-        <div className="flex justify-center items-center gap-10">
-          <ul className="flex gap-8">
-            <li
-              className="hover:border-b-2 border-primary uppercase cursor-pointer"
-              onClick={() => navigate("/home")}
-            >
-              Home
-            </li>
-            <li
-              className="hover:border-b-2 border-primary uppercase cursor-pointer"
-              onClick={() => navigate("/club")}
-            >
-              Club
-            </li>
-            <li className="hover:border-b-2 border-primary uppercase cursor-default">
-              Course
-            </li>
-            <li
-              className="hover:border-b-2 border-primary uppercase cursor-pointer"
-              onClick={() => navigate("/products")}
-            >
-              Shop
-            </li>
-          </ul>
+          <div className="flex justify-center items-center gap-10">
+            <ul className="flex gap-8 text-base font-medium">
+              <li
+                className="hover:border-b-2 border-primary uppercase cursor-pointer"
+                onClick={() => navigate("/home")}
+              >
+                Home
+              </li>
+              <li
+                className="hover:border-b-2 border-primary uppercase cursor-pointer"
+                onClick={() => navigate("/club")}
+              >
+                Club
+              </li>
+              <li className="hover:border-b-2 border-primary uppercase cursor-default">
+                Course
+              </li>
+              <li
+                className="hover:border-b-2 border-primary uppercase cursor-pointer"
+                onClick={() => navigate("/products")}
+              >
+                Shop
+              </li>
+            </ul>
 
-          <div className="flex gap-4 items-center">
-            <img src={Profile} alt="Profile" className="w-10 rounded-full" 
-            onClick={() => navigate("/profile")} />
-            <IoIosArrowDown />
+            {/* Profile avatar and dropdown icon */}
+            <div className="flex items-center space-x-2 group relative">
+              <img
+                src={Profile}
+                alt="User Profile"
+                className="w-9 h-9 rounded-full border-2 border-blue-400 cursor-pointer hover:border-purple-400 transition-colors"
+                onClick={() => navigate("/profile")} 
+              />
+              <IoIosArrowDown className="text-stone-500 text-lg transition-transform group-hover:rotate-180" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

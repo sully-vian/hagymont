@@ -28,8 +28,12 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <FaDumbbell className="text-3xl text-primary animate-bounce" />
-            <p className="text-3xl lg:text-4xl font-semibold">
-              Ha<span className="text-primary">Gym</span>ont
+            <p className="text-3xl lg:text-4xl font-bold text-white">
+              Ha
+              <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Gym
+              </span>
+              ont
             </p>
           </div>
 
@@ -58,9 +62,16 @@ const Navbar = () => {
               </li>
             </ul>
 
-            <div className="flex gap-4 items-center">
-              <img src={Profile} alt="Profile" className="w-10 rounded-full" />
-              <IoIosArrowDown className="text-xl" />
+            <div
+              className="flex items-center space-x-2 group relative cursor-pointer"
+              onClick={() => navigate("/profile")}
+            >
+              <img
+                src={Profile}
+                alt="User Profile"
+                className="w-9 h-9 rounded-full border-2 border-blue-400 hover:border-purple-400 transition-colors"
+              />
+              <IoIosArrowDown className="text-stone-700 text-lg transition-transform group-hover:rotate-180" />
             </div>
           </div>
         </div>

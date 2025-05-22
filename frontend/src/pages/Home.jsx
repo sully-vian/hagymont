@@ -1,4 +1,5 @@
 import Banner from '../components/Banner/Banner';
+import Coach from '../components/Coach/Coach';
 import Footer from '../components/Footer/Footer';
 import Hero from '../components/Hero/Hero';
 import Membership from '../components/Membership/Membership';
@@ -16,7 +17,7 @@ const Home = () => {
     const hash = location.hash;
     if (hash) {
       setTimeout(() => {
-        const element = document.getElementById(hash.substring(1)); // 移除 '#' 取得 id
+        const element = document.getElementById(hash.substring(1)); 
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
         }
@@ -35,6 +36,12 @@ const Home = () => {
       <div id="membership">
         <Membership />
       </div>
+
+      {/* Coach Section */}
+      <div id="coach">
+        <Coach />
+      </div>
+
 
       {/* Fitness Meals Section */}
       <div id="fitness-meals">

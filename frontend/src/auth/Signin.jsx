@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import userService from '../utils/UserService';
 import { initBackground } from '../utils/canvasAnimation';
+import Navbar from './Navbar';
 import './Signin.css';
 
 
@@ -25,7 +26,7 @@ function Signin() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  // 初始化背景动画
+
   useEffect(() => {
     return initBackground(canvasRef);
   }, []);
@@ -102,8 +103,11 @@ function Signin() {
 
 
   return (
-    <>
-      {/* 动态背景 */}
+      <div className="min-h-screen w-screen">
+      {/* Head */}
+      <Navbar className="fixed top-0 left-0 w-full z-50" />
+
+      {/* background */}
       <canvas 
         ref={canvasRef}
         className="background-canvas"
@@ -116,17 +120,15 @@ function Signin() {
         }}
       />
 
-      {/* Logo */}
-    <div className="gym-logo">
-      <span className="logo-text">HaGymont</span>
-      <span className="logo-subtext">FITNESS CLUB</span>
-    </div>
+
     
     {/* form */}
     <div className="signin-container">
         <div className="form-wrapper">
-          <h2 className="form-main-title">Create Account</h2>
-          
+          <h2 className="form-main-title text-center font-bold text-2xl mb-6">
+  Create Account
+</h2>
+
           <form onSubmit={handleSubmit}>
             {/* gender */}
             <div className="form-section">
@@ -335,12 +337,13 @@ function Signin() {
         )}
 
         <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>
-          Register
+          REGISTER
         </button>
       </form>
     </div>
     </div>
-    </>
+    </div>
+
 );
 }
 

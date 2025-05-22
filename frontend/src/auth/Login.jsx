@@ -1,10 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import avatarImg from '../auth/avatar.png';
 import userService from '../utils/UserService';
-import './Login.css';
+import avatarImg from './avatar.png';
+import Navbar from './Navbar';
 
-const Background = () => {
+  class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = Math.random() * 3 + 1;
+    this.speed = Math.random() * 2 + 1;
+    this.color = `hsl(${Math.random() * 40 + 160}, 70%, 60%)`;
+  }
+
+  update() {
+    this.y -= this.speed;
+  }
+}
+
+	const Background = () => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
   const data = useRef({
@@ -13,21 +27,6 @@ const Background = () => {
     calories: 0
   });
 
-  
-
-  class Particle {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.size = Math.random() * 3 + 1;
-      this.speed = Math.random() * 2 + 1;
-      this.color = `hsl(${Math.random() * 40 + 160}, 70%, 60%)`;
-    }
-
-    update() {
-      this.y -= this.speed;
-    }
-  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -125,7 +124,8 @@ const Background = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="background-canvas" />;
+  
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-screen h-screen z-0 bg-[#1a1a2e]" />;
 };
 
 const Login = () => {
@@ -134,14 +134,11 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
+ 
   const handleLogin = async () => {
     setIsLoading(true);
     try {
       const response = userService.loginRequest('/auth/login', { username, password });
-      console.log('Connection réussie :', (await response).data.message);
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('username');
       sessionStorage.setItem('token', (await response).data.jwt);
       sessionStorage.setItem('username', username);
       navigate(-1);
@@ -151,72 +148,87 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-
-  return (
-    <div className="login-wrapper">
+ 
+      return (
+    <div className="min-h-screen w-screen">
+      <Navbar className="fixed top-0 left-0 w-full z-50" />
       <Background />
-     {/* 左上角Logo */}
-     <div className="gym-logo">
-      <span className="logo-text">HaGymont</span>
-      <span className="logo-subtext">FITNESS CLUB</span>
-    </div>
+ 
+      <div className="relative pt-20 h-screen flex items-center justify-center">
+        <div className="relative z-20 w-full max-w-5xl bg-white bg-opacity-20 backdrop-blur-md rounded-2xl shadow-2xl p-14">
+          <div className="grid md:grid-cols-2 gap-10"> 
+            {/* Left Section */}
+            <div className="hidden md:flex flex-col items-center justify-center p-6 bg-gradient-to-br from-[#ff6b6b]/80 to-[#ffd93d]/80 rounded-xl">
+              <img 
+                src={avatarImg}
+                alt="Gym Logo"
+                className="w-32 h-32 rounded-full border-4 border-white shadow-xl mb-4"
+              />
+              <h2 className="text-3xl text-[#2c3e50] mb-2">WELCOME TO</h2>
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-[#ae6bff] to-[#2eb8ea] bg-clip-text text-transparent mb-4">
+                HaGymont
+              </h2>
+              <p className="text-lg text-gray-600 italic">A better you, A better world</p>
+            </div>
+ 
+            {/* Right Form Section */}
+            <div className="p-8 flex flex-col justify-center">
+          <h2 className="text-4xl font-semibold text-[#2c3e50] text-center mb-6">Member Login</h2>
 
-      <div className="login-container">
-        <div className="left-container">
-          <img src={avatarImg} alt="Gym Logo" className="avatar" />
-          <h2 className="welcome-text">WELCOME TO</h2>
-          <h2 className="gym-name-text">HaGymont</h2>
-          <h2 className="welcome-text sub-title">
-            A better you ,A better world
-          </h2>
-        </div>
+          
+          {error && (
+            <div className="mb-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg animate-fade-in">
+              {error}
+            </div>
+          )}
+ 
+          <div className="mb-4">
+            <label className="block text-base font-medium text-gray-800 mb-2">Username</label>
 
-        <div className="form-container">
-          <h2 className="form-title">Member Login</h2>
-          
-          {error && <div className="error-message">{error}</div>}
-          
-          <div className="input-group">
-            <label className="input-label">Username</label>
             <input
               type="text"
-              className="input-field"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
             />
           </div>
-
-          <div className="input-group">
-            <label className="input-label">Password</label>
+ 
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-800 mb-2">Password</label>
             <input
               type="password"
-              className="input-field"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
             />
           </div>
+ 
+          <div className="flex flex-col md:flex-row gap-4">
+            <button
+  className="flex-1 px-6 py-3 bg-blue-500 text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition-all disabled:bg-gray-400"
+  onClick={handleLogin}
+  disabled={isLoading}
+>
+  {isLoading ? 'Signing In...' : 'LOGIN'}
+</button>
 
-          <div className="button-group">
-            <button
-              className="primary-btn"
-              onClick={handleLogin}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Signing In...' : 'Login'}
-            </button>
-            <button
-              className="secondary-btn"
-              onClick={() => navigate('/signin')}
-            >
-              Create Account
-            </button>
+<button
+  className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white text-base font-semibold rounded-lg transition-all"
+  onClick={() => navigate('/signin')}
+>
+  CREATE ACCOUNT
+</button>
+
           </div>
         </div>
       </div>
     </div>
+        </div>
+      </div>
   );
 };
+
 
 export default Login;

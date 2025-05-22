@@ -1,6 +1,4 @@
-import TrainerImg2 from "../../assets/coach1.png";
-import TrainerImg1 from "../../assets/coach2.png";
-import TrainerImg3 from "../../assets/coach3.png";
+
 import EssentialImg from "../../assets/member1.png";
 import PerformanceImg from "../../assets/member2.png";
 import ExecutiveImg from "../../assets/member3.png";
@@ -52,40 +50,6 @@ const memberPlans = [
   },
 ];
 
-const trainerPlans = [
-  {
-    title: "Coach Access",
-    image: TrainerImg1,
-    features: [
-    "Teaching access to group classes",
-    "No access to personal training zones",
-    "No equipment or gym floor usage",
-    "Limited access to coaching lounge",
-    ],
-  },
-  {
-    title: "Coach Pro",
-    image: TrainerImg2,
-    features: [
-    "Full teaching and training rights",
-    "Unlimited access to gym equipment",
-    "Use of recovery equipment (stretch zones)",
-    "Access to smart locker rooms",
-    ],
-  },
-  {
-    title: "Coach Elite",
-    image: TrainerImg3,
-    features: [
-    "Unlimited facility access (gym, pool, courts)",
-    "VIP Spa & wellness services (massage, hydrotherapy)",
-    "Exclusive access to Fitness Café & lounge",
-    "Monthly medical checkups & health analysis",
-    "Dedicated coaching suite & private studio",
-    ],
-  },
-];
-
 
 const PlanCard = ({ title, price, features, image }) => (
   <div className="bg-white/50 p-6 rounded-3xl hover:scale-105 transition duration-300">
@@ -111,7 +75,8 @@ const Membership = () => {
     <div className="container py-14">
       {/* Section header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-semibold">Membership Plans</h1>
+        <h1 className="text-4xl font-semibold">
+          <span className="text-pink-600 font-bold">Membership</span> Plans</h1>
         <p>Refined plans for exceptional lifestyles.</p>
       </div>
 
@@ -123,13 +88,6 @@ const Membership = () => {
         ))}
       </div>
 
-      {/* Trainer Plans */}
-      <h2 className="text-2xl font-semibold mb-4">For Coaches</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {trainerPlans.map((plan, i) => (
-          <PlanCard key={i} {...plan} />
-        ))}
-      </div>
     </div>
   );
 };

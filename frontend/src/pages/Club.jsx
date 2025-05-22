@@ -15,7 +15,10 @@ const Club = () => {
       <div className="relative z-10">
         <Navbar/>
         <Head />
-        <ChooseClub />
+         {/* ChooseClub Section */}
+      <div id="chooseclub">
+        <ChooseClub  />
+      </div>
         <Banner />
         <OurServices />
         <Footer />

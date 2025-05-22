@@ -14,9 +14,10 @@ import FooterLogo from "../../assets/x.jpg";
 const FooterLinks = [
   { title: "Home", link: "/" },
   { title: "Membership", link: "/#membership" },
+  { title: "Coach", link: "/#coach" },
   { title: "Fitness Meals", link: "/#fitness-meals" },
   { title: "Club", link: "/Club" },
-  { title: "Course", link: "/Course" },
+  { title: "ChooseClub", link: "../../club/#chooseclub" },
   { title: "Shop", link: "/products" },
 ];
 

@@ -24,20 +24,22 @@ const Hero = () => {
             top-tier facilities and services tailored to your goals.
           </p>
 
-          <div className="flex gap-4 items-center md:justify-start justify-center">
-            <button
-              className="primary-btn hover:scale-105 duration-200"
-              onClick={() => navigate("/signin")}
-            >
-              JOIN US
-            </button>
-            <button
-              className="secondary-btn text-black hover:scale-105 duration-200"
-              onClick={() => navigate("/login")}
-            >
-              WELCOME BACK
-            </button>
-          </div>
+          <div className="flex flex-wrap gap-6 items-center md:justify-start justify-center">
+  <button
+    className="px-10 py-2 min-w-[300px] text-base font-semibold bg-blue-600 text-white rounded-xl shadow-md hover:scale-105 hover:bg-blue-700 transition duration-200"
+    onClick={() => navigate("/signin")}
+  >
+    JOIN US
+  </button>
+  <button
+    className="px-10 py-2 min-w-[280px] text-base font-semibold bg-green-500 text-black rounded-xl shadow-md hover:scale-105 hover:bg-green-600 transition duration-200"
+    onClick={() => navigate("/login")}
+  >
+    WELCOME BACK
+  </button>
+</div>
+
+
         </div>
 
         {/* image section */}
