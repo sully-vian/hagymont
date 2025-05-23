@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import UserService from '../utils/UserService';
 import './ProductList.css';
+import ShopItem from './components/ShopItem';
 
 function ProductList(){
   const [products, setProducts] = useState([]);
@@ -13,14 +14,6 @@ function ProductList(){
   const searchTerm = searchParams.get('contains') || null;
 
   const { minPrice, maxPrice } = useOutletContext();
-
-  const getImage = (id) => {
-    try {
-      return require(`../assets/images/product${id}.png`);
-    } catch (err) {
-      return require(`../assets/images/default.png`); // Image de secours si elle n'existe pas
-    }
-  };
 
   const filteredProducts = products.filter((product) => {
   const min = minPrice === '' ? 0 : parseFloat(minPrice) || 0;
@@ -43,18 +36,7 @@ function ProductList(){
         </div>
       ) : (
         filteredProducts.map(product =>
-          <div className="product-item" key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
-            <div className="product-image">
-              <img src={getImage(product.id)} alt={product.name} />
-            </div>
-            <div className="product-name">
-              <p>{product.name}</p>
-            </div>
-            <div className="product-stock">
-              <p>{product.price}€</p>
-              <p>Stock: {product.stock}</p>
-            </div>
-          </div>
+          <ShopItem key={product.id} product ={product}/>
         )
       )}
     </div>
