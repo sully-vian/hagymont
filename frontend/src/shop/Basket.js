@@ -79,7 +79,11 @@ function Basket() {
       ) : (
         <div class="rounded-lg border p-4">
         {purchases.map(purchase =>
-          <BasketItem key={purchase.id} purchase={purchase} actualise={actualise} basketId = {basket.id}/>
+          <BasketItem 
+            key={purchase.id} 
+            purchase={purchase} 
+            actualise={actualise} 
+            basketId = {basket.id}/>
         )}
         </div>
       )}
