@@ -35,7 +35,7 @@ const TopList = () => {
         {/* Text Section */}
         <div className="w-1/2 text-left">
           <h1 className="text-4xl font-semibold">Fitness Meals</h1>
-          <p className="text-lg">Our top list</p>
+          <p className="text-lg text-center">Our top list</p>
         </div>
 
         {/* Banner image */}
