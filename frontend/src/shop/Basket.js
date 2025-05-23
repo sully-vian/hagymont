@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserService from '../utils/UserService';
-import './Basket.css';
+import Navbar from '../components/Navbar/Navbar';
+import BasketItem from './components/BasketItem';
 
 function Basket() {
   const navigate = useNavigate();
@@ -13,14 +14,6 @@ function Basket() {
 
   const printDate = (date) => {
     return new Date(date).toLocaleDateString('fr-FR');
-  };
-
-  const getImage = (id) => {
-    try {
-      return require(`../assets/images/product${id}.png`);
-    } catch (err) {
-      return require(`../assets/images/default.png`);
-    }
   };
 
   const actualise = useCallback(() => {
@@ -55,100 +48,57 @@ function Basket() {
     }
   }, [purchases]);
 
-  const handleDelete = (productId) => {
-    UserService.deleteRequest(`/baskets/delete-product/${basket.id}/${productId}`)
-      .then(() => actualise())
-      .catch(error => {
-        console.error('Erreur détectée :', error);
-        navigate('/error', { state: error.status });
-      });
-  };
-
-  const handleQuantityChange = (productId, quantity) => {
-    UserService.patchRequest(`/baskets/change-quantity/${basket.id}`, { productId, quantity: parseInt(quantity) })
-      .then(() => actualise())
-      .catch(error => {
-        console.error('Erreur détectée :', error);
-        navigate('/error', { state: error.status });
-      });
-  };
-
   const handleShop = () => {
     navigate('/products');
   };
 
   const handleValidate = () => {
     navigate('/payment');
-    // UserService.patchRequest(`/baskets/update/${basket.id}`, { status: "confirmed" })
-    //   .then(() => {
-    //     console.log("Validé !!");
-    //   })
-    //   .catch(error => {
-    //     console.error('Erreur détectée :', error);
-    //     navigate('/error', { state: error.status });
-    //   });
   };
 
   return (
-    <div id="basket">
-      <div className="header">
-        <button className="shop-button" onClick={handleShop}>Shop</button>
-        <p className="username">{username}</p>
-      </div>
+    <div className="p-5 max-w-3xl mx-auto font-sans">
+        <Navbar />
+        <div className="mt-10 mb-5">
+          <h1 className="text-2xl text-gray-800 mb-1">Your basket</h1>
+          {basket && <p className="text-sm text-gray-500">Created at : {printDate(basket.createdAt)}</p>}
+        </div>
 
-      <div className="basket-infos">
-        <h1>Your basket</h1>
-        {basket && <p>Created at : {printDate(basket.createdAt)}</p>}
-      </div>
-
-      <hr />
+        <hr className="border-none h-px bg-gray-300 my-5" />
 
       {!purchases || purchases.length === 0 ? (
-        <div id="empty-list">
+        <div className="text-center text-gray-500 mt-10 border rounded-lg p-4">
           <p>No product in your basket yet !</p>
-          <button className="shop-button" onClick={handleShop}>Buy something</button>
+          <button
+            onClick={handleShop}
+            className="mt-3 bg-blue-600 text-white border-none px-3 py-1.5 text-sm rounded hover:bg-blue-800"
+          >
+            Buy something
+          </button>
         </div>
       ) : (
-        purchases.map(purchase =>
-          <div className='list-item' key={purchase.id}>
-            <div
-              className="product-item"
-              onClick={() => navigate(`/products/${purchase?.product?.id}`)}
-            >
-              <div className="product-image">
-                <img 
-                  src={getImage(purchase?.product?.id)} 
-                  alt={purchase?.product?.name || "Product image"} 
-                />
-              </div>
-              <p className="name-product">{purchase?.product?.name}</p>
-            </div>
-            <div className="purchase-actions">
-              <div className="purchase-infos">
-                <p className="price-product">{purchase?.product?.price ?? 0}€</p>
-                <input
-                  className="quantity-input"
-                  type="number"
-                  value={purchase?.quantity ?? 1}
-                  min={1}
-                  onChange={e => handleQuantityChange(purchase?.product?.id, e.target.value)}
-                />
-              </div>
-              <button className="delete-button" onClick={() => handleDelete(purchase?.product?.id)}>
-                Delete item
-              </button>
-            </div>
-          </div>
-        )
-      )}
-
-      {purchases && (
-        <div className="basket-recap">
-          <hr />
-          <p>Your total ({nbItems} item{nbItems > 1 ? 's' : ''}) : <strong>{totalPrice} €</strong></p>
-          <button className="validate-button" onClick={handleValidate}>Validate basket</button>
+        <div class="rounded-lg border p-4">
+        {purchases.map(purchase =>
+          <BasketItem key={purchase.id} purchase={purchase} actualise={actualise} basketId = {basket.id}/>
+        )}
         </div>
       )}
+
+      {purchases.length !== 0 && (
+        <div className="text-right mt-6">
+          <hr className="border-none h-px bg-gray-300 my-5" />
+          <p className="mr-5">
+            Your total ({nbItems} item{nbItems > 1 ? 's' : ''}) : <strong>{totalPrice} €</strong>
+          </p>
+          <button
+            onClick={handleValidate}
+            className="bg-green-600 text-white px-4 py-2 rounded mt-2 w-1/3 hover:bg-green-700"
+          >
+            Validate basket
+          </button>
+        </div>
+      )}
+
     </div>
   );
 }

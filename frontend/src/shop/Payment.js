@@ -3,16 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import UserService from '../utils/UserService';
 
 function Payment() {
-  const [nom, setNom] = useState('');
-  const [carte, setCarte] = useState('');
-  const [expiration, setExpiration] = useState('');
-  const [cvc, setCvc] = useState('');
+  const [formData, setFormData] = useState('');
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username");
   const [totalPrice, setTotalPrice] = useState(0);
   const [nbItems, setNbItems] = useState(0);
   const [basketId, setBasketId] = useState(null);
   const [validate, setValidate] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const actualiseInfos = (purchases) => {
     if (purchases.length > 0) {
@@ -31,6 +29,7 @@ function Payment() {
   };
 
   const handleSubmit = (e) => {
+    if (!validateForm()) {return};
     UserService.patchRequest(`/baskets/update/${basketId}`, { status: "confirmed" })
       .then(() => {
         console.log("Validé !!");
@@ -42,32 +41,72 @@ function Payment() {
       });
   };
 
-  useEffect(() => {
-    if (!validate){
-      UserService.getRequest(`/baskets/current/${username}`)
-      .then(response => {
-        setBasketId(response.data.id);
-        actualiseInfos(response.data.products || []);
-      })
-      .catch(error => {
-        console.error('Erreur détectée :', error);
-        navigate('/error', { state: error.status });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+
+    if (errors[e.target.name]) {
+      setErrors({
+        ...errors,
+        [e.target.name]: null
       });
     }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    newErrors.name = (!formData.name) ? 'Owner of the card is required' : null;
+    newErrors.card = (!formData.card) ? 'Card number is required' : null;
+    newErrors.expiration = (!formData.expiration) ? 'Expiration date is required' : null;
+    newErrors.cvc = (!formData.cvc) ? 'CVC is required' : null;
+    
+    const cardRegex = /[0-9]{16}/;
+    newErrors.card = (formData.card && !cardRegex.test(formData.card)) ? 
+      'Invalid card number'
+      : newErrors.card ;
+    
+      const expRegex = /(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])/;
+    newErrors.expiration = (formData.expiration && !expRegex.test(formData.expiration)) ?
+      'Invalid expiration date'
+      : newErrors.expiration;
+    
+      const cvcRegex = /[0-9]{3}/;
+    newErrors.cvc = (formData.cvc && !cvcRegex.test(formData.cvc)) ?
+      'Invalid CVC'
+      : newErrors.cvc;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  useEffect(() => {
+    if (validate) return;
+
+    UserService.getRequest(`/baskets/current/${username}`)
+    .then(response => {
+      setBasketId(response.data.id);
+      actualiseInfos(response.data.products || []);
+    })
+    .catch(error => {
+      console.error('Erreur détectée :', error);
+      navigate('/error', { state: error.status });
+    });
+    
     }, []);
 
   return (
     validate ? 
     (<div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Confirmation</h2>
-      <p>Payment accepted</p>
-      <p>Your order has ben confirmed</p>
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Confirmation</h2>
+        <p className="text-2xl font-semibold mb-2 text-center">Payment accepted</p>
+        <p className="text-2xl font-semibold mb-2 text-center">Your order has ben confirmed</p>
+      </div>
     </div>)
     : (<div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-md"
-      >
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <div className="mb-4">
           <h3 className="text-2xl font-semibold mb-2 text-center">Recap</h3>
           <label className="p-2 mb-1 w-full font-medium flex justify-end">{nbItems} article(s)</label>
@@ -81,57 +120,80 @@ function Payment() {
           <label className="block mb-1 font-medium">Name</label>
           <input
             type="text"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-2"
             required
           />
+          {errors.name &&
+            <div className="invalid-feedback d-block">
+              {errors.name}
+            </div>}
         </div>
 
         <div className="mb-4">
           <label className="block mb-1 font-medium">Card number</label>
           <input
             type="text"
-            value={carte}
-            onChange={(e) => setCarte(e.target.value)}
+            name="card"
+            value={formData.card}
+            onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-2"
             placeholder="1234 5678 9012 3456"
             required
           />
+          {errors.card &&
+            <div className="invalid-feedback d-block">
+              {errors.card}
+            </div>}
         </div>
+        
 
         <div className="flex gap-4 mb-4">
           <div className="w-1/2">
-            <label className="block mb-1 font-medium">Expiration</label>
+            <label className="block mb-1 font-medium">Expiration date</label>
             <input
               type="text"
-              value={expiration}
-              onChange={(e) => setExpiration(e.target.value)}
+              name="expiration"
+              value={formData.expiration}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded-md p-2"
               placeholder="MM/AA"
               required
             />
+              {errors.expiration &&
+            <div className="invalid-feedback d-block">
+              {errors.expiration}
+            </div>}
           </div>
+          
 
           <div className="w-1/2">
             <label className="block mb-1 font-medium">CVC</label>
             <input
               type="text"
-              value={cvc}
-              onChange={(e) => setCvc(e.target.value)}
+              name="cvc"
+              value={formData.cvc}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded-md p-2"
               required
             />
+            {errors.cvc &&
+              <div className="invalid-feedback d-block">
+                {errors.cvc}
+              </div>}
+            </div>
           </div>
-        </div>
+          
 
         <button
-          type="submit"
+          onClick={handleSubmit}
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
         >
           Pay
         </button>
-      </form>
+      </div>
     </div>)
   );
 }

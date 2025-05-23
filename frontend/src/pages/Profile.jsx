@@ -11,6 +11,7 @@ const Profile = () => {
     const [isModifying, setModyfing] = useState(false);
     const [text_button, setTextButton] = useState("Modify");
     const [formPatch, setFormPatch] = useState('');
+    const [error, setError] = useState('');
 
     const printDate = (date) => {
         return new Date(date).toLocaleDateString('fr-FR');
@@ -51,6 +52,7 @@ const Profile = () => {
         }
       });
     }
+  }
 
   useEffect(() => {
     if (error) {
@@ -229,6 +231,5 @@ const Profile = () => {
         </>
     );
 };
-}
 
 export default Profile;

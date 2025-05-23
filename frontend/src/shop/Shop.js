@@ -19,8 +19,8 @@ function Shop() {
   };
 
   const handleBasket = () => {
-    if (username==='Unknown'){
-      navigate('/');
+    if (username==='Not connected'){
+      navigate('/login');
     }else{
       navigate(`/basket`);
     }
@@ -29,8 +29,7 @@ function Shop() {
   return (
     <div className="Shop">
       <Navbar />
-      <h1>Shop</h1>
-      <div id="Header">
+      <div id="Header" className="mt-10">
         <div id="Searchbar">
           <input type="search"
           value={searchTerm}
