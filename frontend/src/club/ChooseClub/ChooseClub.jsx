@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DefaultImage from "../../assets/club/club.png";
-import UserService from "../../utils/UserService";
+import apiService from "../../utils/APIService";
 
 const getClubImage = (id) => {
   try {
@@ -26,7 +26,7 @@ const ChooseClub = () => {
         const endpoint = searchQuery
           ? `/clubs/search?query=${encodeURIComponent(searchQuery)}`
           : "/clubs";
-        const res = await UserService.getRequest(endpoint);
+        const res = await apiService.getRequest(endpoint);
         if (res.data) {
           setClubs(res.data);
         } else {

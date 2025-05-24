@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import pilatesVideo from '../assets/video/surfing.mp4';
 import Navbar from "../club/Navbar/Navbar";
-import UserService from '../utils/UserService';
+import apiService from '../utils/APIService';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Profile = () => {
     setModyfing(!isModifying);
     if (isModifying && formPatch!==''){
       console.log(formPatch);
-      UserService.patchRequest(`/users/${username}`, formPatch)
+      apiService.patchRequest(`/users/${username}`, formPatch)
       .then(response => {
         setUser(response.data);
         setFormPatch('');
@@ -33,7 +33,7 @@ const Profile = () => {
       })
       .catch(error => {
         //Restore user infos
-        UserService.getRequest(`/users/${username}`)
+        apiService.getRequest(`/users/${username}`)
         .then(response => {
           setUser(response.data);
           setFormPatch('');
@@ -68,7 +68,7 @@ const Profile = () => {
     if (username==null){
       navigate("/login");
     }else{
-      UserService.getRequest(`/users/${username}`)
+      apiService.getRequest(`/users/${username}`)
       .then(response => {
         setUser(response.data);
         setFormPatch('');

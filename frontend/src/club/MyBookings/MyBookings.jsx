@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import UserService from "../../utils/UserService";
+import apiService from "../../utils/APIService";
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const username = sessionStorage.getItem("username");
 
   useEffect(() => {
-    UserService.getRequest(`/api/bookings/user/${username}`)
+    apiService.getRequest(`/api/bookings/user/${username}`)
       .then(res => setBookings(res.data));
   }, [username]);
 

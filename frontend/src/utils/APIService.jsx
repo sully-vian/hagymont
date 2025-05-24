@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_BASE_URL = 'http://localhost:8081';
-class UserService {
+class APIService {
 
     loginRequest(path, body){
         return axios.post(API_BASE_URL + path, body)
@@ -27,6 +27,6 @@ class UserService {
         return axios.delete(API_BASE_URL + path, body, {headers: {Authorization: 'Bearer ' + sessionStorage.getItem('token')}})
     }
 }
-const userService = new UserService();
+const apiService = new APIService();
 
-export default userService;
+export default apiService;

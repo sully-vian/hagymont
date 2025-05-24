@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import userService from '../utils/UserService';
+import apiService from '../utils/APIService';
 import avatarImg from './avatar.png';
 import Navbar from './Navbar';
 
@@ -138,7 +138,7 @@ const Login = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const response = userService.loginRequest('/auth/login', { username, password });
+      const response = apiService.loginRequest('/auth/login', { username, password });
       sessionStorage.setItem('token', (await response).data.jwt);
       sessionStorage.setItem('username', username);
       navigate(-1);

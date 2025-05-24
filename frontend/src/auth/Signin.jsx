@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import userService from '../utils/UserService';
+import apiService from '../utils/APIService';
 import { initBackground } from '../utils/canvasAnimation';
 import Navbar from './Navbar';
 import './Signin.css';
@@ -80,7 +80,7 @@ function Signin() {
         passwordConfirm: undefined
       };
 
-      userService.signinRequest('/auth/signup', payload)
+      apiService.signinRequest('/auth/signup', payload)
       .then(response => {
         console.log('Connection réussie :', response.data.message);
       console.log('Token :', response.data.jwt);

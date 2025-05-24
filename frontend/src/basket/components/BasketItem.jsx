@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserService from '../../utils/UserService';
+import apiService from '../../utils/APIService';
 
 
 function BasketItem({purchase, actualise, basketId}) {
@@ -15,7 +15,7 @@ function BasketItem({purchase, actualise, basketId}) {
     };
 
     const handleDelete = (productId) => {
-        UserService.deleteRequest(`/baskets/delete-product/${basketId}/${productId}`)
+        apiService.deleteRequest(`/baskets/delete-product/${basketId}/${productId}`)
         .then(() => actualise())
         .catch(error => {
             console.error('Erreur détectée :', error);
@@ -25,7 +25,7 @@ function BasketItem({purchase, actualise, basketId}) {
 
     const handleQuantityChange = (productId, quantity) => {
         if (!quantity) return;
-        UserService.patchRequest(`/baskets/change-quantity/${basketId}`, { productId, quantity: parseInt(quantity) })
+        apiService.patchRequest(`/baskets/change-quantity/${basketId}`, { productId, quantity: parseInt(quantity) })
         .then(() => actualise())
         .catch(error => {
             console.error('Erreur détectée :', error);

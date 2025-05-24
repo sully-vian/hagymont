@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
-import UserService from '../utils/UserService';
-import './ProductList.css';
+import { useLocation, useOutletContext } from 'react-router-dom';
+import apiService from '../utils/APIService';
 import ShopItem from './components/ShopItem';
 
 function ProductList(){
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
 
   const location = useLocation();
 
@@ -23,21 +21,22 @@ function ProductList(){
 
   useEffect(() => {
   const filter = searchTerm ? `/name?contains=${encodeURIComponent(searchTerm)}` : '';
-    UserService.getRequest(`/products${filter}`).then((response) => {
+    apiService.getRequest(`/products${filter}`)
+    .then((response) => {
       setProducts(response.data);
     });
   }, [searchTerm]);
 
   return (
-    <div id="shop-products-list">
+    <div className="grid-auto-fill-180 gap-5 p-5">
       {filteredProducts.length === 0 ? (
-        <div className="empty-list">
+        <div className="col-span-full text-center italic text-gray-500 py-10">
           <p>No products match your search...</p>
         </div>
       ) : (
-        filteredProducts.map(product =>
-          <ShopItem key={product.id} product ={product}/>
-        )
+        filteredProducts.map(product => (
+          <ShopItem key={product.id} product={product} />
+        ))
       )}
     </div>
   );

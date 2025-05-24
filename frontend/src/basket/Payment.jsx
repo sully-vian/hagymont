@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import UserService from '../utils/UserService';
+import { useNavigate, useOutletContext} from 'react-router-dom';
+import apiService from '../utils/APIService';
 
 function Payment() {
   const [formData, setFormData] = useState('');
   const navigate = useNavigate();
-  const username = sessionStorage.getItem("username");
+  const { purchases, basket, _, setState } = useOutletContext();
   const [totalPrice, setTotalPrice] = useState(0);
   const [nbItems, setNbItems] = useState(0);
-  const [basketId, setBasketId] = useState(null);
   const [validate, setValidate] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -30,7 +29,7 @@ function Payment() {
 
   const handleSubmit = (e) => {
     if (!validateForm()) {return};
-    UserService.patchRequest(`/baskets/update/${basketId}`, { status: "confirmed" })
+    apiService.patchRequest(`/baskets/update/${basket.id}`, { status: "confirmed" })
       .then(() => {
         console.log("Validé !!");
         setValidate(true);
@@ -82,31 +81,22 @@ function Payment() {
   };
 
   useEffect(() => {
+    setState(3);
     if (validate) return;
-
-    UserService.getRequest(`/baskets/current/${username}`)
-    .then(response => {
-      setBasketId(response.data.id);
-      actualiseInfos(response.data.products || []);
-    })
-    .catch(error => {
-      console.error('Erreur détectée :', error);
-      navigate('/error', { state: error.status });
-    });
-    
+    actualiseInfos(purchases);
     }, []);
 
   return (
     validate ? 
-    (<div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    (<div className="min-h-screen flex items-center justify-center p-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-semibold mb-6 text-center">Confirmation</h2>
         <p className="text-2xl font-semibold mb-2 text-center">Payment accepted</p>
         <p className="text-2xl font-semibold mb-2 text-center">Your order has ben confirmed</p>
       </div>
     </div>)
-    : (<div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    : (<div className="min-h-screen flex items-center justify-center p-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <div className="mb-4">
           <h3 className="text-2xl font-semibold mb-2 text-center">Recap</h3>
           <label className="p-2 mb-1 w-full font-medium flex justify-end">{nbItems} article(s)</label>

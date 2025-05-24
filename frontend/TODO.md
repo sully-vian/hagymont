@@ -1,7 +1,7 @@
 # TODO in front
 ## Shop
-- [ ] Reorganiser shop avec pages et composants
-- [ ] Regler pb halteres 2 
+- [x] Reorganiser shop avec pages et composants
+- [x] Regler pb halteres 2 (ok apparemment)
 - [ ] Partie admin (creer/supprimer produit)
 ## Page product
 - [ ] Partie admin (modif produit)

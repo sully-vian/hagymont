@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import './Shop.css';
+import { Outlet } from 'react-router-dom';
+import './style/Shop.css';
 import Navbar from '../components/Navbar/Navbar';
 import SearchBar from './components/SearchBar';
 
@@ -14,12 +14,10 @@ function Shop() {
   };
 
   return (
-    <div className="Shop">
+    <div>
       <Navbar />
       <SearchBar onChanges={handleChanges}/>
-      <div id="Body">
-        <Outlet context={{minPrice, maxPrice}}/>
-      </div>
+      <Outlet context={{minPrice, maxPrice}}/>
     </div>
   );
 }

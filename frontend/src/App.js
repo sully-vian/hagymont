@@ -5,12 +5,14 @@ import ErrorBoundary from './ErrorBoundary';
 import ErrorPage from './errors/ErrorPage';
 import Club from './pages/Club';
 import Home from './pages/Home';
-import Basket from './shop/Basket';
+import Basket from './basket/Basket';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
-import Payment from './shop/Payment';
+import Payment from './basket/Payment';
 import Profile from './pages/Profile';
+import BasketList from './basket/BasketList';
+import OrderReview from './basket/OrderReview';
 
 
 
@@ -41,9 +43,12 @@ function App() {
           <Route path=":id" element={<ProductPage />} />
         </Route>
 
-        {/* Other feature routes */}
-        <Route path="/basket" element={<Basket />} />
-        <Route path="/payment" element={<Payment />} />
+        {/* Nested routes for basket */}
+        <Route path="/basket" element={<Basket />}>
+          <Route index element={<BasketList />} />
+          <Route path="payment" element={<Payment />} />
+          <Route path="review" element={<OrderReview />} />
+        </Route>
 
         {/* Default redirection and 404 handling */}
         <Route path="/error" element={<ErrorPage />} />

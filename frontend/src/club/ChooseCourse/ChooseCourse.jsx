@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import UserService from "../../utils/UserService";
+import apiService from "../../utils/APIService";
 
 const ChooseCourse = () => {
   const { clubId } = useParams();
@@ -8,15 +8,15 @@ const ChooseCourse = () => {
   const [clubName, setClubName] = useState("");
 
   useEffect(() => {
-    UserService.getRequest(`/api/clubs/${clubId}/courses`)
+    apiService.getRequest(`/api/clubs/${clubId}/courses`)
       .then(res => setCourses(res.data));
-    UserService.getRequest(`/api/clubs/${clubId}`)
+    apiService.getRequest(`/api/clubs/${clubId}`)
       .then(res => setClubName(res.data.name));
   }, [clubId]);
 
   const handleBooking = (courseId) => {
     const username = sessionStorage.getItem("username");
-    UserService.postRequest(`/api/bookings/${username}`, {
+    apiService.postRequest(`/api/bookings/${username}`, {
       courseId
     })
     .then(() => alert("Booking successful!"))
