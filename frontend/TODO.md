@@ -7,15 +7,14 @@
 - [ ] Partie admin (modif produit)
 ## Basket 
 - [x] Reorganiser avec pages et composants
-- [ ] Ajouter vérification commande (adresse, etc)
-- [ ] Créer banière étapes (Cart, Order review, Payment, Order complete ...)
+- [x] Ajouter vérification commande (adresse, etc)
+- [x] Créer banière étapes (Cart, Order review, Payment, Order complete ...)
 - [x] Ajouter paiement et confirmation validation
 ## Profile
 - [x] Handle bouton modifier
-- [ ] Creer composant champ
 - [x] Lier backend update user
 - [ ] Ajouter vision commandes
-- [ ] Ajouter adresse
+- [ ] Supprimer compte
 ## Page error 
 - [x] Differencier erreurs (404, 505 etc)
 - [x] Mise en page

@@ -44,6 +44,7 @@ function Basket() {
                 Created at: {printDate(basket.createdAt)}
               </p>
             </div>
+
           )}
         </div>
         {basket && <ProgressionBar current={state}/>}

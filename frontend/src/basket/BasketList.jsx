@@ -1,6 +1,7 @@
 import BasketItem from './components/BasketItem';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import EmptyBasket from './components/EmptyBasket';
 
 function BasketList() {
     const navigate = useNavigate();
@@ -8,10 +9,6 @@ function BasketList() {
     const [nbItems, setNbItems] = useState(0);
 
     const { purchases, basket, actualise, setState } = useOutletContext();
-
-    const handleShop = () => {
-        navigate('/products');
-    };
 
     const handleValidate = () => {
         navigate('/basket/review');
@@ -37,15 +34,7 @@ function BasketList() {
     return (
         <div className='p-5 mx-auto max-w-4xl'>
             {!purchases || purchases.length === 0 ? (
-                <div className="text-center text-gray-500 mt-10 border rounded-lg p-4">
-                <p>No product in your basket yet !</p>
-                <button
-                    onClick={handleShop}
-                    className="mt-3 bg-blue-600 text-white border-none px-3 py-1.5 text-sm rounded hover:bg-blue-800"
-                >
-                    Buy something
-                </button>
-                </div>
+                <EmptyBasket/>
             ) : (
                 <div class="rounded-lg border p-4">
                 {purchases.map(purchase =>
