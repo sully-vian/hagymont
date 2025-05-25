@@ -56,6 +56,10 @@ function Payment() {
     }
   };
 
+  const handleOrders = () => {
+        navigate('/orders');
+    };
+
   const validateForm = () => {
     const newErrors = {};
     newErrors.name = (!formData.name) ? 'Owner of the card is required' : null;
@@ -97,10 +101,16 @@ function Payment() {
     ) : (
       validate ? 
       (<div className="min-h-screen flex items-center justify-center p-4">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Confirmation</h2>
+        <div className=" flex flex-col items-center bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-3xl font-semibold mb-6 text-center">Confirmation</h2>
           <p className="text-2xl font-semibold mb-2 text-center">Payment accepted</p>
           <p className="text-2xl font-semibold mb-2 text-center">Your order has ben confirmed</p>
+          <button
+            onClick={handleOrders}
+            className="bg-gray-600 text-white border-none px-3 py-1.5 text-sm rounded hover:bg-gray-800"
+            >
+            See previous orders
+          </button>
         </div>
       </div>)
       : (<div className="min-h-screen flex items-center justify-center p-4">

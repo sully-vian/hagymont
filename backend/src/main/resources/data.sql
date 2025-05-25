@@ -11,6 +11,8 @@ INSERT INTO user (
   card_start, 
   card_end
 ) VALUES
+  ('Admin', 'Admin', 'N', 'admin', '1970-01-01', '0600000000', 'admin@gmail.com', 'admin', 'mdp', '2024-07-10', '2025-07-10'),
+
   ('Pierre', 'Dupont', 'M', 'classic', '2000-04-17', '0612345678', 'pierre.dupont@gmail.com', 'pierrot1704', 'mdp1234', '2024-07-10', '2025-07-10'),
   ('Paul', 'Dupont', 'M', 'premium', '1985-02-28', '0612345689', 'paul.dupont@gmail.com', 'passionMuscu', 'mdp1234', '2025-01-10', '2026-01-10'),
   ('Jacques', 'Martin', 'M', 'coach', '1997-01-25', '0612345698', 'jacques.martin@gmail.com', 'jm1267', 'mdp1234', '2024-07-08', '2025-07-08'),
@@ -57,9 +59,9 @@ INSERT INTO product (name, price, stock, description)
 
 INSERT INTO order_basket (username, address, created_at, status)
   VALUES
-    ('pierrot1704', '3 rue de la poste 31000 Toulouse', '2025-03-17', 'shipped'),
-    ('SarahFitness', '19 rue du moulin 31300 Toulouse', '2025-03-29', 'completed'),
-    ('GinetteLebel', '19 bis avenue de la republique 32000 Auch', '2025-04-01', 'pending');
+    ('pierrot1704', '3 rue de la poste \n31000 \nToulouse \nFrance', '2025-03-17', 'shipped'),
+    ('SarahFitness', '19 rue du moulin \n31300 \nToulouse \nFrance', '2025-03-29', 'completed'),
+    ('GinetteLebel', '19 bis avenue de la republique \n32000 \nAuch \nFrance', '2025-04-01', 'pending');
 
 INSERT INTO purchase_order (product_id, order_id, quantity)
   VALUES

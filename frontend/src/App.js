@@ -13,6 +13,7 @@ import Payment from './basket/Payment';
 import Profile from './pages/Profile';
 import BasketList from './basket/BasketList';
 import OrderReview from './basket/OrderReview';
+import Orders from './orders/Orders';
 
 
 
@@ -49,6 +50,8 @@ function App() {
           <Route path="payment" element={<Payment />} />
           <Route path="review" element={<OrderReview />} />
         </Route>
+
+        <Route path="/orders" element={<Orders/>}/>
 
         {/* Default redirection and 404 handling */}
         <Route path="/error" element={<ErrorPage />} />
