@@ -70,9 +70,9 @@ function Payment() {
     const cardRegex = /[0-9]{16}/;
     newErrors.card = (formData.card && !cardRegex.test(formData.card)) ? 
       'Invalid card number'
-      : newErrors.card ;
+      : newErrors.card;
     
-      const expRegex = /(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])/;
+      const expRegex = /(0[1-9]|1[0,1,2])\/(2[5-9]|[3-9][0-9])/;
     newErrors.expiration = (formData.expiration && !expRegex.test(formData.expiration)) ?
       'Invalid expiration date'
       : newErrors.expiration;

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 import jakarta.persistence.Entity;
@@ -25,7 +27,13 @@ public class Product {
     private String description;
 
     @OneToMany(mappedBy = "product")
-    private List<PurchaseOrder> orders = new ArrayList<>();
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<PurchaseOrder> orders;
+
+    public Product() {
+        this.orders = new ArrayList<>();
+    }
 
     // Getters and Setters
     public Long getId() {
