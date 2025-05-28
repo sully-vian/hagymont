@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,49 +31,49 @@ public class Course {
     private Category category;
 
     public enum Category {
-        salsa,
-        yoga,
-        cardio_fit,
-        zumba,
-        step,
-        pilates,
-        natation,
-        renforcement,
-        cardio_yoga,
-        strength_renforcement,
-        yoga_morning,
-        aqua_fit,
-        machine_training,
-        yoga_sunset,
-        pilates_power,
-        yoga_deep,
-        machine_tone,
-        boxing_kick,
-        core_burn,
-        yoga_sun,
-        diving_intro,
-        machine_strength,
-        cardio_cycle,
-        cardio_burn,
-        pilates_milan,
-        dance_italian_fit,
-        machine_sculpt,
-        crossfit_berlin,
-        machine_core,
-        pickleball_sport,
-        cardio_royal,
-        machine_focus,
-        cardio_sunrise,
-        machine_weight,
-        yoga_wave,
-        tennis_pro,
-        golf_elite,
-        pilates_private,
-        yoga_beach,
-        aqua_training,
-        core_paddle,
-        pickleball_elite,
-        relax_spa
+        SALSA,
+        YOGA, 
+        CARDIO_FIT,
+        ZUMBA,
+        STEP,
+        PILATES,
+        NATATION,
+        RENFORCEMENT,
+        CARDIO_YOGA,
+        STRENGTH_RENFORCEMENT,
+        YOGA_MORNING,
+        AQUA_FIT,
+        MACHINE_TRAINING,
+        YOGA_SUNSET,
+        PILATES_POWER,
+        YOGA_DEEP,
+        MACHINE_TONE,
+        BOXING_KICK,
+        CORE_BURN,
+        YOGA_SUN,
+        DIVING_INTRO,
+        MACHINE_STRENGTH,
+        CARDIO_CYCLE,
+        CARDIO_BURN,
+        PILATES_MILAN,
+        DANCE_ITALIAN_FIT,
+        MACHINE_SCULPT,
+        CROSSFIT_BERLIN,
+        MACHINE_CORE,
+        PICKLEBALL_SPORT,
+        CARDIO_ROYAL,
+        MACHINE_FOCUS,
+        CARDIO_SUNRISE,
+        MACHINE_WEIGHT,
+        YOGA_WAVE,
+        TENNIS_PRO,
+        GOLF_ELITE,
+        PILATES_PRIVATE,
+        YOGA_BEACH,
+        AQUA_TRAINING,
+        CORE_PADDLE,
+        PICKLEBALL_ELITE,
+        RELAX_SPA
     }
 
     @Column(name = "startTime", nullable = false)
@@ -87,7 +88,7 @@ public class Course {
     @JoinColumn(name = "room_id") // FK: room_id
     private Room room;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
 
     @ManyToOne

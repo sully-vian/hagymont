@@ -46,8 +46,18 @@ public class CourseService {
     // POST /courses - Coach crée un nouveau cours
     public Course createCourse(Course course) throws ResourceNotFoundException {
         // Vérifier si la salle et le coach existent
-        validateRoom(course.getRoom().getId());
-        validateCoach(course.getCoach().getUsername());
+        String coachUsername = course.getCoach().getUsername();
+        System.out.println(coachUsername);
+        Long roomId = course.getRoom().getId();
+        validateRoom(roomId);
+        validateCoach(coachUsername);
+        Optional<User> coachOpt = Optional.of(userRepository.findByUsername(coachUsername));
+        User coach = coachOpt.orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
+        course.setCoach(coach);
+        Room room = roomRepository.findById(roomId)
+            .orElseThrow(() -> new ResourceNotFoundException("Room not found: " + roomId));
+        course.setRoom(room);
+        
         return courseRepository.save(course);
     }
 
@@ -75,10 +85,10 @@ public class CourseService {
                     course.setCategory(Course.Category.valueOf((String) value));
                     break;
                 case "startTime":
-                    course.setStartTime((LocalDateTime) value);
+                    course.setStartTime(LocalDateTime.parse((String) value));
                     break;
                 case "endTime":
-                    course.setEndTime((LocalDateTime) value);
+                    course.setEndTime(LocalDateTime.parse((String) value));
                     break;
                 case "capacity":
                     course.setCapacity((Integer) value);
