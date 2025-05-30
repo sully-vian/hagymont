@@ -1,5 +1,7 @@
 package fr.n7.hagymont.service;
 
+import java.util.stream.Collectors;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,29 @@ public class CourseService {
 
     public List<Course> getCoursesByClubId(Long clubId) {
         return courseRepository.findByClubId(clubId);
+    }
+
+    // 搜索课程（不区分大小写），支持关键词匹配类别名、教练名、房间名
+    public List<Course> searchCourses(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return courseRepository.findAll();
+        }
+        String lowerQuery = query.toLowerCase().trim();
+        return courseRepository.findAll().stream()
+                .filter(course
+                        -> course.getCategory().name().toLowerCase().contains(lowerQuery)
+                || (course.getCoach() != null && course.getCoach().getUsername().toLowerCase().contains(lowerQuery))
+                || (course.getRoom() != null && course.getRoom().getType().toLowerCase().contains(lowerQuery))
+                )
+                .toList();
+    }
+
+// 用于课程选择页面，只筛选未来的课程
+    public List<Course> chooseCourses(String keyword) {
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        return searchCourses(keyword).stream()
+                .filter(course -> course.getStartTime().isAfter(now))
+                .toList();
     }
 
     // GET /courses - User consulte les cours disponibles (filtre)

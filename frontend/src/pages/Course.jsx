@@ -1,9 +1,9 @@
 import Banner from '../club/Banner/Banner';
-import Background from '../course/Background/Background';
-
 import Footer from '../club/Footer/Footer';
 import Navbar from '../club/Navbar/Navbar';
 import OurServices from '../club/OurServices/OurServices';
+import Background from '../course/Background/Background';
+import ChooseCourse from '../course/ChooseCourse/ChooseCourse';
 import Head from '../course/Head/Head';
 
 const Course = () => {
@@ -15,6 +15,9 @@ const Course = () => {
       <div className="relative z-10">
         <Navbar />
         <Head />
+        <div id="choosecourse">
+          <ChooseCourse />
+        </div>
         <Banner />
         <OurServices />
         <Footer />

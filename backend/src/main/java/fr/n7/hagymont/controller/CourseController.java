@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,17 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @GetMapping("/search")
+    public List<Course> searchCourses(@RequestParam(required = false) String query) {
+        return courseService.searchCourses(query);
+    }
+
+    // choose courses just for future courses
+    @GetMapping("/choose")
+    public List<Course> chooseCourses(@RequestParam(required = false) String keyword) {
+        return courseService.chooseCourses(keyword);
+    }
 
     @GetMapping("/by-club/{clubId}")
     public ResponseEntity<List<Course>> getCoursesByClubId(@PathVariable Long clubId) {

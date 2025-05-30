@@ -25,34 +25,29 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
-    // 获取单个俱乐部（修复路径变量名称）
     @GetMapping("/{id}")
     public ResponseEntity<Club> getClub(@PathVariable("id") Long clubId) {
         Club club = clubService.getClubById(clubId);
         return club != null ? ResponseEntity.ok(club) : ResponseEntity.notFound().build();
     }
 
-    // 获取所有俱乐部（保留原有过滤功能）
     @GetMapping
     public List<Club> getAllClubs(
             @RequestParam(required = false) String addressFilter) {
         return clubService.getAllClubs(addressFilter);
     }
 
-    // 新增：支持名称/地址联合搜索
     @GetMapping("/search")
     public List<Club> searchClubs(@RequestParam(required = false) String query) {
         return clubService.searchClubs(query);
     }
 
-    // 创建俱乐部（管理员功能）
     @PostMapping
     public ResponseEntity<Club> createClub(@RequestBody Club club) {
         Club createdClub = clubService.createClub(club);
         return ResponseEntity.status(201).body(createdClub);
     }
 
-    // 删除俱乐部（管理员功能）
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteClub(@PathVariable("id") Long clubId) {
         return clubService.deleteClub(clubId)
@@ -60,7 +55,6 @@ public class ClubController {
                 : ResponseEntity.notFound().build();
     }
 
-    // 更新俱乐部信息（管理员功能）
     @PatchMapping("/{id}")
     public ResponseEntity<Club> updateClub(
             @PathVariable("id") Long clubId,
