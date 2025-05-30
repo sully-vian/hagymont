@@ -17,8 +17,10 @@ const FooterLinks = [
   { title: "Membership", link: "/#membership" },
   { title: "Coach", link: "/#coach" },
   { title: "Fitness Meals", link: "/#fitness-meals" },
+  { title: "Club", link: "/Club" },
   { title: "ChooseClub", link: "../../club/#chooseclub" },
   { title: "Course", link: "/Course" },
+  { title: "ChooseCourse", link: "../../club/#choosecourse" },
   { title: "Shop", link: "/products" },
 ];
 

@@ -39,7 +39,7 @@ const Navbar = () => {
               {[
                 { name: "Home", path: "/home" },
                 { name: "Club", path: "/club" },
-                { name: "Courses", path: null },
+                { name: "Courses", path: "/course"  },
                 { name: "Shop", path: "/products" }
               ].map((item) => (
                 <li

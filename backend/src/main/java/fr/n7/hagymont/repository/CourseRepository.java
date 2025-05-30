@@ -4,28 +4,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import fr.n7.hagymont.model.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findByCoachUsername(String username);
 
-    List<Course> findByid(Long id);
-
     List<Course> findByCategory(Course.Category category);
 
     List<Course> findByPriceBetween(double minPrice, double maxPrice);
 
-    /**
-     * équivalent à la requête suivante :
-     *
-     * <pre>
-     * SELECT *
-     * FROM Course
-     * WHERE category = :category
-     *     AND start_time > :startTime
-     * </pre>
-     */
     List<Course> findByCategoryAndStartTimeAfter(Course.Category category, LocalDateTime startTime);
 
+    @Query("SELECT c FROM Course c WHERE c.room.club.id = :clubId")
+    List<Course> findByClubId(@Param("clubId") Long clubId);
 }

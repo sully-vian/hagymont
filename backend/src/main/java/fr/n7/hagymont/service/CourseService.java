@@ -28,6 +28,10 @@ public class CourseService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<Course> getCoursesByClubId(Long clubId) {
+        return courseRepository.findByClubId(clubId);
+    }
+
     // GET /courses - User consulte les cours disponibles (filtre)
     public List<Course> getAvailableCourses(String categoryName) {
         Course.Category category = Course.Category.valueOf(categoryName);
@@ -55,9 +59,9 @@ public class CourseService {
         User coach = coachOpt.orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
         course.setCoach(coach);
         Room room = roomRepository.findById(roomId)
-            .orElseThrow(() -> new ResourceNotFoundException("Room not found: " + roomId));
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found: " + roomId));
         course.setRoom(room);
-        
+
         return courseRepository.save(course);
     }
 

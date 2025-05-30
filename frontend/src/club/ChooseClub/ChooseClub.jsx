@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import DefaultImage from "../../assets/club/club.png";
 import apiService from "../../utils/APIService";
 
@@ -11,14 +10,17 @@ const getClubImage = (id) => {
   }
 };
 
-const ChooseClub = () => {
+const ChooseClub = ({ onClubClick }) => {
   const [clubs, setClubs] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("All");
-  const navigate = useNavigate();
 
-  const cities = ["All","France","Italy","Germany","United Kingdom","USA" ,"Paris", "Toulouse", "Nice","Lyon", "Barcelona","Los Angeles", "Santa Monica","Milano","Berlin", "London" ];
+  const cities = [
+    "All", "France", "Italy", "Germany", "United Kingdom", "USA",
+    "Paris", "Toulouse", "Nice", "Lyon", "Barcelona", "Los Angeles",
+    "Santa Monica", "Milano", "Berlin", "London"
+  ];
 
   useEffect(() => {
     const fetchClubs = async () => {
@@ -58,8 +60,7 @@ const ChooseClub = () => {
   return (
     <div className="relative z-10 py-14 px-4">
       <div className="max-w-6xl mx-auto bg-white/90 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-10 shadow-2xl">
-
-        {/* City filter button */}
+        {/* City filter */}
         <div className="flex flex-wrap gap-2 mb-6">
           {cities.map((city) => (
             <button
@@ -76,7 +77,7 @@ const ChooseClub = () => {
           ))}
         </div>
 
-        {/* Search Bar */}
+        {/* Search bar */}
         <div className="mb-10 flex gap-3">
           <input
             type="text"
@@ -94,13 +95,13 @@ const ChooseClub = () => {
           </button>
         </div>
 
-        {/* Club List */}
+        {/* Club cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {filteredClubs.length > 0 ? (
             filteredClubs.map((club) => (
               <div
                 key={club.id}
-                onClick={() => navigate(`/clubs/${club.id}`)}
+                onClick={() => onClubClick(club.id)} 
                 className="bg-white/60 dark:bg-gray-800/60 p-6 rounded-3xl shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer text-center"
               >
                 <img

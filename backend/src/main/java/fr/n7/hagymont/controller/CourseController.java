@@ -1,18 +1,23 @@
 package fr.n7.hagymont.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import fr.n7.hagymont.model.Course;
-import fr.n7.hagymont.service.CourseService;
-import fr.n7.hagymont.exception.ResourceNotFoundException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import fr.n7.hagymont.exception.ResourceNotFoundException;
+import fr.n7.hagymont.model.Course;
+import fr.n7.hagymont.service.CourseService;
 
-import java.time.format.DateTimeFormatter;
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
@@ -20,8 +25,12 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    // GET /courses/available - User consulte tous les cours disponibles avec une
-    // catégorie
+    @GetMapping("/by-club/{clubId}")
+    public ResponseEntity<List<Course>> getCoursesByClubId(@PathVariable Long clubId) {
+        List<Course> courses = courseService.getCoursesByClubId(clubId);
+        return ResponseEntity.ok(courses);
+    }
+
     @GetMapping("/available/{category}")
     public ResponseEntity<?> getAvailableCourses(@PathVariable String category) {
         List<Course> courses = courseService.getAvailableCourses(category.toUpperCase());
@@ -31,14 +40,11 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    // GET /courses/coach/{coachUsername} - Coach consulte ses propres cours
     @GetMapping("/coach/{coachUsername}")
-    public List<Course> getCoursesByCoach(
-            @PathVariable String coachUsername) {
+    public List<Course> getCoursesByCoach(@PathVariable String coachUsername) {
         return courseService.getCoursesByCoach(coachUsername);
     }
 
-    // POST /courses - Coach crée un nouveau cours
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody Course course) {
         try {
@@ -49,24 +55,17 @@ public class CourseController {
         }
     }
 
-    // DELETE /courses/{id} - Coach supprime un cours
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
         boolean deleted = courseService.deleteCourse(id);
-        return deleted ? ResponseEntity.ok("Course deleted")
-                : ResponseEntity.notFound().build();
+        return deleted ? ResponseEntity.ok("Course deleted") : ResponseEntity.notFound().build();
     }
 
-    // PATCH /courses/{id} - Coach modifie les informations d'un cours
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateCourse(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {
             Course updatedCourse = courseService.updateCourse(id, updates);
-            return updatedCourse != null
-                    ? ResponseEntity.ok(updatedCourse)
-                    : ResponseEntity.notFound().build();
+            return updatedCourse != null ? ResponseEntity.ok(updatedCourse) : ResponseEntity.notFound().build();
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());
         }

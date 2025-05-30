@@ -1,19 +1,20 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Login from './auth/Login';
 import Signin from './auth/Signin';
+import Basket from './basket/Basket';
+import BasketList from './basket/BasketList';
+import OrderReview from './basket/OrderReview';
+import Payment from './basket/Payment';
 import ErrorBoundary from './ErrorBoundary';
 import ErrorPage from './errors/ErrorPage';
+import Orders from './orders/Orders';
 import Club from './pages/Club';
+import Course from './pages/Course';
 import Home from './pages/Home';
-import Basket from './basket/Basket';
+import Profile from './pages/Profile';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
-import Payment from './basket/Payment';
-import Profile from './pages/Profile';
-import BasketList from './basket/BasketList';
-import OrderReview from './basket/OrderReview';
-import Orders from './orders/Orders';
 
 
 
@@ -31,11 +32,12 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/profile" element={<Profile />} />
 
-        {/* Club-related routes */}
+        {/* Club */}
 
         <Route path="/club" element={<Club />} />
 
-        {/* About page */}
+        {/* Course */}
+        <Route path="/course" element={<Course />} />
         
         {/* Nested routes for products */}
         <Route path="/products" element={<Shop />}>
