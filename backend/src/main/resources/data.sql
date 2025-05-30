@@ -1,4 +1,4 @@
-INSERT INTO user (
+INSERT INTO users (
   firstname, 
   secondname, 
   gender, 
@@ -80,8 +80,8 @@ INSERT INTO club (name, address, parking_capacity) VALUES
 ('MilanoForma', '8 Via della Moscova, 20121 Milano, Italy', 50),
 ('BerlinBurn', '101 Friedrichstraße, 10117 Berlin, Germany', 70),
 ('LondonLift', '150 Oxford Street, W1D 1DJ London, United Kingdom', 85),
-('LA Powerhouse', '102 Sunset Blvd, Los Angeles CA 90026, USA', 100),
 ('West Coast Gym', '55 Hollywood Blvd, Los Angeles CA 90028, USA', 80),
+('LA Powerhouse', '102 Sunset Blvd, Los Angeles CA 90026, USA', 100),
 ('BeachFit LA', '200 Ocean Ave, Santa Monica CA 90401, USA', 200);
 
 
@@ -130,15 +130,15 @@ INSERT INTO room (type, club_id) VALUES
 ('cardio', 9),
 ('machines', 9),
 
--- West Coast Gym
-('cardio', 10),
-('machines', 10),
-('yoga', 10),
+-- West Coast Gym (club_id=10)
+('cardio', 10),  
+('machines', 10), 
+('yoga', 10),     
 
--- LA Powerhouse
-('machines', 11),
-('cycling', 11),
-('crossfit', 11),
+-- LA Powerhouse (club_id=11)
+('machines', 11),   
+('cycling', 11),    
+('crossfit', 11),   
 
 
 -- BeachFit LA 
@@ -177,9 +177,9 @@ INSERT INTO course (category, start_time, end_time, room_id, coach_username, cap
 ('diving_intro', '2025-08-15 10:00:00', '2025-08-15 11:30:00', 13, 'NicoDive', 7, 88.88),
 
 -- BarcelonaCore (club_id = 6, room_id 14~16)
-('machine_strength', '2025-08-16 16:00:00', '2025-07-16 17:00:00', 14, 'TrainerJose', 10, 35.99),
-('cardio_cycle', '2025-08-16 18:00:00', '2025-07-16 19:00:00', 15, 'LauraSpin', 12, 36.49),
-('cardio_burn', '2025-08-17 10:00:00', '2025-07-17 11:00:00', 16, 'TrainerJose', 10, 35.99),
+('machine_strength', '2025-08-16 16:00:00', '2025-08-16 17:00:00', 14, 'TrainerJose', 10, 35.99),
+('cardio_cycle', '2025-08-16 18:00:00', '2025-08-16 19:00:00', 15, 'LauraSpin', 12, 36.49),
+('cardio_burn', '2025-08-17 10:00:00', '2025-08-17 11:00:00', 16, 'TrainerJose', 10, 35.99),
 
 -- MilanoForma (club_id = 7, room_id 17~19)
 ('pilates_milan', '2025-07-20 18:00:00', '2025-07-20 19:00:00', 17, 'FrancaPilates', 8, 48.99),
@@ -197,17 +197,16 @@ INSERT INTO course (category, start_time, end_time, room_id, coach_username, cap
 ('machine_focus', '2025-07-27 17:00:00', '2025-07-27 18:00:00', 25, 'TomBox', 10, 66.99),
 
 
--- West Coast Gym (club_id = 10, room_id 29~31)
+-- West Coast Gym (club_id = 10, room_id 26~28)
 ('cardio_sunrise', '2025-08-01 08:00:00', '2025-08-03 09:00:00', 26, 'LindaSun', 10, 65.99),
 ('machine_weight', '2025-08-03 17:00:00', '2025-08-03 18:00:00', 27, 'JakeMuscle', 10, 66.49),
 ('yoga_wave', '2025-08-25 18:30:00', '2025-08-25 19:30:00', 28, 'ZoeZen', 10, 67.49),
 
 
-
--- LA Powerhouse (club_id = 11, room_id 26~28)
-('cardio_sunrise', '2025-07-01 08:00:00', '2025-07-01 09:00:00', 29, 'LindaSun', 10, 65.99),
-('yoga_wave', '2025-07-01 18:30:00', '2025-07-01 19:30:00', 30, 'LindaSun', 10, 67.49),
-('machine_weight', '2025-07-01 17:00:00', '2025-07-01 18:00:00', 31, 'JakeMuscle', 10, 66.49),
+-- LA Powerhouse (club_id = 11, room_id 29~31)
+('cycling_advanced', '2025-07-01 08:00:00', '2025-07-01 09:00:00', 30, 'LindaSun', 10, 65.99),
+('crossfit_pro', '2025-07-01 18:30:00', '2025-07-01 19:30:00', 31, 'LindaSun', 10, 67.49),
+('machine_weight', '2025-07-01 17:00:00', '2025-07-01 18:00:00', 29, 'JakeMuscle', 10, 66.49),
 
 -- BeachFit LA (club_id = 12, room_id 32~39)
 ('tennis_pro', '2025-07-11 09:00:00', '2025-07-11 10:00:00', 32, 'coachAnna', 2, 59.99),
@@ -228,4 +227,4 @@ INSERT INTO reservation (status, date, user_id, course_id, num_parking_spaces)
   VALUES
     ('confirme', '2025-03-10', 'pierrot1704', 1, 1),
     ('annule', '2025-03-10', 'passionMuscu', 2, 0),
-    ('confirme', '2025-07-01', 'GinetteLebel', 4, 0);
+    ('confirme', '2025-08-14', 'GinetteLebel', 4, 0);

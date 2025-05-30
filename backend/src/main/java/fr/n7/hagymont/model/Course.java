@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -68,7 +69,9 @@ public class Course {
         CARDIO_SUNRISE,
         MACHINE_WEIGHT,
         YOGA_WAVE,
+        CROSSFIT_PRO,
         TENNIS_PRO,
+        CYCLING_ADVANCED,
         GOLF_ELITE,
         PILATES_PRIVATE,
         YOGA_BEACH,
@@ -97,6 +100,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "coach_username", referencedColumnName = "username", nullable = false)
+    //@JsonIgnoreProperties({"email", "phone", "reservations", "courses", "password", "roles"})
     private User coach;
 
     // getters and setters

@@ -34,7 +34,7 @@ public class CourseService {
         return courseRepository.findByClubId(clubId);
     }
 
-    // 搜索课程（不区分大小写），支持关键词匹配类别名、教练名、房间名
+    // Search courses, keyword matching for category/coach/room 
     public List<Course> searchCourses(String query) {
         if (query == null || query.trim().isEmpty()) {
             return courseRepository.findAll();
@@ -49,7 +49,7 @@ public class CourseService {
                 .toList();
     }
 
-// 用于课程选择页面，只筛选未来的课程
+// Filter future courses
     public List<Course> chooseCourses(String keyword) {
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
         return searchCourses(keyword).stream()
@@ -110,34 +110,29 @@ public class CourseService {
             Object value = entry.getValue();
 
             switch (key) {
-                case "type":
+                case "type" ->
                     course.setCategory(Course.Category.valueOf((String) value));
-                    break;
-                case "startTime":
+                case "startTime" ->
                     course.setStartTime(LocalDateTime.parse((String) value));
-                    break;
-                case "endTime":
+                case "endTime" ->
                     course.setEndTime(LocalDateTime.parse((String) value));
-                    break;
-                case "capacity":
+                case "capacity" ->
                     course.setCapacity((Integer) value);
-                    break;
-                case "price":
+                case "price" ->
                     course.setPrice((Double) value);
-                    break;
-                case "roomId":
+                case "roomId" -> {
                     Room room = roomRepository.findById((Long) value)
                             .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
                     course.setRoom(room);
-                    break;
-                case "coachUsername":
+                }
+                case "coachUsername" -> {
                     User coach = Optional.of(userRepository.findByUsername(value.toString()))
                             .orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
                     if (coach.getType() != User.UserType.coach) {
                         throw new IllegalArgumentException("this user is not a coach");
                     }
                     course.setCoach(coach);
-                    break;
+                }
             }
         }
 

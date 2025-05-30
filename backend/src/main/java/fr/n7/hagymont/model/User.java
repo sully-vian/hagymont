@@ -14,8 +14,10 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 @JsonIdentityInfo(generator = PropertyGenerator.class, property = "username")
 public class User {
 
@@ -65,6 +67,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+
     // Getters and setters
     public String getFirstname() {
         return firstname;

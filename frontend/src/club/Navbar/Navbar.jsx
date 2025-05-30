@@ -51,7 +51,7 @@ const Navbar = () => {
               >
                 Club
               </li>
-              <li className="hover:border-b-2 border-primary uppercase cursor-default"
+              <li className="hover:border-b-2 border-primary uppercase cursor-pointer"
                 onClick={() => navigate("/course")}
                 >
                 Course

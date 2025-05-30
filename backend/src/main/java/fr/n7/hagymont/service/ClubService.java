@@ -26,7 +26,6 @@ public class ClubService {
         return clubRepository.findAll();
     }
 
-    // searchClubs
     public List<Club> searchClubs(String query) {
         if (query == null || query.trim().isEmpty()) {
             return clubRepository.findAll();
@@ -52,15 +51,12 @@ public class ClubService {
         if (club != null) {
             updates.forEach((key, value) -> {
                 switch (key) {
-                    case "name":
+                    case "name" ->
                         club.setName((String) value);
-                        break;
-                    case "address":
+                    case "address" ->
                         club.setAddress((String) value);
-                        break;
-                    case "parkingCapacity":
+                    case "parkingCapacity" ->
                         club.setParkingCapacity((Integer) value);
-                        break;
                 }
             });
             return clubRepository.save(club);
