@@ -30,6 +30,10 @@ public class CourseService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<Course> getAllCourses(){
+        return courseRepository.findAll();
+    }
+
     public List<Course> getCoursesByClubId(Long clubId) {
         return courseRepository.findByClubId(clubId);
     }

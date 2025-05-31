@@ -26,6 +26,11 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @GetMapping
+    public List<Course> getAllCourses() {
+        return courseService.getAllCourses();
+    }
+
     @GetMapping("/search")
     public List<Course> searchCourses(@RequestParam(required = false) String query) {
         return courseService.searchCourses(query);

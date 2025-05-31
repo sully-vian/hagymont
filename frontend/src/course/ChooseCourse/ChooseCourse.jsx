@@ -46,6 +46,14 @@ const ChooseCourse = ({ onCourseClick }) => {
     // 更多类型可继续添加...
   };
 
+  const printDate = (date) => {
+    return new Date(date).toLocaleDateString('fr-FR');
+  };
+
+  const printTime = (date) => {
+    return new Date(date).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'}); 
+  };
+
   const formatCourseType = (type) => {
     return type
       .split("_")
@@ -56,24 +64,18 @@ const ChooseCourse = ({ onCourseClick }) => {
   const getIcon = (type) => categoryIcons[type] || "📘";
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const endpoint = searchQuery
-          ? `/courses/search?query=${encodeURIComponent(searchQuery)}`
-          : "/courses";
-        const res = await apiService.getRequest(endpoint);
-        if (res.data) {
-          setCourses(res.data);
-          setCurrentPage(1); // 重置到第1页
-        } else {
-          throw new Error("No course data returned.");
-        }
-      } catch (error) {
-        console.error("Error fetching courses:", error);
-        setCourses([]);
-      }
-    };
-    fetchCourses();
+    const endpoint = searchQuery
+      ? `/courses/search?query=${encodeURIComponent(searchQuery)}`
+      : "/courses";
+    apiService.getRequest(endpoint)
+    .then(res => {
+      setCourses(res.data);
+      setCurrentPage(1);
+    })
+    .catch(error => {
+      console.error("Error fetching courses:", error);
+      setCourses([]);
+    });
   }, [searchQuery]);
 
   const handleSearch = () => {
@@ -165,8 +167,11 @@ const ChooseCourse = ({ onCourseClick }) => {
                   {getIcon(course.category)} {formatCourseType(course.category)}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  🕒 {new Date(course.start_time).toLocaleString()} -{" "}
-                  {new Date(course.end_time).toLocaleTimeString()}
+                  📅 {printDate(course.startTime)}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  🕒 {printTime(course.startTime)} -{" "}
+                  {printTime(course.endTime)}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   🧑‍🏫 {course.coach_username}
