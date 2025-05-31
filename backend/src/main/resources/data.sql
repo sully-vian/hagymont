@@ -49,13 +49,20 @@ INSERT INTO product (name, price, stock, description)
   VALUES
     ('Dumbbells 1kg', 10.99, 60, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red"),
     ('Dumbbells 2kg', 14.99, 60, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red"),
-    ('Blue T-shirt - S', 29.99, 60, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue"),
-    ('Blue T-shirt - M', 29.99, 60, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue"),
-    ('Blue T-shirt - L', 29.99, 60, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue"),
-    ('Tung Tung Tung Sahur T-shirt - S', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration \nsize: S \nMaterial: 100% cotton \nColor: black"),
-    ('Tung Tung Tung Sahur T-shirt - M', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black"),
-    ('Tung Tung Tung Sahur T-shirt - L', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black");
-  
+    ('Blue T-shirt - S', 39.99, 60, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue"),
+    ('Blue T-shirt - M', 39.99, 60, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue"),
+    ('Blue T-shirt - L', 39.99, 60, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue"),
+    ('Tung Tung Tung Sahur T-shirt -S', 49.99, 35, "HaGymont x Tung Tung Tung Sahur Collaboration \nsize: S \nMaterial: 100% cotton \nColor: black"),
+    ('Tung Tung Tung Sahur T-shirt -M', 49.99, 35, "HaGymont x Tung Tung Tung Sahur Collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black"),
+    ('Tung Tung Tung Sahur T-shirt -L', 49.99, 35, "HaGymont x Tung Tung Tung Sahur Collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black"),
+    ('Tralalero Tralala Sports Towel -Red', 35, 15, "HaGymont x Tralalero Tralala Collaboration(Limited) \nsize: One Size \nMaterial: 100% cotton \nColor: red"),
+    ('Tralalero Tralala Sports Towel -Violet', 35, 15, "HaGymont x Tralalero Tralala Collaboration(Limited) \nsize: One Size \nMaterial: 100% cotton \nColor: violet"),
+    ('Tralalero Tralala Sports Towel -Orange', 35, 15, "HaGymont x Tralalero Tralala Collaboration(Limited) \nsize: One Size \nMaterial: 100% cotton \nColor: orange"),
+    ('Tralalero Tralala Sports Towel -Blue', 35, 15, "HaGymont x Tralalero Tralala Collaboration(Limited) \nsize: One Size \nMaterial: 100% cotton \nColor: blue"),
+    ('Ballerina Capuchina T-shirt -S', 49.99, 35, "HaGymont x Ballerina Capuchina Collaboration \nsize: S \nMaterial: 100% cotton \nColor: black-blue"),
+    ('Ballerina Capuchina T-shirt-M', 49.99, 35, "HaGymont x Ballerina Capuchina Collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black-yellow"),
+    ('Ballerina Capuchina T-shirt -L', 49.99, 35, "HaGymont x Ballerina Capuchina Collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black-purple-orange"),
+    ('Ballerina Capuchina T-shirt -XL', 49.99, 35, "HaGymont x Ballerina Capuchina Collaboration  \nsize: XL \nMaterial: 100% cotton \nColor: black-red-whhite");
 
 INSERT INTO order_basket (username, address, created_at, status)
   VALUES

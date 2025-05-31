@@ -26,6 +26,7 @@ const Club = () => {
       <div className="relative z-10">
         <Navbar />
         <Head />
+  
 
         <div id="chooseclub">
           <ChooseClub onClubClick={handleClubClick} />
@@ -39,9 +40,12 @@ const Club = () => {
             />
           </div>
         )}
-
+        <div id="club">
         <Banner />
+        </div>
+        <div id="contact">
         <OurServices />
+        </div>
         <Footer />
       </div>
     </div>

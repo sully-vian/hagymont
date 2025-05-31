@@ -145,9 +145,9 @@ const ChooseCourse = ({ onCourseClick }) => {
       <div className="max-w-6xl mx-auto bg-white/90 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-10 shadow-2xl transform transition-all duration-500 hover:shadow-3xl">
         {/* Page Title */}
         <div className="text-center mb-10">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-4 drop-shadow-sm">
-            Find Your Perfect Workout
-          </h2>
+          <h1 className="text-4xl  font-extrabold  text-purple-600 to-indigo-600 mb-4 drop-shadow-sm">
+            🌞Find Your Perfect Workout🌞
+          </h1>
          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
             Discover the perfect fitness classes tailored for you,<br/> guided by professional instructors with flexible schedules
           </p>

@@ -28,7 +28,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <FaDumbbell className="text-3xl text-primary animate-bounce" />
-            <p className="text-3xl lg:text-4xl font-bold text-white">
+            <p className="text-3xl lg:text-4xl font-bold text-black">
               Ha
               <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                 Gym
