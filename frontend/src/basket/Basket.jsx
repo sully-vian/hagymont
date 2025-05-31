@@ -19,7 +19,7 @@ function Basket() {
       apiService.getRequest(`/baskets/current/${username}`)
       .then(response => {
           setBasket(response.data);
-          setPurchases(response.data.products || []);
+          setPurchases(response.data.purchases || []);
       })
       .catch(error => {
           console.error('Erreur détectée :', error);
