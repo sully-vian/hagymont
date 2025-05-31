@@ -59,23 +59,34 @@ const ChooseClub = ({ onClubClick }) => {
 
   return (
     <div className="relative z-10 py-14 px-4">
-      <div className="max-w-6xl mx-auto bg-white/90 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-10 shadow-2xl">
-        {/* City filter */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {cities.map((city) => (
-            <button
-              key={city}
-              onClick={() => setSelectedCity(city)}
-              className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                selectedCity === city
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-              }`}
-            >
-              {city}
-            </button>
-          ))}
-        </div>
+    <div className="max-w-6xl mx-auto bg-white/90 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-10 shadow-2xl">
+  {/* intro*/}
+  <div className="text-center mb-12">
+    <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
+      🏢 Find Your Ideal Club
+    </h1>
+    <p className="text-lg text-blue-400 dark:text-gray-400 max-w-3xl mx-auto">
+      Explore our diverse network of fitness clubs in vibrant cities worldwide. <br />
+      Choose the perfect location with the facilities you need — wherever you are.
+    </p>
+  </div>
+
+  {/* City filter */}
+  <div className="flex flex-wrap gap-2 mb-6">
+    {cities.map((city) => (
+      <button
+        key={city}
+        onClick={() => setSelectedCity(city)}
+        className={`px-4 py-2 rounded-full text-sm transition-colors ${
+          selectedCity === city
+            ? "bg-blue-600 text-white"
+            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+        }`}
+      >
+        {city}
+      </button>
+    ))}
+  </div>
 
         {/* Search bar */}
         <div className="mb-10 flex gap-3">

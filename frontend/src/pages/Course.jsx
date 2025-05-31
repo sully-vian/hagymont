@@ -1,8 +1,8 @@
-import Banner from '../club/Banner/Banner';
 import Footer from '../club/Footer/Footer';
 import Navbar from '../club/Navbar/Navbar';
 import OurServices from '../club/OurServices/OurServices';
 import Background from '../course/Background/Background';
+import Banner from '../course/Banner/Banner';
 import ChooseCourse from '../course/ChooseCourse/ChooseCourse';
 import Head from '../course/Head/Head';
 
