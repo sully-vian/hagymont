@@ -87,7 +87,7 @@ const ChooseCourse = ({ onCourseClick }) => {
   };
 
   const filteredCourses = selectedType !== "All"
-    ? courses.filter((course) => course.category === selectedType)
+    ? courses.filter((course) => course.category.toLowerCase() === selectedType)
     : courses;
 
   const sortedCourses = [...filteredCourses].sort((a, b) => {
@@ -174,7 +174,7 @@ const ChooseCourse = ({ onCourseClick }) => {
                   {printTime(course.endTime)}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  🧑‍🏫 {course.coach_username}
+                  🧑‍🏫 {course.coach}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   🧍 Capacity: {course.capacity}

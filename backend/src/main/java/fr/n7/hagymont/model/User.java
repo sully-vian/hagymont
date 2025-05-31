@@ -62,7 +62,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<OrderBasket> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "coach")
+    @OneToMany(mappedBy = "coach", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Course> coursesCreated = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)

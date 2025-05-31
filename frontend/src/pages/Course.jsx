@@ -8,6 +8,10 @@ import Head from '../course/Head/Head';
 
 const Course = () => {
 
+  const onCourseClick = (e) => {
+    //TODO aller sur page reservation cours
+  }
+
 
    return (
     <div className="relative min-h-screen">
@@ -16,7 +20,7 @@ const Course = () => {
         <Navbar />
         <Head />
         <div id="choosecourse">
-          <ChooseCourse />
+          <ChooseCourse onCourseClick={onCourseClick} />
         </div>
         <Banner />
         <OurServices />
