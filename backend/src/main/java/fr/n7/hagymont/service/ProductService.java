@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.n7.hagymont.model.Product;
+import fr.n7.hagymont.model.Product.Category;
 import fr.n7.hagymont.repository.ProductRepository;
 
 @Service
@@ -25,10 +26,6 @@ public class ProductService {
 
     public List<Product> getProductsContaining(String name) {
         return productRepository.findByNameContaining(name);
-    }
-
-    public List<Product> getProductsByPrice(int min, int max) {
-        return productRepository.findByPriceBetween(min, max);
     }
 
     //Pour les admins
@@ -62,6 +59,15 @@ public class ProductService {
                     break;
                 case "stock":
                     product.setStock(Integer.valueOf((String) value));
+                    break;
+                case "sizes":
+                    product.setSizes(String.valueOf((String) value));
+                    break;
+                case "colors":
+                    product.setColors(String.valueOf((String) value));
+                    break;
+                case "category":
+                    product.setCategory((String) value);
                     break;
                 default:
                     break;

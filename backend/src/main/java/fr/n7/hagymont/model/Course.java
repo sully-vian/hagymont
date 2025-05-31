@@ -95,19 +95,13 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "room_id") // FK: room_id
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     private Room room;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     private final List<Reservation> reservations = new ArrayList<>(); // Initialize the list
 
     @ManyToOne
     @JoinColumn(name = "coach_username", referencedColumnName = "username", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
-    @JsonIdentityReference(alwaysAsId = true)
     private User coach;
 
     // getters and setters

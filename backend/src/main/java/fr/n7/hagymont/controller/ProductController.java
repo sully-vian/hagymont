@@ -2,6 +2,7 @@ package fr.n7.hagymont.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.n7.hagymont.dto.ProductDto;
 import fr.n7.hagymont.model.Product;
 import fr.n7.hagymont.service.ProductService;
 
@@ -27,36 +29,30 @@ public class ProductController {
 
     // GET /products - récupérer tous les utilisateurs
     @GetMapping
-    public List<Product> getAllUsers() {
-        return productService.getAllProducts();
+    public List<ProductDto> getAllUsers() {
+        return productService.getAllProducts().stream().map(p -> ProductDto.toDto(p)).collect(Collectors.toList());
     }
 
     // GET /products/{id} - récupérer un produit par son id
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ProductDto getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        return product==null ? null : ProductDto.toDto(product);
     }
 
     // GET /products/name?contains={chaine} - récupérer tous les produits contenant une certaine chaine dans le name
     @GetMapping("/name")
-    public List<Product> getProductContaining(@RequestParam Map<String, String> customQuery) {
+    public List<ProductDto> getProductContaining(@RequestParam Map<String, String> customQuery) {
         String chaine = customQuery.get("contains");
-        return productService.getProductsContaining(chaine);
+        return productService.getProductsContaining(chaine).stream().map(p -> ProductDto.toDto(p)).collect(Collectors.toList());
     }
 
-    // GET /products?min={val1}&max={val2} - récupérer tous les produits contenant une certaine chaine dans le name
-    @GetMapping("/price")
-    public List<Product> getProductsByPrice(@RequestParam Map<String, String> customQuery) {
-        int min = Integer.parseInt(customQuery.get("min"));
-        int max = Integer.parseInt(customQuery.get("max"));
-        return productService.getProductsByPrice(min, max);
-    }
 
     // POST /products - créer un nouveau produit
     @PostMapping
-    public ResponseEntity<Product> createUser(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(201).body(createdProduct);
+    public ResponseEntity<ProductDto> createUser(@RequestBody ProductDto productDto) {
+        Product createdProduct = productService.createProduct(ProductDto.fromDto(productDto));
+        return ResponseEntity.status(201).body(ProductDto.toDto(createdProduct));
     }
 
     @DeleteMapping("/{id}")
@@ -69,8 +65,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Product> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<ProductDto> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         Product updatedProduct = productService.updateProduct(id, updates);
-        return ResponseEntity.status(200).body(updatedProduct);
+        return ResponseEntity.status(200).body(ProductDto.toDto(updatedProduct));
     }
 }

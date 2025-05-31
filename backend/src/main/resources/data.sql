@@ -45,16 +45,16 @@ INSERT INTO users (
 
 
 
-INSERT INTO product (name, price, stock, description)
+INSERT INTO product (name, price, stock, description, sizes, colors, category)
   VALUES
-    ('Dumbbells 1kg', 10.99, 60, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red"),
-    ('Dumbbells 2kg', 14.99, 60, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red"),
-    ('Blue T-shirt - S', 29.99, 60, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue"),
-    ('Blue T-shirt - M', 29.99, 60, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue"),
-    ('Blue T-shirt - L', 29.99, 60, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue"),
-    ('Tung Tung Tung Sahur T-shirt - S', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration \nsize: S \nMaterial: 100% cotton \nColor: black"),
-    ('Tung Tung Tung Sahur T-shirt - M', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black"),
-    ('Tung Tung Tung Sahur T-shirt - L', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black");
+    ('Dumbbells 1kg', 10.99, 60, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red", null, "red/blue/black", "equipement"),
+    ('Dumbbells 2kg', 14.99, 60, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red", null, "red/blue/black", "equipement"),
+    ('Blue T-shirt - S', 29.99, 60, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue", "S/M/L/XL", "red/blue/green/orange", "clothe"),
+    ('Blue T-shirt - M', 29.99, 60, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue", "S/M/L/XL", "red/blue/green/orange", "clothe"),
+    ('Blue T-shirt - L', 29.99, 60, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue", "S/M/L/XL", "red/blue/green/orange", "clothe"),
+    ('Tung Tung Tung Sahur T-shirt - S', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration \nsize: S \nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe"),
+    ('Tung Tung Tung Sahur T-shirt - M', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe"),
+    ('Tung Tung Tung Sahur T-shirt - L', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe");
   
 
 INSERT INTO order_basket (username, address, created_at, status)
@@ -225,6 +225,6 @@ INSERT INTO course (category, start_time, end_time, room_id, coach_username, cap
 
 INSERT INTO reservation (status, date, user_id, course_id, num_parking_spaces)
   VALUES
-    ('confirme', '2025-03-10', 'pierrot1704', 1, 1),
-    ('annule', '2025-03-10', 'passionMuscu', 2, 0),
-    ('confirme', '2025-08-14', 'GinetteLebel', 4, 0);
+    ('confirmed', '2025-03-10', 'pierrot1704', 1, 1),
+    ('cancelled', '2025-03-10', 'passionMuscu', 2, 0),
+    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0);
