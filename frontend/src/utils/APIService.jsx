@@ -1,7 +1,14 @@
 import axios from 'axios'
+import SessionService from './SessionService';
 
 const API_BASE_URL = 'http://localhost:8081';
 class APIService {
+
+    getAuthHeaders() {
+        const token = SessionService.getToken();
+        if (!token) return {};
+        return { Authorization: 'Bearer ' + token };
+    }
 
     loginRequest(path, body){
         return axios.post(API_BASE_URL + path, body)
@@ -12,19 +19,19 @@ class APIService {
     }
     
     getRequest(path){
-        return axios.get(API_BASE_URL + path, {headers: {Authorization: 'Bearer ' + sessionStorage.getItem('token')}});
+        return axios.get(API_BASE_URL + path, {headers: this.getAuthHeaders()});
     }
 
     postRequest(path, body){
-        return axios.post(API_BASE_URL + path, body, {headers: {Authorization: 'Bearer ' + sessionStorage.getItem('token')}});
+        return axios.post(API_BASE_URL + path, body, {headers: this.getAuthHeaders()});
     }
 
     patchRequest(path, body){
-        return axios.patch(API_BASE_URL + path, body, {headers: {Authorization: 'Bearer ' + sessionStorage.getItem('token'), 'Content-Type': 'application/json'}});
+        return axios.patch(API_BASE_URL + path, body, {headers: {'Content-Type': 'application/json', ...this.getAuthHeaders()}});
     }
 
     deleteRequest(path, body){
-        return axios.delete(API_BASE_URL + path, body, {headers: {Authorization: 'Bearer ' + sessionStorage.getItem('token')}})
+        return axios.delete(API_BASE_URL + path, body, {headers: this.getAuthHeaders()})
     }
 }
 const apiService = new APIService();

@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import pilatesVideo from '../assets/video/surfing.mp4';
 import Navbar from "../club/Navbar/Navbar";
 import apiService from '../utils/APIService';
+import SessionService from "../utils/SessionService";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const username = sessionStorage.getItem("username");
+  const username = SessionService.getUsername();
   const [user, setUser] = useState({});
   const [isModifying, setModyfing] = useState(false);
   const [text_button, setTextButton] = useState("Modify");

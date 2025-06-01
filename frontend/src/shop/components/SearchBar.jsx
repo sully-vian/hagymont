@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FilterCard from './FilterCard';
 import filterIcon from '../../assets/filter.png';
+import SessionService from '../../utils/SessionService';
 
 function SearchBar({ onChanges }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [changes, setChanges] = useState({});
+    const [changes, setChanges] = useState({category:'all'});
     const navigate = useNavigate();
-    const username = sessionStorage.getItem('username') || 'Not connected';
+    const username = SessionService.getUsername() || 'Not connected';
+    const isAdmin = SessionService.getRole()==='admin';
 
     const handleSearch = () => {
         if (searchTerm === '') {
@@ -49,7 +51,6 @@ function SearchBar({ onChanges }) {
                 >
                 Search
                 </button>
-
             </div>
 
             {/* Filter by type */}
@@ -75,7 +76,7 @@ function SearchBar({ onChanges }) {
 
             {/* Price Filter */}
 
-            <div className="flex items-center">
+            <div>
                 <button
                     onClick={() => setShowFilter((prev) => !prev)}
                     className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray rounded text-base transition duration-300 flex items-center gap-1"
@@ -93,7 +94,6 @@ function SearchBar({ onChanges }) {
                 )}
                 </div>
 
-
             {/* User + Basket */}
             <div className="flex items-center gap-3">
                 <span className="text-sm font-medium text-gray-800">{username}</span>
@@ -103,6 +103,15 @@ function SearchBar({ onChanges }) {
                 >
                     Basket
                 </button>
+                {isAdmin ? 
+                    (<button
+                        onClick={() => navigate("/products/edit")}
+                        className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-2xl text-sm shadow transition"
+                    >
+                        Create
+                    </button>)
+                    : (<></>)
+                }
             </div>
         </div>
     );

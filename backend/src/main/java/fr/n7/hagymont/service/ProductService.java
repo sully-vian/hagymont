@@ -1,10 +1,16 @@
 package fr.n7.hagymont.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.n7.hagymont.model.Product;
 import fr.n7.hagymont.model.Product.Category;
@@ -15,6 +21,11 @@ public class ProductService {
 
     @Autowired
     public ProductRepository productRepository;
+    private final String images_path;
+
+    public ProductService() {
+        this.images_path = "../frontend/src/assets/images";
+    }
 
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -75,6 +86,25 @@ public class ProductService {
         });
 
         return productRepository.save(product);
+    }
+
+
+    public void storeProductImage(Long id, MultipartFile imageFile) {
+
+         try {
+            String filename = "product" + id + ".png";
+            Path uploadPath = Paths.get(images_path);
+            System.out.println(uploadPath.toAbsolutePath());
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(filename);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store image file", e);
+        }
     }
 
 

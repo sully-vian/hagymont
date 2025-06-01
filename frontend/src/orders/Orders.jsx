@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import OrderItem from "./components/OrderItem";
 import EmptyOrders from "./components/EmptyOrders";
 import Navbar from "../components/Navbar/Navbar";
+import SessionService from "../utils/SessionService";
 
 function Orders(){
     const navigate = useNavigate();
-    const username = sessionStorage.getItem("username");
+    const username = SessionService.getUsername();
     const [orders, setOrders] = useState([]);
     
     const compareOrders = (order1, order2) => {

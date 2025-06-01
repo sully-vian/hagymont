@@ -97,6 +97,7 @@ public class AuthController {
 
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(token);
+        authResponse.setRole(savedUser.getType().toString());
         authResponse.setMessage("Register Success");
         authResponse.setStatus(true);
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
@@ -117,9 +118,11 @@ public class AuthController {
         String token = JwtProvider.generateToken(authentication);
         AuthResponse authResponse = new AuthResponse();
         System.out.println(token);
-
+        
+        String role = userService.getUserByUsername(username).getType().toString();
         authResponse.setMessage("Login success");
         authResponse.setJwt(token);
+        authResponse.setRole(role);
         authResponse.setStatus(true);
 
         return new ResponseEntity<>(authResponse,HttpStatus.OK);

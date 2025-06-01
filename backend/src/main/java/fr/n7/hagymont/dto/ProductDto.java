@@ -45,7 +45,7 @@ public class ProductDto {
         product.setName(dto.name);
         product.setPrice(dto.price);
         product.setStock(dto.stock);
-        product.setDescription(dto.description);
+        product.setCategory(dto.category);
         product.setSizes(dto.sizes);
         product.setColors(dto.colors);
         product.setDescription(dto.description);

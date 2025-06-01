@@ -3,12 +3,14 @@ import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import apiService from '../utils/APIService';
 import ComboBoxOption from './components/ComboBoxOptions';
+import SessionService from '../utils/SessionService';
 
 function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
-  const username = sessionStorage.getItem("username");
+  const username = SessionService.getUsername();
+  const isAdmin = SessionService.getRole() === 'admin';
   const [message, setMessage] = useState('');
   const [size, setSize] = useState(null);
   const [color, setColor] = useState(null);
@@ -54,6 +56,10 @@ function ProductPage() {
       });
   };
 
+  const handleEdit = () => {
+     navigate('/edit', { state: { product } });
+  };
+
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-8 bg-gray-50">
@@ -92,7 +98,15 @@ function ProductPage() {
           {/* Product info area */}
           <div className="p-8 lg:p-8 col-span-1 lg:col-span-3">
             {/* Product name */}
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+              {isAdmin && (<button
+                onClick={handleEdit}
+                className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition"
+              >
+              ✏️ Edit
+              </button>)}
+            </div>
 
             {/* Price and stock */}
             <div className="mb-8">

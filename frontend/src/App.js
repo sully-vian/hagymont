@@ -15,6 +15,8 @@ import Profile from './pages/Profile';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
+import ProductEdit from './shop/components/ProductEdit';
+import AdminRoute from './utils/AdminRoute';
 
 
 
@@ -44,6 +46,12 @@ function App() {
           <Route index element={<ProductList />} />
           <Route path="name" element={<ProductList />} />
           <Route path=":id" element={<ProductPage />} />
+          <Route path="edit" element={
+            <AdminRoute>
+              <ProductEdit />
+            </AdminRoute>
+            }
+          />
         </Route>
 
         {/* Nested routes for basket */}

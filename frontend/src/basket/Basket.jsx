@@ -3,12 +3,13 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import apiService from '../utils/APIService';
 import Navbar from '../components/Navbar/Navbar';
 import ProgressionBar from './components/ProgressionBar';
+import SessionService from '../utils/SessionService';
 
 function Basket() {
   const navigate = useNavigate();
   const [basket, setBasket] = useState(null);
   const [purchases, setPurchases] = useState([]);
-  const username = sessionStorage.getItem("username");
+  const username = SessionService.getUsername();
   const [state, setState] = useState(1);
 
   const printDate = (date) => {

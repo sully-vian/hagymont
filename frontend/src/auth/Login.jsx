@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import apiService from '../utils/APIService';
 import avatarImg from './avatar.png';
 import Navbar from './Navbar';
+import SessionService from '../utils/SessionService';
 
   class Particle {
   constructor(x, y) {
@@ -138,9 +139,13 @@ const Login = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const response = apiService.loginRequest('/auth/login', { username, password });
-      sessionStorage.setItem('token', (await response).data.jwt);
-      sessionStorage.setItem('username', username);
+      const response = await apiService.loginRequest('/auth/login', { username, password });
+      const data = response.data;
+      SessionService.startSession({
+        username, 
+        jwt : data.jwt,
+        role : data.role
+      });
       navigate(-1);
     } catch (err) {
       setError('Invalid username or password');

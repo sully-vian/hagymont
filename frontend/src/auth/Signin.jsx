@@ -4,6 +4,7 @@ import apiService from '../utils/APIService';
 import { initBackground } from '../utils/canvasAnimation';
 import Navbar from './Navbar';
 import './Signin.css';
+import SessionService from '../utils/SessionService';
 
 
 function Signin() {
@@ -85,8 +86,12 @@ function Signin() {
         console.log('Connection réussie :', response.data.message);
       console.log('Token :', response.data.jwt);
 
-      sessionStorage.setItem('token', response.data.jwt);
-      sessionStorage.setItem('username', formData.username);
+      const data = response.data;
+      SessionService.startSession({
+        username : formData.musername, 
+        jwt : data.jwt,
+        role : data.role
+      });
       navigate(-1);
       })
       .catch(error => {
