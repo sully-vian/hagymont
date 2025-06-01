@@ -14,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -26,6 +27,7 @@ public class Product {
     private String name;
     private Double price;
     private Integer stock;
+    @Lob
     private String description;
     private String sizes; // sizes existing (can be null if no size)
     private String colors; // colors existing (can be null if no color)

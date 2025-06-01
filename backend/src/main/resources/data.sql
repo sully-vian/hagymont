@@ -41,33 +41,59 @@ INSERT INTO users (
   ('Zoe', 'Zen', 'F', 'coach', '1992-02-15', '0600000020', 'zoe.zen@gmail.com', 'ZoeZen', 'pass123', '2025-01-01', '2025-12-31'),
   ('coach', 'Anna', 'F', 'coach', '1987-11-11', '0600000021', 'coach.anna@gmail.com', 'coachAnna', 'pass123', '2025-01-01', '2025-12-31'),
   ('coach', 'Chris', 'M', 'coach', '1984-05-29', '0600000022', 'coach.chris@gmail.com', 'coachChris', 'pass123', '2025-01-01', '2025-12-31'),
-  ('coach', 'Spa', 'M', 'coach', '1977-08-20', '0600000023', 'coach.spa@gmail.com', 'coachSpa', 'pass123', '2025-01-01', '2025-12-31');
+  ('coach', 'Spa', 'M', 'coach', '1977-08-20', '0600000023', 'coach.spa@gmail.com', 'coachSpa', 'pass123', '2025-01-01', '2025-12-31') :
 
 
 
 INSERT INTO product (name, price, stock, description, sizes, colors, category)
   VALUES
-    ('Dumbbells 1kg', 10.99, 60, "Set of two professional dumbbells. \nWeight: 1kg \nColour: red", null, "red/blue/black", "equipement"),
-    ('Dumbbells 2kg', 14.99, 60, "Set of two professional dumbbells. \nWeight: 2kg \nColour: red", null, "red/blue/black", "equipement"),
-    ('Blue T-shirt - S', 29.99, 60, "T-shirt size S. \nMaterial: 100% cotton \nColor: blue", "S/M/L/XL", "red/blue/green/orange", "clothe"),
-    ('Blue T-shirt - M', 29.99, 60, "T-shirt size M. \nMaterial: 100% cotton \nColor: blue", "S/M/L/XL", "red/blue/green/orange", "clothe"),
-    ('Blue T-shirt - L', 29.99, 60, "T-shirt size L. \nMaterial: 100% cotton \nColor: blue", "S/M/L/XL", "red/blue/green/orange", "clothe"),
-    ('Tung Tung Tung Sahur T-shirt - S', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration \nsize: S \nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe"),
-    ('Tung Tung Tung Sahur T-shirt - M', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: M \nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe"),
-    ('Tung Tung Tung Sahur T-shirt - L', 39.99, 35, "HaGymont x Tung Tung Tung Sahur collaboration  \nsize: L \nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe");
-  
+    ('Dumbbells 1kg', 10.99, 60, "Set of 2 professional dumbbells. \nPerfect for beginners or light training sessions, this set of two professional-grade dumbbells helps you tone, strengthen, and stay active. Each dumbbell weighs 1kg, making them ideal for home workouts, rehab exercises, or warm-ups. Compact, durable, and easy to grip : fitness made simple. \nWeight: 2 x 1kg", null, "red/blue/black", "equipement"),
+    ('Dumbbells 2kg', 14.99, 60, "Set of 2 professional dumbbells. \nSet of two professional dumbbells.Perfect for beginners or light training sessions, this set of two professional-grade dumbbells helps you tone, strengthen, and stay active. Each dumbbell weighs 2kg, making them ideal for home workouts, rehab exercises, or warm-ups. Compact, durable, and easy to grip : fitness made simple.\nWeight: 2 x 2kg", null, "red/blue/black", "equipement"),
+    ('Simple T-shirt', 29.99, 60, "Soft, stylish, and made to move with you : this everyday essential is crafted from 100% breathable cotton for all-day comfort. With a timeless cut and a perfect fit, it's your go-to tee for layering or wearing solo. Dress it up or keep it casual : either way, you'll look effortlessly cool.\nMaterial:100% cotton", "XS/S/M/L/XL/XXL", "red/blue/green/orange", "clothe"),
+    ('Tung Tung Tung Sahur T-shirt', 39.99, 35, "Sport meets internet culture in this exclusive collab tee. Designed by Hagymont and inspired by the viral Tung Tung Tung Sahur meme, this shirt blends performance energy with playful chaos. Made from 100% soft cotton with a relaxed fit, it's perfect for everyday wear : on or off the field. Limited edition. Meme-approved.\nMaterial: 100% cotton \nColor: black", "XS/S/M/L/XL", null, "clothe"),
+    ('Push-ups bars', 19.99, 10, "Set of 2 push-up stands \nTake your push-ups to the next level. These ergonomic push-up bars help reduce wrist strain, improve form, and increase your range of motion for more effective workouts. Designed with non-slip grips and stable bases, they're perfect for home training, gym sessions, or on-the-go fitness. Lightweight, durable, and compact : power in every push. \nColor : blue", null, null, "equipement"),
+    ('Kettlebell 10kg', 24.99, 8, "Build strength, power, and endurance with this 10 kg kettlebell : a versatile tool for full-body workouts. Its ergonomic handle offers a secure, comfortable grip for swings, squats, presses, and more. Made from durable materials with a smooth finish, it's designed to withstand intense training sessions at home or in the gym. Compact, efficient, and essential for functional fitness.", null, null, "equipement"),
+    ('Resistance bands', 21.99, 57, "Set of 4 resistance bands \nElevate your workouts with this versatile set of 4 resistance bands, designed to help you build strength, improve flexibility, and enhance muscle tone. Each band offers a different resistance level, perfect for beginners to advanced users. Lightweight and portable, these bands are ideal for home workouts, physical therapy, or on-the-go training. Durable, non-slip, and easy to use : your all-in-one fitness companion. \nResistances : 1 x 5kg, 1 x 10kg, 1 x 15kg, 1 x 20kg", null, null, 'equipement'),
+    ('Fitness ball', 29.99, 40, "Durable and anti-burst fitness ball perfect for balance, core strengthening, and rehabilitation exercises. Ideal for home or gym use with a non-slip surface for safety and control.", null, null, 'equipement'),
+    ('Exercise mat', 19.99, 65, "Comfortable and lightweight exercise mat with non-slip texture, ideal for yoga, pilates, stretching, and floor workouts. Easy to roll up and carry.", null, "blue/gray/orange", 'equipement'),
+    ('Set 10 Dumbbells', 39.99, 30, "Set of 5 pairs of professional dumbbells \nPerfect for beginners, light training, and warm-ups. Compact, durable, and easy to grip. \nWeights : 2 x 1.5kg, 2 x 2kg, 2 x 3kg, 2 x 6kg, 2 x 7kg", null, null, 'equipement'),
+    ('Adjustable Dumbbell Set', 59.99, 40, "Set of 2 adjustable dumbbell bars with weight plates. Customize your workout by adding or removing weights to fit your training needs. Durable steel bars with secure collars for safe and effective strength training at home or in the gym. \nWeights : 8 x 1kg, 4 x 2kg", null, null, 'equipement'),
+    ('Sweatshirt', 49.99, 50, "Comfortable and stylish sweatshirt made from soft cotton blend. Perfect for warming up or casual wear with a classic fit and durable stitching.", "S/L/M/XL/XXL", "blue/black/grey/red/pink", 'clothe'),
+    ('Swim shorts', 24.99, 45, "Men's swim shorts made from quick-dry fabric with comfortable fit and elastic waistband. Perfect for swimming, beach, or casual summer wear.", "S/L/M/XL/XXL", "blue/black/white/red/green/orange", 'clothe'),
+    ('Sport shorts', 22.99, 60, "Lightweight and breathable sport shorts designed for maximum comfort and freedom of movement during training or running.", "S/L/M/XL", "black/gray/blue", 'clothe'),
+    ('Swim suit', 34.99, 35, "High-quality swim suit made with chlorine-resistant fabric for durability and comfort. Ideal for training and leisure swimming.", "36/38/40/42/44", "black/white/blue/pink/purple", 'clothe'),
+    ('Workout leggings', 39.99, 55, "Stretchy and moisture-wicking workout leggings with a snug fit for optimal performance during running, yoga, or gym sessions.", "36/38/40/42/44", "black/purple/gray", 'clothe'),
+    ('Sports bra', 29.99, 50, "Supportive sports bra with breathable fabric and comfortable fit, designed to provide maximum support during high-impact activities.", "XS/S/L/M/XL", "black/purple/gray", 'clothe'),
+    ('Sports socks', 12.99, 100, "Pack of breathable and cushioned sports socks designed to keep your feet dry and comfortable during any workout. \nColor : white", "36-39/39-42/42-45", null, 'clothe'),
+    ('Running shoes', 89.99, 40, "Lightweight running shoes with cushioned sole and breathable mesh upper for comfort and support on every run. \nColor : blue", "36/37/38/39/40/41/42/43/44/45/46", null, 'clothe'),
+    ('Energy bars', 2.99, 200, "Nutritious and tasty energy bars packed with protein and carbohydrates to fuel your workouts and recovery.", null, null, 'nutrition'),
+    ('Climbing shoes', 79.99, 25, "Durable climbing shoes with sticky rubber soles and snug fit for precision and grip on any surface. \nColor : black", null, null, 'equipement'),
+    ('Creatine powder', 24.99, 100, "Pure creatine monohydrate powder to support muscle strength, power, and recovery during intense training.", null, null, 'nutrition'),
+    ('Sports bottle', 14.99, 70, "Reusable sports bottle with leak-proof cap and easy-to-use spout. Ideal for hydration during any workout.", null, "white/black/blue/orange", 'accessory'),
+    ('Gym bag', 49.99, 30, "Spacious and durable gym bag with multiple compartments for organizing all your workout essentials.", null, "black/blue/gray/pink", 'accessory'),
+    ('Climbing harness', 69.99, 20, "Adjustable climbing harness with padded waist and leg loops for comfort and safety during climbs.", "XS/S/M/L/XL", null, 'equipement'),
+    ('Protein shaker', 12.99, 80, "Convenient protein shaker bottle with mixing ball, perfect for preparing protein shakes and supplements on the go.", null, "black/white/blue/pink/green/red", 'accessory'),
+    ('Athletic tape', 6.99, 150, "Strong and flexible athletic tape to support joints and muscles during physical activity and prevent injuries.", null, null, 'accessory'),
+    ('Wrist sweatbands', 7.99, 120, "Soft and absorbent wrist sweatbands to keep your hands dry and improve grip during workouts.", null, null, 'accessory'),
+    ('Sports smartwatch', 199.99, 25, "Advanced sports smartwatch featuring heart rate monitoring, GPS tracking, and activity analysis for optimized training.", null, "blue/black/gray/pink", 'accessory'),
+    ('Glycine capsules', 19.99, 90, "Glycine supplement capsules to support muscle recovery, sleep quality, and cognitive function.", null, null, 'nutrition'),
+    ('Magnesium/Zinc capsules', 22.99, 80, "Combined magnesium and zinc capsules to aid muscle function, immune support, and overall wellness.", null, null, 'nutrition'),
+    ('Creatine capsules', 27.99, 75, "Convenient creatine capsules for enhanced muscle strength and endurance without the need for powder mixing.", null, null, 'nutrition'),
+    ('Whey', 49.99, 60, "High-quality whey protein powder to support muscle growth, recovery, and daily protein intake.", null, null, 'nutrition'),
+    ('Swim goggles', 15.99, 50, "Comfortable and anti-fog swim goggles with adjustable strap for clear vision and secure fit in the water.", "S/M/L", "blue/pink", 'equipement') :
+
 
 INSERT INTO order_basket (username, address, created_at, status)
   VALUES
     ('pierrot1704', '3 rue de la poste \n31000 \nToulouse \nFrance', '2025-03-17', 'shipped'),
     ('SarahFitness', '19 rue du moulin \n31300 \nToulouse \nFrance', '2025-03-29', 'completed'),
-    ('GinetteLebel', '19 bis avenue de la republique \n32000 \nAuch \nFrance', '2025-07-01', 'pending');
+    ('GinetteLebel', '19 bis avenue de la republique \n32000 \nAuch \nFrance', '2025-07-01', 'pending') :
 
 INSERT INTO purchase_order (product_id, order_id, quantity)
   VALUES
     (1, 1, 2),
     (2, 3, 1),
-    (1, 2, 1);
+    (1, 2, 1) :
 
 
 INSERT INTO club (name, address, parking_capacity) VALUES
@@ -82,7 +108,7 @@ INSERT INTO club (name, address, parking_capacity) VALUES
 ('LondonLift', '150 Oxford Street, W1D 1DJ London, United Kingdom', 85),
 ('West Coast Gym', '55 Hollywood Blvd, Los Angeles CA 90028, USA', 80),
 ('LA Powerhouse', '102 Sunset Blvd, Los Angeles CA 90026, USA', 100),
-('BeachFit LA', '200 Ocean Ave, Santa Monica CA 90401, USA', 200);
+('BeachFit LA', '200 Ocean Ave, Santa Monica CA 90401, USA', 200) :
 
 
 
@@ -149,7 +175,7 @@ INSERT INTO room (type, club_id) VALUES
 ('aqua_sport', 12),
 ('paddle_boarding', 12),
 ('elite_training', 12),
-('spa_relax', 12);
+('spa_relax', 12) :
 
 
 INSERT INTO course (category, start_time, end_time, room_id, coach_username, capacity, price) VALUES
@@ -216,7 +242,7 @@ INSERT INTO course (category, start_time, end_time, room_id, coach_username, cap
 ('aqua_training', '2025-07-13 09:00:00', '2025-07-13 10:00:00', 36, 'coachChris', 5, 74.99),
 ('core_paddle', '2025-07-14 08:30:00', '2025-07-14 09:30:00', 37, 'coachChris', 3, 89.99),
 ('pickleball_elite', '2025-07-14 16:00:00', '2025-07-14 17:00:00', 38, 'coachChris', 5, 99.99),
-('relax_spa', '2025-07-14 17:30:00', '2025-07-14 18:30:00', 39, 'coachSpa', 4, 109.99);
+('relax_spa', '2025-07-14 17:30:00', '2025-07-14 18:30:00', 39, 'coachSpa', 4, 109.99) :
 
 
 
@@ -227,4 +253,4 @@ INSERT INTO reservation (status, date, user_id, course_id, num_parking_spaces)
   VALUES
     ('confirmed', '2025-03-10', 'pierrot1704', 1, 1),
     ('cancelled', '2025-03-10', 'passionMuscu', 2, 0),
-    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0);
+    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0) :
