@@ -28,6 +28,9 @@ public class ProductDto {
     public ProductDto() {}
 
     public static ProductDto toDto(Product product) {
+        if (product==null){
+            return null;
+        }
         ProductDto dto = new ProductDto();
         dto.id = product.getId();
         dto.name = product.getName();

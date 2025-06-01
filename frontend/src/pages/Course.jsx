@@ -1,5 +1,5 @@
 import Footer from '../club/Footer/Footer';
-import Navbar from '../club/Navbar/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import OurServices from '../club/OurServices/OurServices';
 import Background from '../course/Background/Background';
 import Banner from '../course/Banner/Banner';

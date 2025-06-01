@@ -33,6 +33,9 @@ public class CourseInfosDto {
     public CourseInfosDto() {}
 
     public static CourseInfosDto toDto(Course course) {
+        if (course==null){
+            return null;
+        }
         CourseInfosDto dto = new CourseInfosDto();
         dto.id = course.getId();
         dto.category = course.getCategory().toString();

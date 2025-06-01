@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import pilatesVideo from '../assets/video/surfing.mp4';
-import Navbar from "../club/Navbar/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import apiService from '../utils/APIService';
 import SessionService from "../utils/SessionService";
 
@@ -108,11 +108,10 @@ const Profile = () => {
         src={pilatesVideo}
         type="video/mp4"
       />
+      <Navbar />
 
       {/* Main container, flex column layout, fills the screen */}
       <div className="relative z-10 min-h-screen flex flex-col justify-between max-w-4xl mx-auto my-10 bg-white bg-opacity-50 rounded-lg shadow-lg p-8">
-
-        <Navbar />
 
         {/* Profile info area, flex-grow fills remaining space */}
         <div className="flex-grow overflow-auto">

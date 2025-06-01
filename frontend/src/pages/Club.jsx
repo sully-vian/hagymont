@@ -5,7 +5,7 @@ import ChooseClub from '../club/ChooseClub/ChooseClub';
 import ClubCourses from '../club/ClubCourses/ClubCourses';
 import Footer from '../club/Footer/Footer';
 import Head from '../club/Head/Head';
-import Navbar from '../club/Navbar/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import OurServices from '../club/OurServices/OurServices';
 
 const Club = () => {

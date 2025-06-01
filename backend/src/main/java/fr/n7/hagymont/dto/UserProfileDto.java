@@ -36,6 +36,9 @@ public class UserProfileDto {
     public UserProfileDto() {}
 
     public static UserProfileDto toDto(User user) {
+        if (user==null){
+            return null;
+        }
         UserProfileDto dto  = new UserProfileDto();
         dto.username = user.getUsername();
         dto.firstname = user.getFirstname();

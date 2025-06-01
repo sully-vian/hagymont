@@ -25,6 +25,9 @@ public class ClubInfosDto {
     public ClubInfosDto() {}
 
     public static ClubInfosDto toDto(Club club) {
+        if (club==null){
+            return null;
+        }
         ClubInfosDto dto = new ClubInfosDto();
         dto.id = club.getId();
         dto.name = club.getName();

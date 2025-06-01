@@ -33,6 +33,9 @@ public class BasketDto {
     public BasketDto() {}
 
     public static BasketDto toDto(OrderBasket basket) {
+        if (basket==null){
+            return null;
+        }
         BasketDto dto = new BasketDto();
         dto.id = basket.getId();
         dto.createdAt = basket.getCreatedAt();
