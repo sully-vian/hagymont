@@ -72,9 +72,9 @@ function ProductPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gray-50">
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* Main product content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* Image area */}
-          <div className="relative h-96 lg:h-auto">
+          <div className="relative aspect-square col-span-1 lg:col-span-2 w-full">
             <img
               src={getImage(product.id)}
               alt={product.name || "Product image"}
@@ -90,7 +90,7 @@ function ProductPage() {
           </div>
 
           {/* Product info area */}
-          <div className="p-8 lg:p-12">
+          <div className="p-8 lg:p-8 col-span-1 lg:col-span-3">
             {/* Product name */}
             <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
 

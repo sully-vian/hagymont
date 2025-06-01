@@ -74,31 +74,6 @@ function SearchBar({ onChanges }) {
             </div>
 
             {/* Price Filter */}
-<<<<<<< HEAD
-            <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-700"><strong>Price:</strong></span>
-                <input
-                    name="min"
-                    type="number"
-                    placeholder="Min"
-                    min={0}
-                    value={changes.min || ''}
-                    onChange={handleChanges}
-                    className="w-20 px-2 py-1 rounded-lg border border-gray-300 text-sm"
-                />
-                <span className="text-gray-700">-</span>
-                <input
-                    name="max"
-                    type="number"
-                    placeholder="Max"
-                    min={0}
-                    value={changes.max || ''}
-                    onChange={handleChanges}
-                    className="w-20 px-2 py-1 rounded-lg border border-gray-300 text-sm"
-                />
-                <span className="text-sm text-gray-700">€</span>
-            </div>
-=======
 
             <div className="flex items-center">
                 <button
@@ -118,7 +93,6 @@ function SearchBar({ onChanges }) {
                 )}
                 </div>
 
->>>>>>> main
 
             {/* User + Basket */}
             <div className="flex items-center gap-3">
