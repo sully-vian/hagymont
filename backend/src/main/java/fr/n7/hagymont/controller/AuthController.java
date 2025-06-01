@@ -141,7 +141,7 @@ public class AuthController {
         if(userDetails == null) {
             System.out.println("Sign in details - null" + userDetails);
 
-            throw new BadCredentialsException("Invalid username and password");
+            throw new BadCredentialsException("The username doesn't exist");
         }
         //if(!passwordEncoder.matches(password,userDetails.getPassword())) {
         if(!password.equals(userDetails.getPassword())) {

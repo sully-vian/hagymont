@@ -4,6 +4,7 @@ import pilatesVideo from '../assets/video/surfing.mp4';
 import Navbar from "../components/Navbar/Navbar";
 import apiService from '../utils/APIService';
 import SessionService from "../utils/SessionService";
+import ConfirmCard from "../components/ConfirmCard";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Profile = () => {
   const [text_button, setTextButton] = useState("Modify");
   const [formPatch, setFormPatch] = useState('');
   const [error, setError] = useState('');
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const printDate = (date) => {
     return new Date(date).toLocaleDateString('fr-FR');
@@ -61,7 +63,7 @@ const Profile = () => {
     setError(null);
     }, 5000);
 
-    return () => clearTimeout(timer); // Cleanup if error changes before timer ends
+    return () => clearTimeout(timer);
   }
   }, [error]);
 
@@ -97,6 +99,25 @@ const Profile = () => {
     });
   };
 
+  const handleDisconnect = () => {
+    SessionService.clearSession();
+    navigate("/home");
+  };
+
+
+  const handleDelete = () => {
+    setShowConfirm(false);
+    apiService.deleteRequest(`/users/${username}`)
+    .then(_ => {
+      SessionService.clearSession();
+      navigate("/home")
+    })
+    .catch(error => {
+      console.error('Error detected:', error);
+      navigate('/error', {"state":error.status});
+    });
+  };
+
   return (
     <>
       {/* Video background, fixed and covers the entire screen */}
@@ -116,9 +137,17 @@ const Profile = () => {
         {/* Profile info area, flex-grow fills remaining space */}
         <div className="flex-grow overflow-auto">
           <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">Your profile</h1>
-
           <div>
-            <h2 className="text-2xl font-semibold mb-5 text-gray-700">Personal infos</h2>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-2xl font-semibold text-gray-700">Personal infos</h2>
+              <button
+                onClick={handleDisconnect}
+                className="bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-500"
+              >
+                Disconnect
+              </button>
+            </div>
+            
             <div className="space-y-4">
               <div className="flex items-center">
                 <label className="w-1/3 font-semibold text-gray-700">Username :</label>
@@ -226,6 +255,27 @@ const Profile = () => {
           >
             {text_button}
           </button>
+        </div>
+        <div className="mt-6 pt-4 border-t border-gray-300">
+          <p className="text-sm text-red-600 font-medium mb-3">
+            ⚠️ Careful... This action is <span className="font-bold">irreversible</span>
+          </p>
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 w-full"
+          >
+            Delete Account
+          </button>
+
+          {showConfirm && (
+            <ConfirmCard
+              message="Are you sure you want to delete your account?"
+              onConfirm={handleDelete}
+              onCancel={() => setShowConfirm(false)}
+              confirmLabel="Yes, Delete"
+              cancelLabel="Cancel"
+            />
+          )}
         </div>
       </div>
     </>

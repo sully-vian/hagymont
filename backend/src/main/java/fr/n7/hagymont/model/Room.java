@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,7 @@ public class Room {
     @JoinColumn(name = "club_id") // FK: club_id
     private Club club;
 
-    @OneToMany(mappedBy = "room") // 1 room can have many courses
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE, orphanRemoval = true) // 1 room can have many courses
     private final List<Course> courses = new ArrayList<>(); // Initialize the list
 
     // Getters and setters

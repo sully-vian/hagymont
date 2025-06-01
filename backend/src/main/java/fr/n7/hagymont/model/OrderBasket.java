@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -51,7 +52,7 @@ public class OrderBasket {
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
-    @OneToMany(mappedBy = "orderBasket")
+    @OneToMany(mappedBy = "orderBasket", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PurchaseOrder> products = new ArrayList<>();
 
 

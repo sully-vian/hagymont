@@ -30,8 +30,8 @@ class APIService {
         return axios.patch(API_BASE_URL + path, body, {headers: {'Content-Type': 'application/json', ...this.getAuthHeaders()}});
     }
 
-    deleteRequest(path, body){
-        return axios.delete(API_BASE_URL + path, body, {headers: this.getAuthHeaders()})
+    deleteRequest(path){
+        return axios.delete(API_BASE_URL + path, {headers: this.getAuthHeaders()})
     }
 }
 const apiService = new APIService();
