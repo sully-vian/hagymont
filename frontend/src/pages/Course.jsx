@@ -22,8 +22,12 @@ const Course = () => {
         <div id="choosecourse">
           <ChooseCourse onCourseClick={onCourseClick} />
         </div>
+        <div id="course">
         <Banner />
+        </div>
+        <div id="contact">
         <OurServices />
+        </div>
         <Footer />
       </div>
     </div>

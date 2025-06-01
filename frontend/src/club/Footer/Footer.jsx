@@ -16,11 +16,12 @@ const FooterLinks = [
   { title: "Membership", link: "/#membership" },
   { title: "Coach", link: "/#coach" },
   { title: "Fitness Meals", link: "/#fitness-meals" },
-  { title: "Club", link: "/Club" },
+  { title: "Club", link: "../../club/#club" },
   { title: "ChooseClub", link: "../../club/#chooseclub" },
-  { title: "Course", link: "/Course" },
-  { title: "ChooseCourse", link: "../../club/#choosecourse" },
+  { title: "Course", link: "../../course/#course" },
+  { title: "ChooseCourse", link: "../../course/#choosecourse" },
   { title: "Shop", link: "/products" },
+  { title: "Contact Us", link: "../../club/#contact" },
 ];
 
 const Footer = () => {

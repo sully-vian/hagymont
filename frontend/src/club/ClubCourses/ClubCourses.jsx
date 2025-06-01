@@ -28,20 +28,19 @@ const ClubCourses = ({ clubId, onBack }) => {
     const fetchData = async () => {
       try {
         // Get club info
-      const clubRes = await apiService.getRequest(`/clubs/${clubId}`);
-      if (clubRes.data) setClubInfo(clubRes.data);
+        const clubRes = await apiService.getRequest(`/clubs/${clubId}`);
+        if (clubRes.data) setClubInfo(clubRes.data);
 
         // Get courses for the club
-      const coursesRes = await apiService.getRequest(`/courses/by-club/${clubId}`);
-      console.log("Courses data:", coursesRes.data);
+        const coursesRes = await apiService.getRequest(`/courses/by-club/${clubId}`);
+        console.log("Courses data:", coursesRes.data); 
 
-        
         const processedCourses = (coursesRes.data || []).map(course => ({
           ...course,
-          startTime: course.start_time || course.startTime,
-          endTime: course.end_time || course.endTime,
-          coachUsername: course.coach_username || course.coachUsername,
-          roomType: course.room?.type || course.room_type || "Unknown"
+          startTime: course.startTime, 
+          endTime: course.endTime,
+          coachUsername: course.coachUsername || "Unknown", 
+          roomType: course.room?.type || "Unknown" 
         }));
         
         setCourses(processedCourses);
@@ -122,7 +121,7 @@ const ClubCourses = ({ clubId, onBack }) => {
               key={course.id}
               className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-xl transition"
             >
-              {/* Course type (formatted) */}
+              {/* Course type */}
               <h3 className="text-xl font-bold text-purple-600 mb-3 flex items-center gap-2">
                 <FaDumbbell className="w-5 h-5 text-pink-600" />
                 {formatCourseType(course.category)}
@@ -149,7 +148,7 @@ const ClubCourses = ({ clubId, onBack }) => {
               {/* Coach info */}
               <p className="flex items-center text-gray-700 mb-1 gap-2">
                 <FaUser className="w-5 h-5 text-teal-500" />
-                Coach: {course.coachUsername || "Unknown"}
+                Coach: {course.coachUsername}
               </p>
 
               {/* Price */}

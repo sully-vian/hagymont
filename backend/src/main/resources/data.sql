@@ -41,7 +41,7 @@ INSERT INTO users (
   ('Zoe', 'Zen', 'F', 'coach', '1992-02-15', '0600000020', 'zoe.zen@gmail.com', 'ZoeZen', 'pass123', '2025-01-01', '2025-12-31'),
   ('coach', 'Anna', 'F', 'coach', '1987-11-11', '0600000021', 'coach.anna@gmail.com', 'coachAnna', 'pass123', '2025-01-01', '2025-12-31'),
   ('coach', 'Chris', 'M', 'coach', '1984-05-29', '0600000022', 'coach.chris@gmail.com', 'coachChris', 'pass123', '2025-01-01', '2025-12-31'),
-  ('coach', 'Spa', 'M', 'coach', '1977-08-20', '0600000023', 'coach.spa@gmail.com', 'coachSpa', 'pass123', '2025-01-01', '2025-12-31') :
+  ('coach', 'Spa', 'M', 'coach', '1977-08-20', '0600000023', 'coach.spa@gmail.com', 'coachSpa', 'pass123', '2025-01-01', '2025-12-31');
 
 
 
@@ -80,20 +80,21 @@ INSERT INTO product (name, price, stock, description, sizes, colors, category)
     ('Magnesium/Zinc capsules', 22.99, 80, "Combined magnesium and zinc capsules to aid muscle function, immune support, and overall wellness.", null, null, 'nutrition'),
     ('Creatine capsules', 27.99, 75, "Convenient creatine capsules for enhanced muscle strength and endurance without the need for powder mixing.", null, null, 'nutrition'),
     ('Whey', 49.99, 60, "High-quality whey protein powder to support muscle growth, recovery, and daily protein intake.", null, null, 'nutrition'),
-    ('Swim goggles', 15.99, 50, "Comfortable and anti-fog swim goggles with adjustable strap for clear vision and secure fit in the water.", "S/M/L", "blue/pink", 'equipement') :
-
+    ('Swim goggles', 15.99, 50, "Comfortable and anti-fog swim goggles with adjustable strap for clear vision and secure fit in the water.", "S/M/L", "blue/pink", 'equipement'),
+    ('Tralalero Tralala Sports Towel -Blue', 35, 15, "HaGymont x Tralalero Tralala Collaboration(Limited) \nsize: One Size \nMaterial: 100% cotton \nColor: blue", null, "red/violet/orage/blue", 'equipement'),
+    ('Ballerina Capuchina T-shirt -S', 49.99, 35, "HaGymont x Ballerina Capuchina Collaboration \nsize: S \nMaterial: 100% cotton", "S/M/L/XL", "blue/black", 'clothe');
 
 INSERT INTO order_basket (username, address, created_at, status)
   VALUES
     ('pierrot1704', '3 rue de la poste \n31000 \nToulouse \nFrance', '2025-03-17', 'shipped'),
     ('SarahFitness', '19 rue du moulin \n31300 \nToulouse \nFrance', '2025-03-29', 'completed'),
-    ('GinetteLebel', '19 bis avenue de la republique \n32000 \nAuch \nFrance', '2025-07-01', 'pending') :
+    ('GinetteLebel', '19 bis avenue de la republique \n32000 \nAuch \nFrance', '2025-07-01', 'pending');
 
 INSERT INTO purchase_order (product_id, order_id, quantity)
   VALUES
     (1, 1, 2),
     (2, 3, 1),
-    (1, 2, 1) :
+    (1, 2, 1);
 
 
 INSERT INTO club (name, address, parking_capacity) VALUES
@@ -108,7 +109,7 @@ INSERT INTO club (name, address, parking_capacity) VALUES
 ('LondonLift', '150 Oxford Street, W1D 1DJ London, United Kingdom', 85),
 ('West Coast Gym', '55 Hollywood Blvd, Los Angeles CA 90028, USA', 80),
 ('LA Powerhouse', '102 Sunset Blvd, Los Angeles CA 90026, USA', 100),
-('BeachFit LA', '200 Ocean Ave, Santa Monica CA 90401, USA', 200) :
+('BeachFit LA', '200 Ocean Ave, Santa Monica CA 90401, USA', 200);
 
 
 
@@ -175,7 +176,7 @@ INSERT INTO room (type, club_id) VALUES
 ('aqua_sport', 12),
 ('paddle_boarding', 12),
 ('elite_training', 12),
-('spa_relax', 12) :
+('spa_relax', 12);
 
 
 INSERT INTO course (category, start_time, end_time, room_id, coach_username, capacity, price) VALUES
@@ -242,7 +243,7 @@ INSERT INTO course (category, start_time, end_time, room_id, coach_username, cap
 ('aqua_training', '2025-07-13 09:00:00', '2025-07-13 10:00:00', 36, 'coachChris', 5, 74.99),
 ('core_paddle', '2025-07-14 08:30:00', '2025-07-14 09:30:00', 37, 'coachChris', 3, 89.99),
 ('pickleball_elite', '2025-07-14 16:00:00', '2025-07-14 17:00:00', 38, 'coachChris', 5, 99.99),
-('relax_spa', '2025-07-14 17:30:00', '2025-07-14 18:30:00', 39, 'coachSpa', 4, 109.99) :
+('relax_spa', '2025-07-14 17:30:00', '2025-07-14 18:30:00', 39, 'coachSpa', 4, 109.99);
 
 
 
@@ -253,4 +254,4 @@ INSERT INTO reservation (status, date, user_id, course_id, num_parking_spaces)
   VALUES
     ('confirmed', '2025-03-10', 'pierrot1704', 1, 1),
     ('cancelled', '2025-03-10', 'passionMuscu', 2, 0),
-    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0) :
+    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0);
