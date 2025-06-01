@@ -24,7 +24,14 @@ function SearchBar({ onChanges }) {
         const newChanges = { ...changes, [name]: value };
         setChanges(newChanges);
         onChanges(newChanges);
-        console.log(newChanges);
+        if (name === 'keyword'){
+            setSearchTerm(value);
+            if (value !== '') {
+                navigate(`/products/name?contains=${encodeURIComponent(value)}`);
+            } else {
+                navigate('/products');
+            }
+        }
     };
 
     const [showFilter, setShowFilter] = useState(false);
@@ -55,10 +62,10 @@ function SearchBar({ onChanges }) {
 
             {/* Filter by type */}
             <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-700"><strong>Category:</strong></span>
+                <span className="text-sm text-gray-700"><strong>Keyword:</strong></span>
                 <select
-                    name="category"
-                    value={changes.category || ''}
+                    name="keyword"
+                    value={changes.keyword || ''}
                     onChange={handleChanges}
                     className="px-3 py-2 rounded-lg border border-gray-300 text-sm"
                 >
@@ -67,10 +74,11 @@ function SearchBar({ onChanges }) {
                     <option value="Towel">Towel</option>
                     <option value="Dumbbells">Dumbbells</option>
                     <option value="Protein">Protein</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
+                    <option value="Sport">Sport</option>
+                    <option value="Bag">Bag</option>
+                    <option value="Capsules">Capsules</option>
+                    <option value="Climbing">Climbing</option>
+                    <option value="Swim">Swim</option>
                 </select>
             </div>
 
