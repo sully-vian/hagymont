@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import apiService from '../utils/APIService';
+import ComboBoxOption from './components/ComboBoxOptions';
 
 function ProductPage() {
   const { id } = useParams();
@@ -9,6 +10,8 @@ function ProductPage() {
   const navigate = useNavigate();
   const username = sessionStorage.getItem("username");
   const [message, setMessage] = useState('');
+  const [size, setSize] = useState(null);
+  const [color, setColor] = useState(null);
 
 
   const [imageLoading, setImageLoading] = useState(true);
@@ -135,6 +138,12 @@ function ProductPage() {
                   <p key={index} className="mb-2">{line}</p>
                 ))}
               </div>
+            </div>
+            <div className="my-4">
+              {product.sizes !==null ? (<ComboBoxOption label='Size' values={product.sizes} onChange={setSize} name='size'/>) : (<></>)}
+            </div>
+            <div className="my-4">
+              {product.colors !==null ? (<ComboBoxOption label='Color' values={product.colors} onChange={setColor} name='color'/>) : (<></>)}
             </div>
           </div>
         </div>

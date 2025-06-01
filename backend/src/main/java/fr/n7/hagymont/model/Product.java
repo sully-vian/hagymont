@@ -9,9 +9,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -24,7 +27,40 @@ public class Product {
     private String name;
     private Double price;
     private Integer stock;
+    @Lob
     private String description;
+    private String sizes; // sizes existing (can be null if no size)
+    private String colors; // colors existing (can be null if no color)
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = Category.valueOf(category);
+    }
+
+    public String getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(String sizes) {
+        this.sizes = sizes;
+    }
+
+    public String getColors() {
+        return colors;
+    }
+
+    public void setColors(String colors) {
+        this.colors = colors;
+    }
+
+    public enum Category {
+        nutrition, clothe, equipement, accessory
+    }
 
     @OneToMany(mappedBy = "product")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")

@@ -7,17 +7,19 @@ import SearchBar from './components/SearchBar';
 function Shop() {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState(''); 
+  const [category, setCategory] = useState('all'); 
 
   const handleChanges = (changes) => {
     setMinPrice(changes.min);
     setMaxPrice(changes.max);
+    setCategory(changes.category);
   };
 
   return (
     <div>
       <Navbar />
       <SearchBar onChanges={handleChanges}/>
-      <Outlet context={{minPrice, maxPrice}}/>
+      <Outlet context={{minPrice, maxPrice, category}}/>
     </div>
   );
 }

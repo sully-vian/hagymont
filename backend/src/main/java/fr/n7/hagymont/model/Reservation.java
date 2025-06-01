@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators.PropertyGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,9 +23,14 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    public enum Status {
+        confirmed, cancelled
+    }
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private LocalDate date;
-    private Double price;
 
     @Column(name = "num_parking_spaces", nullable = false)
     private Integer numParkingSpaces;
@@ -36,12 +43,12 @@ public class Reservation {
     @JoinColumn(name = "user_id") // FK: user_id
     private User user;
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = Status.valueOf(status);
     }
 
     public LocalDate getDate() {
@@ -50,14 +57,6 @@ public class Reservation {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Integer getNumParkingSpaces() {

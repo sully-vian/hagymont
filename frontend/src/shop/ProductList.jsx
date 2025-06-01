@@ -10,13 +10,14 @@ function ProductList() {
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get('contains') || null;
 
-  const { minPrice, maxPrice } = useOutletContext();
+  const { minPrice, maxPrice, category } = useOutletContext();
 
   const filteredProducts = products.filter((product) => {
-    const min = minPrice === '' ? 0 : parseFloat(minPrice) || 0;
-    const max = maxPrice === '' ? Infinity : parseFloat(maxPrice) || Infinity;
-    return product.price >= min && product.price <= max;
-  });
+  const min = minPrice === '' ? 0 : parseFloat(minPrice) || 0;
+  const max = maxPrice === '' ? Infinity : parseFloat(maxPrice) || Infinity;
+  const categoryFilter = category === 'all' || category === product.category;
+  return product.price >= min && product.price <= max && categoryFilter;
+});
 
   useEffect(() => {
     const filter = searchTerm ? `/name?contains=${encodeURIComponent(searchTerm)}` : '';

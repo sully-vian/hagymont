@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import fr.n7.hagymont.dto.BasketDto;
 
 @RestController
 @RequestMapping("/baskets")
@@ -20,28 +23,28 @@ public class OrderBasketController {
 
     // POST /baskets - Créer un nouveau panier
     @PostMapping("/add/{username}")
-    public ResponseEntity<OrderBasket> createOrderBasket(@RequestBody String username) {      
+    public ResponseEntity<BasketDto> createOrderBasket(@RequestBody String username) {      
         OrderBasket createdBasket = orderBasketService.createOrderBasket(username);
         return createdBasket!=null ? 
-            ResponseEntity.ok(createdBasket)
+            ResponseEntity.ok(BasketDto.toDto(createdBasket))
             : ResponseEntity.notFound().build();
     }
 
     // GET /baskets/all/{username} - récupérer toutes les commandes d'un user
     @GetMapping("/all/{username}")
-    public ResponseEntity<List<OrderBasket>> getOrderBasketByUser(@PathVariable String username) {
+    public ResponseEntity<List<BasketDto>> getOrderBasketByUser(@PathVariable String username) {
         List<OrderBasket> orders = orderBasketService.getOrderBasketByUser(username);
         return orders!=null ? 
-             ResponseEntity.ok(orders)
+             ResponseEntity.ok(orders.stream().map(b -> BasketDto.toDto(b)).collect(Collectors.toList()))
             : ResponseEntity.notFound().build();
     }
 
     // GET /baskets/current/{username} - récupérer le panier (commande courante) d'un user
     @GetMapping("/current/{username}")
-    public ResponseEntity<OrderBasket> getCurrentOrderBasketByUser(@PathVariable String username) {
+    public ResponseEntity<BasketDto> getCurrentOrderBasketByUser(@PathVariable String username) {
         try {
             OrderBasket order = orderBasketService.findCurrentByUsername(username);
-            return ResponseEntity.ok(order);
+            return ResponseEntity.ok(BasketDto.toDto(order));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -54,7 +57,7 @@ public class OrderBasketController {
             Long productId = Integer.toUnsignedLong(purchase.get("productId"));
             int quantity = purchase.get("quantity");
             OrderBasket updatedOrder = orderBasketService.addProductBasket(username, productId, quantity);
-            return ResponseEntity.status(201).body(updatedOrder);
+            return ResponseEntity.status(201).body(BasketDto.toDto(updatedOrder));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());
         }
@@ -68,7 +71,7 @@ public class OrderBasketController {
             int quantity = purchase.get("quantity");
 
             OrderBasket updated = orderBasketService.updateQuantity(basketId, productId, quantity);
-            return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+            return updated != null ? ResponseEntity.ok(BasketDto.toDto(updated)) : ResponseEntity.notFound().build();
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());
         }
@@ -93,7 +96,7 @@ public class OrderBasketController {
     public ResponseEntity<?> updateOrderBasket(@PathVariable Long basketId, @RequestBody Map<String, Object> updates) {
         OrderBasket updatedBasket = orderBasketService.updateOrderBasket(basketId, updates);
             return updatedBasket != null
-                ? ResponseEntity.ok(updatedBasket)
+                ? ResponseEntity.ok(BasketDto.toDto(updatedBasket))
                 : ResponseEntity.notFound().build();
     }
 

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FilterCard from './FilterCard';
+import filterIcon from '../../assets/filter.png';
 
 function SearchBar({ onChanges }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,16 +22,10 @@ function SearchBar({ onChanges }) {
         const newChanges = { ...changes, [name]: value };
         setChanges(newChanges);
         onChanges(newChanges);
-
-        if (name === 'category') {
-            setSearchTerm(value);
-            if (value !== '') {
-                navigate(`/products/name?contains=${encodeURIComponent(value)}`);
-            } else {
-                navigate('/products');
-            }
-        }
+        console.log(newChanges);
     };
+
+    const [showFilter, setShowFilter] = useState(false);
 
     const handleBasket = () => {
         navigate(username === 'Not connected' ? '/login' : '/basket');
@@ -78,6 +74,7 @@ function SearchBar({ onChanges }) {
             </div>
 
             {/* Price Filter */}
+<<<<<<< HEAD
             <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-700"><strong>Price:</strong></span>
                 <input
@@ -101,6 +98,27 @@ function SearchBar({ onChanges }) {
                 />
                 <span className="text-sm text-gray-700">€</span>
             </div>
+=======
+
+            <div className="flex items-center">
+                <button
+                    onClick={() => setShowFilter((prev) => !prev)}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray rounded text-base transition duration-300 flex items-center gap-1"
+                >
+                    <img src={filterIcon} alt="Filter icon" className="w-4 h-4" />
+                    <span>Filter</span>
+                </button>
+
+                {showFilter && (
+                    <FilterCard
+                    changes={changes}
+                    handleChanges={handleChanges}
+                    onClose={() => setShowFilter(false)}
+                    />
+                )}
+                </div>
+
+>>>>>>> main
 
             {/* User + Basket */}
             <div className="flex items-center gap-3">
