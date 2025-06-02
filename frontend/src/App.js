@@ -17,6 +17,7 @@ import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
 import ProductEdit from './shop/components/ProductEdit';
 import AdminRoute from './utils/AdminRoute';
+import Reservation from './calendar/Calendar';
 
 
 
@@ -62,6 +63,8 @@ function App() {
         </Route>
 
         <Route path="/orders" element={<Orders/>}/>
+
+        <Route path="/calendar" element={<Reservation/>}/>
 
         {/* Default redirection and 404 handling */}
         <Route path="/error" element={<ErrorPage />} />
