@@ -27,6 +27,10 @@ function ProductList() {
       });
   }, [searchTerm]);
 
+  const removeProductFromList = (id) => {
+    setProducts(prev => prev.filter(product => product.id !== id));
+  };
+
   return (
     <div className="min-h-screen bg-[#fdfdfb] px-6 py-8 text-gray-800">
       <div className="text-center mb-8">
@@ -49,7 +53,7 @@ function ProductList() {
               key={product.id}
               className="bg-white border border-gray-200 rounded-lg p-2 shadow-sm hover:shadow-md transition duration-150"
             >
-              <ShopItem product={product} />
+              <ShopItem product={product} removeProduct={() => removeProductFromList(product.id)}/>
             </div>
           ))
         )}

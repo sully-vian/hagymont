@@ -55,7 +55,7 @@ public class ReservationService {
 
         // Vérifier la capacité du cours
         if (course.getReservations().size() >= course.getCapacity()) {
-            throw new IllegalStateException("course is full");
+            throw new IllegalStateException("Course is full");
         }
 
         Reservation createdReservation = new Reservation();

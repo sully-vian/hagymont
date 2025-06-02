@@ -3,8 +3,8 @@
 - [x] Reorganiser shop avec pages et composants
 - [x] Regler pb halteres 2 (ok apparemment)
 - [x] Partie admin (creer produit)
-- [ ] Partie admin (supprimer produit)
-- [ ] Partie admin
+- [x] Partie admin (supprimer produit)
+- [ ] Partie admin gestion stock ?
 ## Page product
 - [x] Partie admin (modif produit)
 ## Basket 
@@ -25,7 +25,7 @@
 - [x] Date requete API
 ## Reservation de cours et salles
 - [x] Page recherche cours
-- [ ] Calendrier reservations (user)
+- [x] Calendrier reservations (user)
 - [ ] Calendrier cours créés (coach)
 - [ ] Page creation/modification cours
 - [ ] Page réservation salle
@@ -44,12 +44,12 @@
 # TODO in Back 
 ## DTO
  - [ ] DTO reservationSalle
- - [ ] DTO reservationCours
+ - [x] DTO reservationCours
  - [ ] Enlever anciennes anotations JSonManagedRef
 ## Security 
  - [ ] Remettre sécurité
  - [ ] Ajouter annotations admin/coach...
  - [ ] Encoder mots de passe
 ## ReservationCours et Shop 
- - [ ] Enlever articles lors validation commande
- - [ ] Vérifier capacité cours ( en comptant réservations)
+ - [x] Enlever articles lors validation commande
+ - [x] Vérifier capacité cours ( en comptant réservations)

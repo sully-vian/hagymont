@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 
 import fr.n7.hagymont.model.OrderBasket.StatusType;
 import fr.n7.hagymont.model.Product;
@@ -144,6 +145,17 @@ public class OrderBasketService {
         return false;
     }
 
+    private void updateQuantiteProduct(PurchaseOrder purchase, BinaryOperator op){
+        Product product = productRepository.findById(purchase.getProduct().getId()).orElse(null);
+        if (product==null){
+            // ne drvrait pas arriver
+            return; 
+        }
+        product.setStock((int) op.apply(product.getStock(), purchase.getQuantity()));
+        productRepository.save(product);
+
+    }
+
     // Mettre à jour une commande
     public OrderBasket updateOrderBasket(Long id, Map<String, Object> updates) {
         OrderBasket basket = orderBasketRepository.findById(id).orElse(null);
@@ -160,6 +172,10 @@ public class OrderBasketService {
                         break;
                     case "status":
                         basket.setStatus(StatusType.valueOf((String) value));
+                        if (value=="confirmed"){
+                            // on retire des stocks quand on confirme une commande
+                            basket.getProducts().stream().forEach(purchase -> updateQuantiteProduct(purchase, ((int a, int b) -> a-b)));
+                        }
                         break;
                 }
             }
@@ -170,7 +186,13 @@ public class OrderBasketService {
 
     // Supprimer une commande
     public boolean deleteOrderBasket(Long id) {
-        if (orderBasketRepository.existsById(id)) {
+        OrderBasket basket = orderBasketRepository.findById(id).orElse(null);
+        if (basket!=null) {
+            
+            if (basket.getStatus()==StatusType.confirmed){
+                // si une commande est confirmee mais pas envoyé ou sous forme de panier on remet les produits en stock
+                basket.getProducts().stream().forEach(purchase -> updateQuantiteProduct(purchase, ((int a, int b) -> a+b)));
+            }
             orderBasketRepository.deleteById(id);
             return true;
         }
