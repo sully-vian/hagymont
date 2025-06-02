@@ -1,0 +1,66 @@
+.rbc {
+  @apply bg-white
+}
+
+.rbc-today {
+  @apply bg-blue-100;
+}
+
+.rbc-out-of-range {
+  @apply text-gray-500 bg-gray-300 border ;
+}
+
+.rbc-calendar,
+.rbc-month-view,
+.rbc-month-view .rbc-month-row,
+.rbc-month-view .rbc-row,
+.rbc-header,
+.rbc-month-header {
+  border: none !important;
+ 
+}
+.rbc-toolbar {
+  display: none;
+}
+
+.rbc-event {
+  @apply bg-transparent
+}
+
+.rbc-month-header {
+    @apply mb-2 text-lg
+}
+
+.rbc-month-view .rbc-day-bg {
+  @apply rounded-xl shadow-sm hover:shadow-md hover:bg-purple-100 cursor-pointer border border-gray-200;
+}
+
+
+
+.rbc-agenda-view {
+  @apply bg-white rounded-lg p-4 shadow-md;
+}
+
+.rbc-agenda-table {
+  @apply w-full border-separate border-spacing-y-2 border-0;
+}
+
+.rbc-agenda-view table tr > :nth-child(1), /* Date cells */
+.rbc-agenda-view table tr > :nth-child(2), /* Time cells */
+.rbc-agenda-view table thead tr th:nth-child(1), /* Header Date */
+.rbc-agenda-view table thead tr th:nth-child(2)  /* Header Time */ {
+  display: none !important;
+}
+
+.rbc-agenda-event-cell,
+.rbc-agenda-header > th:nth-child(3) {
+  width: 100% !important;
+}
+
+.rbc-agenda-view table thead tr th:nth-child(3) {
+  @apply bg-purple-600 text-white  font-extrabold text-2xl text-center py-4 rounded-t-md;
+}
+
+.rbc-agenda-table tr:hover {
+  @apply cursor-pointer;
+}

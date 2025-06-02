@@ -7,11 +7,14 @@ import fr.n7.hagymont.repository.ReservationRepository;
 import fr.n7.hagymont.repository.UserRepository;
 import fr.n7.hagymont.repository.CourseRepository;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import fr.n7.hagymont.dto.ReservationDto;
 
 @Service
 public class ReservationService {
@@ -36,9 +39,9 @@ public class ReservationService {
     }
 
     // Créer une réservation
-    public Reservation createReservation(Reservation reservation) throws ResourceNotFoundException {
+    public Reservation createReservation(ReservationDto reservation) throws ResourceNotFoundException {
         // Valider l'existence de l'utilisateur et du cours
-        String username = reservation.getUser().getUsername();
+        String username = reservation.getUser();
         User user = Optional.of(userRepository.findByUsername(username))
                         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Long courseId = reservation.getCourse().getId();
@@ -55,10 +58,11 @@ public class ReservationService {
             throw new IllegalStateException("course is full");
         }
 
+        Reservation createdReservation = new Reservation();
         // Enregistrer la réservation
-        reservation.setUser(user);
-        reservation.setCourse(course);
-        return reservationRepository.save(reservation);
+        createdReservation.setUser(user);
+        createdReservation.setCourse(course);
+        return reservationRepository.save(createdReservation);
     }
 
     // Supprimer une réservation

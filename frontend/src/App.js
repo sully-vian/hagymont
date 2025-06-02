@@ -17,7 +17,7 @@ import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
 import ProductEdit from './shop/components/ProductEdit';
 import AdminRoute from './utils/AdminRoute';
-import Reservation from './calendar/Calendar';
+import Reservation from './reservations/Reservation';
 
 
 

@@ -254,4 +254,8 @@ INSERT INTO reservation (status, date, user_id, course_id, num_parking_spaces)
   VALUES
     ('confirmed', '2025-03-10', 'pierrot1704', 1, 1),
     ('cancelled', '2025-03-10', 'passionMuscu', 2, 0),
-    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0);
+    ('confirmed', '2025-08-14', 'GinetteLebel', 4, 0),
+    ('confirmed', '2025-05-14', 'GinetteLebel', 1, 0),
+    ('cancelled', '2025-05-14', 'GinetteLebel', 2, 0),
+    ('confirmed', '2025-05-16', 'GinetteLebel', 3, 0);
+

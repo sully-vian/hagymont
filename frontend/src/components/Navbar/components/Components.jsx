@@ -50,8 +50,8 @@ export function Card({username, setConnected, isConnected, theme}) {
         (<div className={`w-48 ${theme.bgColor} shadow-lg border ${theme.borderColor} rounded-lg p-3 absolute right-0 mt-2 hidden group-hover:block transition-opacity z-50`}>
             <p className={`text-sm font-semibold ${theme.textColor} mb-4`}>Hi <span className="capitalize">{username}</span>!</p>
             <ButtonCard
-                label="Your courses"
-                onClick={()=>{}} // TODO
+                label="Your reservations"
+                onClick={()=> navigate("/calendar")}
                 colors={{base : theme.buttonColor, hover : theme.buttonColorHover}}
             />
             <ButtonCard
