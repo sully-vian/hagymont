@@ -75,9 +75,17 @@ public class ProductController {
         return ResponseEntity.status(404).body(id + " has not been found");
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductDto> updateProduct(
+        @PathVariable Long id,
+        @RequestPart("product")Map<String, Object> updates,
+        @RequestPart(value = "image", required = false) MultipartFile imageFile
+    ){
         Product updatedProduct = productService.updateProduct(id, updates);
+        if (imageFile != null && !imageFile.isEmpty()) {
+            productService.storeProductImage(updatedProduct.getId(), imageFile);
+        }
         return ResponseEntity.status(200).body(ProductDto.toDto(updatedProduct));
     }
 }

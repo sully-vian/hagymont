@@ -66,16 +66,16 @@ public class ProductService {
                     product.setDescription((String) value);
                     break;
                 case "price":
-                    product.setPrice(Double.valueOf((String) value));
+                    product.setPrice((Double) value);
                     break;
                 case "stock":
-                    product.setStock(Integer.valueOf((String) value));
+                    product.setStock((Integer) value);
                     break;
                 case "sizes":
-                    product.setSizes(String.valueOf((String) value));
+                    product.setSizes((String) value);
                     break;
                 case "colors":
-                    product.setColors(String.valueOf((String) value));
+                    product.setColors((String) value);
                     break;
                 case "category":
                     product.setCategory((String) value);

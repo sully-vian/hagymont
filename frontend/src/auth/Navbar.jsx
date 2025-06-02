@@ -3,6 +3,7 @@ import { FaDumbbell } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Profile from "../assets/profile.png";
+import UserLogo from "../components/Navbar/components/UserLogo";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -58,14 +59,15 @@ const Navbar = () => {
             </ul>
 
             {/* Profile */}
-            <div className="flex items-center space-x-2 group relative">
-              <img 
-                src={Profile} 
-                alt="User Profile" 
-                className="w-9 h-9 rounded-full border-2 border-blue-400 cursor-pointer hover:border-purple-400 transition-colors"
-              />
-              <IoIosArrowDown className="text-gray-300 text-lg transition-transform group-hover:rotate-180" />
-            </div>
+            <UserLogo
+            theme={{
+              arrowColor : "text-gray-300",
+              bgColor : "bg-gray-900/95",
+              borderColor : "border-gay-700",
+              buttonColor : "text-blue-300",
+              buttonColorHover : "hover:text-purple-400",
+              textColor : "text-gray-300"
+            }}/>
           </div>
         </div>
       </div>

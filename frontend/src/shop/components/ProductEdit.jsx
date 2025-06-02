@@ -40,7 +40,7 @@ function ProductEdit() {
             });
         }else{
             //Update product
-            apiService.patchRequest(`/products/${product.id}`, productForm)
+            apiService.patchMultipartRequest(`/products/${product.id}`, formData)
             .then(response => {
                 setProductForm(response.data);
                 navigate(`/products/${response.data.id}`);
@@ -74,7 +74,7 @@ function ProductEdit() {
         if (!productForm.stock) newErrors.stock = 'Stock is required';
         if (!productForm.category || productForm.category==="") newErrors.category = 'Category is required';
         if (!productForm.description) newErrors.description = 'Description is required';
-        if (!image) newErrors.photo = 'Photo is required';
+        if (!product && !image) newErrors.photo = 'Photo is required'; // Photo necessaire pour creation produit
         if (productForm.stock && !parseInt(productForm.stock)) newErrors.stock = 'Stock must be an integer';
         if (productForm.price && !parseFloat(productForm.price)) newErrors.price = 'Price must be a number';
         if (productForm.sizes && !productForm.sizes.includes('/')) newErrors.sizes = "Sizes must be in the format 'S/M/L' and include at least two sizes.";

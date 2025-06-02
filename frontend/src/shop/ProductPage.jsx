@@ -57,7 +57,7 @@ function ProductPage() {
   };
 
   const handleEdit = () => {
-     navigate('/edit', { state: { product } });
+     navigate('/products/edit', { state: { product } });
   };
 
   if (!product) {
@@ -104,7 +104,7 @@ function ProductPage() {
                 onClick={handleEdit}
                 className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition"
               >
-              ✏️ Edit
+              🛠️ Edit
               </button>)}
             </div>
 

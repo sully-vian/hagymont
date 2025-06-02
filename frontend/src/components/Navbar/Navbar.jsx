@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { FaDumbbell } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import Profile from "../../assets/profile.png";
+import {ItemBar, Logo} from "./components/Components";
+import SessionService from "../../utils/SessionService";
+import UserLogo from "./components/UserLogo";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -25,56 +24,35 @@ const Navbar = () => {
         }`}
       >
         <div className="container flex justify-between items-center px-4 py-2">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <FaDumbbell className="text-3xl text-primary animate-bounce" />
-            <p className="text-3xl lg:text-4xl font-bold text-black">
-              Ha
-              <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                Gym
-              </span>
-              ont
-            </p>
-          </div>
-
+          <Logo/>
           <div className="flex justify-center items-center gap-10">
-            <ul className="flex gap-8 text-base font-medium">
-              <li
-                className="hover:border-b-2 border-primary uppercase cursor-pointer"
-                onClick={() => navigate("/home")}
-              >
-                Home
-              </li>
-              <li
-                className="hover:border-b-2 border-primary uppercase cursor-pointer"
-                onClick={() => navigate("/club")}
-              >
-                Club
-              </li>
-              <li 
-              className="hover:border-b-2 border-primary uppercase cursor-pointer"
-                onClick={() => navigate("/course")}
-                >
-                Course
-              </li>
-              <li
-                className="hover:border-b-2 border-primary uppercase cursor-pointer"
-                onClick={() => navigate("/products")}
-              >
-                Shop
-              </li>
-            </ul>
-
-            {/* Profile avatar and dropdown icon */}
-            <div className="flex items-center space-x-2 group relative">
-              <img
-                src={Profile}
-                alt="User Profile"
-                className="w-9 h-9 rounded-full border-2 border-blue-400 cursor-pointer hover:border-purple-400 transition-colors"
-                onClick={() => navigate("/profile")} 
+            <ul className="flex gap-8">
+              <ItemBar
+                label="Home"
+                page="/home"
               />
-              <IoIosArrowDown className="text-stone-500 text-lg transition-transform group-hover:rotate-180" />
-            </div>
+              <ItemBar
+                label="Club"
+                page="/club"
+              />
+              <ItemBar
+                label="Course"
+                page="/course"
+              />
+              <ItemBar
+                label="shop"
+                page="/products"
+              />
+            </ul>
+            <UserLogo 
+            theme={{
+              arrowColor : "text-stone-500",
+              bgColor : "bg-white",
+              borderColor : "border-gray-200",
+              buttonColor : "text-blue-500",
+              buttonColorHover : "hover:text-purple-600",
+              textColor : "text-gray-800"
+            }}/>
           </div>
         </div>
       </div>

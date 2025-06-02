@@ -8,7 +8,7 @@ function SearchBar({ onChanges }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [changes, setChanges] = useState({category:'all'});
     const navigate = useNavigate();
-    const username = SessionService.getUsername() || 'Not connected';
+    const username = SessionService.getUsername();
     const isAdmin = SessionService.getRole()==='admin';
 
     const handleSearch = () => {
@@ -102,23 +102,26 @@ function SearchBar({ onChanges }) {
                 )}
                 </div>
 
-            {/* User + Basket */}
+            {/* Basket */}
             <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-gray-800">{username}</span>
-                <button
-                    onClick={handleBasket}
-                    className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-2xl text-sm shadow transition"
-                >
-                    Basket
-                </button>
-                {isAdmin ? 
+                {username && 
+                    (<div className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-gray-800">{username}</span>
+                        <button
+                            onClick={handleBasket}
+                            className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-2xl text-sm shadow transition"
+                        >
+                            Basket
+                        </button>
+                    </div>)
+                }
+                {isAdmin &&
                     (<button
                         onClick={() => navigate("/products/edit")}
-                        className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-2xl text-sm shadow transition"
+                        className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 transition"
                     >
-                        Create
+                        🛠️ Create product
                     </button>)
-                    : (<></>)
                 }
             </div>
         </div>
