@@ -41,7 +41,7 @@ public class OrderBasketService {
     public OrderBasket createOrderBasket(String username) {
         // Vérifier l'existence de l'utilisateur
         User user = userRepository.findByUsername(username);
-        if (user==null){
+        if (user == null) {
             return null;
         }
 
@@ -58,30 +58,31 @@ public class OrderBasketService {
         return order;
     }
 
-    //Trouver le panier (commande non validée) d'un user
+    // Trouver le panier (commande non validée) d'un user
     public OrderBasket findCurrentByUsername(String username) throws ResourceNotFoundException {
         List<OrderBasket> orders = orderBasketRepository.findByUserUsernameAndStatus(username, StatusType.pending);
         User user = userRepository.findByUsername(username);
-        if (user==null){
+        if (user == null) {
             throw new ResourceNotFoundException("User doesn't exist");
         }
-        if (orders.isEmpty()){
+        if (orders.isEmpty()) {
             return null;
-        }else{
-            //Normalement on ne devrait jamais avoir plusieurs orders pending
+        } else {
+            // Normalement on ne devrait jamais avoir plusieurs orders pending
             return orders.get(0);
         }
     }
 
     // Ajouter un produit au panier en cours d'un user
-    public OrderBasket addProductBasket(String username, Long productId, int quantity) throws ResourceNotFoundException {
+    public OrderBasket addProductBasket(String username, Long productId, int quantity)
+            throws ResourceNotFoundException {
         // Vérifier l'existence du panier et du produit
         OrderBasket basket = findCurrentByUsername(username);
-        if (basket == null){
+        if (basket == null) {
             basket = createOrderBasket(username);
         }
         Product product = productRepository.findById(productId).orElse(null);
-        if (product==null){
+        if (product == null) {
             throw new ResourceNotFoundException("product " + product + "wasn't found");
         }
         // Vérifier le stock
@@ -89,12 +90,13 @@ public class OrderBasketService {
             throw new IllegalStateException("Stock is insufficient");
         }
         PurchaseOrder purchase;
-        //Si le produit est deja dans le panier on change juste la quantité
-        PurchaseOrder purchaseExisting = purchaseOrderRepository.findByOrderBasketIdAndProductId(basket.getId(), productId);
-        if (purchaseExisting!=null){
+        // Si le produit est deja dans le panier on change juste la quantité
+        PurchaseOrder purchaseExisting = purchaseOrderRepository.findByOrderBasketIdAndProductId(basket.getId(),
+                productId);
+        if (purchaseExisting != null) {
             purchase = purchaseExisting;
             quantity += purchaseExisting.getQuantity();
-        }else{
+        } else {
             purchase = new PurchaseOrder();
         }
         purchase.setOrderBasket(basket);
@@ -105,12 +107,13 @@ public class OrderBasketService {
     }
 
     // Modifier la quantité d'un produit dans une commande
-    public OrderBasket updateQuantity(Long basketId, Long productId, Integer newQuantity) throws ResourceNotFoundException {
+    public OrderBasket updateQuantity(Long basketId, Long productId, Integer newQuantity)
+            throws ResourceNotFoundException {
         OrderBasket basket = orderBasketRepository.findById(basketId)
-            .orElseThrow( () -> new ResourceNotFoundException("basket " + basketId + "wasn't found"));
+                .orElseThrow(() -> new ResourceNotFoundException("basket " + basketId + "wasn't found"));
         productRepository.findById(productId)
-            .orElseThrow(() -> new ResourceNotFoundException("product " + productId + "wasn't found"));
-        
+                .orElseThrow(() -> new ResourceNotFoundException("product " + productId + "wasn't found"));
+
         PurchaseOrder purchase = purchaseOrderRepository.findByOrderBasketIdAndProductId(basketId, productId);
 
         if (newQuantity <= 0) {
@@ -128,16 +131,16 @@ public class OrderBasketService {
     }
 
     // Supprimer un produit dans une commande
-    public boolean deleteProduct(Long basketId, Long productId) throws ResourceNotFoundException{
+    public boolean deleteProduct(Long basketId, Long productId) throws ResourceNotFoundException {
         OrderBasket basket = orderBasketRepository.findById(basketId)
-            .orElseThrow( () -> new ResourceNotFoundException("basket " + basketId + "wasn't found"));
+                .orElseThrow(() -> new ResourceNotFoundException("basket " + basketId + "wasn't found"));
         productRepository.findById(productId)
-            .orElseThrow(() -> new ResourceNotFoundException("product " + productId + "wasn't found"));
-        
+                .orElseThrow(() -> new ResourceNotFoundException("product " + productId + "wasn't found"));
+
         PurchaseOrder purchase = purchaseOrderRepository.findByOrderBasketIdAndProductId(basketId, productId);
-        if (purchase!=null) {
+        if (purchase != null) {
             purchaseOrderRepository.delete(purchase);
-            if (basket.getProducts().isEmpty()){
+            if (basket.getProducts().isEmpty()) {
                 orderBasketRepository.delete(basket);
             }
             return true;
@@ -145,11 +148,11 @@ public class OrderBasketService {
         return false;
     }
 
-    private void updateQuantiteProduct(PurchaseOrder purchase, BinaryOperator op){
+    private void updateQuantiteProduct(PurchaseOrder purchase, BinaryOperator<Integer> op) {
         Product product = productRepository.findById(purchase.getProduct().getId()).orElse(null);
-        if (product==null){
+        if (product == null) {
             // ne drvrait pas arriver
-            return; 
+            return;
         }
         product.setStock((int) op.apply(product.getStock(), purchase.getQuantity()));
         productRepository.save(product);
@@ -159,7 +162,7 @@ public class OrderBasketService {
     // Mettre à jour une commande
     public OrderBasket updateOrderBasket(Long id, Map<String, Object> updates) {
         OrderBasket basket = orderBasketRepository.findById(id).orElse(null);
-        if (basket==null){
+        if (basket == null) {
             return null;
         }
 
@@ -172,9 +175,10 @@ public class OrderBasketService {
                         break;
                     case "status":
                         basket.setStatus(StatusType.valueOf((String) value));
-                        if (value=="confirmed"){
+                        if (value == "confirmed") {
                             // on retire des stocks quand on confirme une commande
-                            basket.getProducts().stream().forEach(purchase -> updateQuantiteProduct(purchase, ((int a, int b) -> a-b)));
+                            basket.getProducts().stream()
+                                    .forEach(purchase -> updateQuantiteProduct(purchase, ((a, b) -> a - b)));
                         }
                         break;
                 }
@@ -187,11 +191,13 @@ public class OrderBasketService {
     // Supprimer une commande
     public boolean deleteOrderBasket(Long id) {
         OrderBasket basket = orderBasketRepository.findById(id).orElse(null);
-        if (basket!=null) {
-            
-            if (basket.getStatus()==StatusType.confirmed){
-                // si une commande est confirmee mais pas envoyé ou sous forme de panier on remet les produits en stock
-                basket.getProducts().stream().forEach(purchase -> updateQuantiteProduct(purchase, ((int a, int b) -> a+b)));
+        if (basket != null) {
+
+            if (basket.getStatus() == StatusType.confirmed) {
+                // si une commande est confirmee mais pas envoyé ou sous forme de panier on
+                // remet les produits en stock
+                basket.getProducts().stream()
+                        .forEach(purchase -> updateQuantiteProduct(purchase, ((a, b) -> a + b)));
             }
             orderBasketRepository.deleteById(id);
             return true;
