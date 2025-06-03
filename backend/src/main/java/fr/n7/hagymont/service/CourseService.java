@@ -30,7 +30,7 @@ public class CourseService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Course> getAllCourses(){
+    public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
 
@@ -74,6 +74,10 @@ public class CourseService {
     // GET /courses/coach/{coachUsername}- Coach consulte ses propres cours
     public List<Course> getCoursesByCoach(String username) {
         return courseRepository.findByCoachUsername(username);
+    }
+
+    public Optional<Course> getCourseById(Long id) {
+        return courseRepository.findCourseWithDetailsById(id);
     }
 
     // POST /courses - Coach crée un nouveau cours

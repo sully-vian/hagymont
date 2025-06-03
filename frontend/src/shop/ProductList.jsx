@@ -24,7 +24,8 @@ function ProductList() {
     apiService.getRequest(`/products${filter}`)
       .then((response) => {
         setProducts(response.data);
-      });
+      })
+
   }, [searchTerm]);
 
   const removeProductFromList = (id) => {

@@ -7,15 +7,15 @@ import fr.n7.hagymont.repository.ReservationRepository;
 import fr.n7.hagymont.repository.UserRepository;
 import fr.n7.hagymont.repository.CourseRepository;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
+import fr.n7.hagymont.dto.ReservationDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import fr.n7.hagymont.dto.ReservationDto;
 
 @Service
 public class ReservationService {
@@ -29,58 +29,56 @@ public class ReservationService {
     @Autowired
     private CourseRepository courseRepository;
 
-    // Récupérer toutes les réservations
+    // 获取所有预约
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
     }
 
-    // Récupérer les réservations d'un utilisateur
-    public List<Reservation> getReservationsByUser(String username) {//throws ResourceNotFoundException{
-        return reservationRepository.findByUser_Username(username);//.orElseThrow(() -> new ResourceNotFoundException("User not found"));;
+    // 获取指定用户的所有预约
+    public List<Reservation> getReservationsByUser(String username) {
+        return reservationRepository.findByUser_Username(username);
     }
 
-    // Créer une réservation
-    public Reservation createReservation(ReservationDto reservation) throws ResourceNotFoundException {
-        // Valider l'existence de l'utilisateur et du cours
-        String username = reservation.getUser();
-        User user = Optional.of(userRepository.findByUsername(username))
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Long courseId = reservation.getCourse().getId();
+    // 创建预约
+    public Reservation createReservation(ReservationDTO reservationDTO) throws ResourceNotFoundException {
+        String username = reservationDTO.getUser();
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        Long courseId = reservationDTO.getCourse().getId();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
-        // Vérifier si l'utilisateur a déjà réservé ce cours (contrainte unique)
+        // 验证是否重复预约
         if (reservationRepository.existsByUserAndCourse(user, course)) {
             throw new IllegalStateException("Reservation already exists");
         }
 
-        // Vérifier la capacité du cours
+        // 检查课程容量
         if (course.getReservations().size() >= course.getCapacity()) {
             throw new IllegalStateException("Course is full");
         }
 
-        Reservation createdReservation = new Reservation();
-        // Enregistrer la réservation
-        createdReservation.setUser(user);
-        createdReservation.setCourse(course);
-        createdReservation.setStatus(reservation.getStatus());
-        createdReservation.setNumParkingSpaces(0);// Set default parking spaces to 0 or adjust as needed
-        createdReservation.setDate(java.time.LocalDate.now());
-        return reservationRepository.save(createdReservation);
+        Reservation reservation = new Reservation();
+        reservation.setUser(user);
+        reservation.setCourse(course);
+        reservation.setStatus(reservationDTO.getStatus()); // 传入字符串，内部已自动转换
+        reservation.setNumParkingSpaces(0); // 默认停车位为 0，可根据需要修改
+        reservation.setDate(LocalDate.now());
+
+        return reservationRepository.save(reservation);
     }
 
-    // Supprimer une réservation
+    // 删除预约
     @Transactional
     public boolean deleteReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
         if (optionalReservation.isPresent()) {
             Reservation reservation = optionalReservation.get();
-            Course course = reservation.getCourse();
-            course.setCapacity(course.getCapacity() + 1); // recover course capacity
 
             reservationRepository.delete(reservation);
-            courseRepository.save(course);
-
             return true;
         }
         return false;

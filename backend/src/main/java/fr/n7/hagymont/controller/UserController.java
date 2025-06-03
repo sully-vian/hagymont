@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.core.status.Status;
-import fr.n7.hagymont.dto.UserProfileDto;
+import fr.n7.hagymont.dto.UserProfileDTO;
 import fr.n7.hagymont.exception.NotUniqueException;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.User;
@@ -32,25 +31,25 @@ public class UserController {
 
     // GET /users - récupérer tous les utilisateurs
     @GetMapping
-    public List<UserProfileDto> getAllUsers() {
-        return userService.getAllUsers().stream().map(u -> UserProfileDto.toDto(u)).collect(Collectors.toList());
+    public List<UserProfileDTO> getAllUsers() {
+        return userService.getAllUsers().stream().map(u -> new UserProfileDTO(u)).collect(Collectors.toList());
     }
 
     // GET /users/{username} - récupérer un utilisateur par son nom d'utilisateur
     @GetMapping("/{username}")
-    public ResponseEntity<UserProfileDto> getUser(@PathVariable String username) {
+    public ResponseEntity<UserProfileDTO> getUser(@PathVariable String username) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(UserProfileDto.toDto(user));
+        return ResponseEntity.ok(new UserProfileDTO(user));
     }
 
     // POST /users - créer un nouvel utilisateur
     @PostMapping
-    public ResponseEntity<UserProfileDto> createUser(@RequestBody UserProfileDto userDto) {
-        User createdUser = userService.createUser(UserProfileDto.fromDto(userDto));
-        return ResponseEntity.status(201).body(UserProfileDto.toDto(createdUser));
+    public ResponseEntity<UserProfileDTO> createUser(@RequestBody UserProfileDTO userDTO) {
+        User createdUser = userService.createUser(UserProfileDTO.fromDTO(userDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserProfileDTO(createdUser));
     }
 
     @DeleteMapping("/{username}")
@@ -59,17 +58,17 @@ public class UserController {
         if (delete) {
             return ResponseEntity.ok(username + " has been deleted");
         }
-        return ResponseEntity.status(404).body(username + " has not been found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(username + " has not been found");
     }
 
     @PatchMapping("/{username}")
     public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
         try {
             User updatedUser = userService.updateUser(username, updates);
-            return ResponseEntity.status(200).body(UserProfileDto.toDto(updatedUser));
+            return ResponseEntity.ok(new UserProfileDTO(updatedUser));
         } catch (NotUniqueException e) {
-            return ResponseEntity.status(505).body(e.getMessage());
-        }catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.HTTP_VERSION_NOT_SUPPORTED).body(e.getMessage());
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }

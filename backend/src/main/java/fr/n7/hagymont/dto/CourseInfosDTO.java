@@ -21,60 +21,50 @@ public class CourseInfosDTO {
      * address},
      * coach}
      */
+
     private Long id;
     private String category;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Integer capacity;
     private Double price;
-    private PlaceDTO place;
+    private PlaceDto place;
     private String coach;
-    private Long reservationId;
 
     public CourseInfosDTO(Course course) {
         if (course == null) {
             return;
         }
-
         this.id = course.getId();
-        this.category = course.getCategory() != null ? course.getCategory().toString() : null;
+        this.category = course.getCategory().toString();
         this.startTime = course.getStartTime();
         this.endTime = course.getEndTime();
         this.capacity = course.getCapacity();
         this.price = course.getPrice();
-
-        if (course.getRoom() != null) {
-            this.place = new PlaceDTO(course.getRoom());
-        }
-
-        if (course.getCoach() != null) {
-            this.coach = course.getCoach().getUsername();
-        }
+        this.place = new PlaceDto(course.getRoom());
+        this.coach = course.getCoach().getUsername();
     }
 
-    public static Course fromDTO(CourseInfosDTO DTO) {
+    public static Course fromDto(CourseInfosDTO dto) {
         Course course = new Course();
-        course.setId(DTO.id);
-        course.setCategory(Course.Category.valueOf(DTO.category));
-        course.setStartTime(DTO.startTime);
-        course.setEndTime(DTO.endTime);
-        course.setCapacity(DTO.capacity);
-        course.setPrice(DTO.price);
+        course.setId(dto.id);
+        course.setCategory(Course.Category.valueOf(dto.category));
+        course.setStartTime(dto.startTime);
+        course.setEndTime(dto.endTime);
+        course.setCapacity(dto.capacity);
+        course.setPrice(dto.price);
         return course;
     }
 
-    public static class PlaceDTO {
-
+    public static class PlaceDto {
         private String type;
         private String club;
         private String address;
 
-        public PlaceDTO(Room room) {
-            if (room != null && room.getClub() != null) {
-                this.type = room.getType();
-                this.club = room.getClub().getName();
-                this.address = room.getClub().getAddress();
-            }
+        public PlaceDto(Room room) {
+            this.type = room.getType();
+            this.club = room.getClub().getName();
+            this.address = room.getClub().getAddress();
         }
 
         public String getType() {
@@ -100,14 +90,6 @@ public class CourseInfosDTO {
         public void setAddress(String address) {
             this.address = address;
         }
-    }
-
-    public Long getReservationId() {
-        return reservationId;
-    }
-
-    public void setReservationId(Long reservationId) {
-        this.reservationId = reservationId;
     }
 
     public Long getId() {
@@ -158,11 +140,11 @@ public class CourseInfosDTO {
         this.price = price;
     }
 
-    public PlaceDTO getPlace() {
+    public PlaceDto getPlace() {
         return place;
     }
 
-    public void setPlace(PlaceDTO place) {
+    public void setPlace(PlaceDto place) {
         this.place = place;
     }
 
