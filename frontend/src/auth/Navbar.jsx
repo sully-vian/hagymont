@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaDumbbell } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import Profile from "../assets/profile.png";
 import UserLogo from "../components/Navbar/components/UserLogo";
 
 const Navbar = () => {
@@ -38,10 +36,10 @@ const Navbar = () => {
           <div className="flex items-center space-x-8">
             <ul className="hidden md:flex space-x-6">
               {[
-                { name: "Home", path: "/home" },
-                { name: "Club", path: "/club" },
-                { name: "Courses", path: "/course"  },
-                { name: "Shop", path: "/products" }
+                { name: "HOME", path: "/home" },
+                { name: "CLUB", path: "/club" },
+                { name: "COURSE", path: "/course"  },
+                { name: "SHOP", path: "/products" }
               ].map((item) => (
                 <li
                   key={item.name}
