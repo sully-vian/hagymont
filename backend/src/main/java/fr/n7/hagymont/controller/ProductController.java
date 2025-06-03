@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,14 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.n7.hagymont.dto.ProductDto;
+import fr.n7.hagymont.dto.ProductDTO;
 import fr.n7.hagymont.model.Product;
 import fr.n7.hagymont.service.ProductService;
 
@@ -32,38 +32,44 @@ public class ProductController {
 
     // GET /products - récupérer tous les utilisateurs
     @GetMapping
-    public List<ProductDto> getAllUsers() {
-        return productService.getAllProducts().stream().map(p -> ProductDto.toDto(p)).collect(Collectors.toList());
+    public List<ProductDTO> getAllUsers() {
+        return productService.getAllProducts().stream().map(p -> new ProductDTO(p)).collect(Collectors.toList());
     }
 
     // GET /products/{id} - récupérer un produit par son id
     @GetMapping("/{id}")
-    public ProductDto getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        return product==null ? null : ProductDto.toDto(product);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new ProductDTO(product));
     }
 
-    // GET /products/name?contains={chaine} - récupérer tous les produits contenant une certaine chaine dans le name
+    // GET /products/name?contains={chaine} - récupérer tous les produits contenant
+    // une certaine chaine dans le name
     @GetMapping("/name")
-    public List<ProductDto> getProductContaining(@RequestParam Map<String, String> customQuery) {
+    public ResponseEntity<List<ProductDTO>> getProductContaining(@RequestParam Map<String, String> customQuery) {
         String chaine = customQuery.get("contains");
-        return productService.getProductsContaining(chaine).stream().map(p -> ProductDto.toDto(p)).collect(Collectors.toList());
+        List<ProductDTO> products = productService.getProductsContaining(chaine)
+                .stream()
+                .map(ProductDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(products);
     }
-
 
     // POST /products - créer un nouveau produit
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProductDto> createProduct(
-        @RequestPart("product") ProductDto productDto,
-        @RequestPart("image") MultipartFile imageFile
-    ) {
-        Product createdProduct = productService.createProduct(ProductDto.fromDto(productDto));
+    public ResponseEntity<ProductDTO> createProduct(
+            @RequestPart("product") ProductDTO productDto,
+            @RequestPart("image") MultipartFile imageFile) {
+        Product createdProduct = productService.createProduct(ProductDTO.fromDto(productDto));
 
         if (imageFile != null && !imageFile.isEmpty()) {
             productService.storeProductImage(createdProduct.getId(), imageFile);
         }
 
-        return ResponseEntity.status(201).body(ProductDto.toDto(createdProduct));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductDTO(createdProduct));
     }
 
     @DeleteMapping("/{id}")
@@ -72,20 +78,18 @@ public class ProductController {
         if (delete) {
             return ResponseEntity.ok(id + " has been deleted");
         }
-        return ResponseEntity.status(404).body(id + " has not been found");
+        return ResponseEntity.notFound().build();
     }
 
-
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProductDto> updateProduct(
-        @PathVariable Long id,
-        @RequestPart("product")Map<String, Object> updates,
-        @RequestPart(value = "image", required = false) MultipartFile imageFile
-    ){
+    public ResponseEntity<ProductDTO> updateProduct(
+            @PathVariable Long id,
+            @RequestPart("product") Map<String, Object> updates,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         Product updatedProduct = productService.updateProduct(id, updates);
         if (imageFile != null && !imageFile.isEmpty()) {
             productService.storeProductImage(updatedProduct.getId(), imageFile);
         }
-        return ResponseEntity.status(200).body(ProductDto.toDto(updatedProduct));
+        return ResponseEntity.ok(new ProductDTO(updatedProduct));
     }
 }

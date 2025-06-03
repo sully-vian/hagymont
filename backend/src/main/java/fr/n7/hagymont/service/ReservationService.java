@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import fr.n7.hagymont.dto.ReservationDto;
+import fr.n7.hagymont.dto.ReservationDTO;
 
 @Service
 public class ReservationService {
@@ -39,7 +39,7 @@ public class ReservationService {
     }
 
     // Créer une réservation
-    public Reservation createReservation(ReservationDto reservation) throws ResourceNotFoundException {
+    public Reservation createReservation(ReservationDTO reservation) throws ResourceNotFoundException {
         // Valider l'existence de l'utilisateur et du cours
         String username = reservation.getUser();
         User user = Optional.of(userRepository.findByUsername(username))

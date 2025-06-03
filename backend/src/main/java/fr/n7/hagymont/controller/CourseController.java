@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.n7.hagymont.dto.CourseInfosDto;
+import fr.n7.hagymont.dto.CourseInfosDTO;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.service.CourseService;
@@ -29,48 +30,50 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public List<CourseInfosDto> getAllCourses() {
-        return courseService.getAllCourses().stream().map(c -> CourseInfosDto.toDto(c)).collect(Collectors.toList());
+    public List<CourseInfosDTO> getAllCourses() {
+        return courseService.getAllCourses().stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList());
     }
 
     @GetMapping("/search")
-    public List<CourseInfosDto> searchCourses(@RequestParam(required = false) String query) {
-        return courseService.searchCourses(query).stream().map(c -> CourseInfosDto.toDto(c)).collect(Collectors.toList());
+    public List<CourseInfosDTO> searchCourses(@RequestParam(required = false) String query) {
+        return courseService.searchCourses(query).stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList());
     }
 
     // choose courses just for future courses
     @GetMapping("/choose")
-    public List<CourseInfosDto> chooseCourses(@RequestParam(required = false) String keyword) {
-        return courseService.chooseCourses(keyword).stream().map(c -> CourseInfosDto.toDto(c)).collect(Collectors.toList());
+    public List<CourseInfosDTO> chooseCourses(@RequestParam(required = false) String keyword) {
+        return courseService.chooseCourses(keyword).stream().map(c -> new CourseInfosDTO(c))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/by-club/{clubId}")
-    public ResponseEntity<List<CourseInfosDto>> getCoursesByClubId(@PathVariable Long clubId) {
+    public ResponseEntity<List<CourseInfosDTO>> getCoursesByClubId(@PathVariable Long clubId) {
         List<Course> courses = courseService.getCoursesByClubId(clubId);
-        return ResponseEntity.ok(courses.stream().map(c -> CourseInfosDto.toDto(c)).collect(Collectors.toList()));
+        return ResponseEntity.ok(courses.stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList()));
     }
 
     @GetMapping("/available/{category}")
     public ResponseEntity<?> getAvailableCourses(@PathVariable String category) {
         List<Course> courses = courseService.getAvailableCourses(category.toUpperCase());
         if (courses.isEmpty()) {
-            return ResponseEntity.status(404).body("No available courses found for category: " + category);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No available courses found for category: " + category);
         }
-        return ResponseEntity.ok(courses.stream().map(c -> CourseInfosDto.toDto(c)).collect(Collectors.toList()));
+        return ResponseEntity.ok(courses.stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList()));
     }
 
     @GetMapping("/coach/{coachUsername}")
-    public List<CourseInfosDto> getCoursesByCoach(@PathVariable String coachUsername) {
-        return courseService.getCoursesByCoach(coachUsername).stream().map(c -> CourseInfosDto.toDto(c)).collect(Collectors.toList());
+    public List<CourseInfosDTO> getCoursesByCoach(@PathVariable String coachUsername) {
+        return courseService.getCoursesByCoach(coachUsername).stream().map(c -> new CourseInfosDTO(c))
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody Course course) {
         try {
             Course createdCourse = courseService.createCourse(course);
-            return ResponseEntity.status(201).body(CourseInfosDto.toDto(createdCourse));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new CourseInfosDTO(createdCourse));
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(404).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 
@@ -84,9 +87,10 @@ public class CourseController {
     public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {
             Course updatedCourse = courseService.updateCourse(id, updates);
-            return updatedCourse != null ? ResponseEntity.ok(CourseInfosDto.toDto(updatedCourse)) : ResponseEntity.notFound().build();
+            return updatedCourse != null ? ResponseEntity.ok(new CourseInfosDTO(updatedCourse))
+                    : ResponseEntity.notFound().build();
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(404).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 }

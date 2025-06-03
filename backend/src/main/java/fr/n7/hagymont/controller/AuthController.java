@@ -12,8 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.n7.hagymont.config.JwtProvider;
 import fr.n7.hagymont.model.User;
-import fr.n7.hagymont.service.UserService;
 import fr.n7.hagymont.repository.UserRepository;
+import fr.n7.hagymont.service.UserService;
 import fr.n7.hagymont.service.UserServiceImplementation;
 
 @RestController
@@ -32,19 +30,18 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
     /*
-    @Autowired
-    private PasswordEncoder passwordEncoder;
- */
-   
+     * @Autowired
+     * private PasswordEncoder passwordEncoder;
+     */
+
     @Autowired
     private UserServiceImplementation customUserDetails;
-    
+
     @Autowired
     private UserService userService;
 
-
     @PostMapping("/signup")
-    public ResponseEntity<?> createUserHandler(@RequestBody Map<String, String> signupRequest)  {
+    public ResponseEntity<?> createUserHandler(@RequestBody Map<String, String> signupRequest) {
         String username = signupRequest.get("username");
         String email = signupRequest.get("email");
         String password = signupRequest.get("password");
@@ -57,16 +54,18 @@ public class AuthController {
 
         User isUsernameExist = userRepository.findByUsername(username);
         if (isUsernameExist != null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The username " + username + " is already used");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("The username " + username + " is already used");
 
         }
 
         User isEmailExist = userRepository.findByEmail(email);
         if (isEmailExist != null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(email + " is already associated with an account");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(email + " is already associated with an account");
 
         }
-        //TODO verifier email
+        // TODO verifier email
         User createdUser = new User();
         createdUser.setUsername(username);
         createdUser.setEmail(email);
@@ -78,22 +77,21 @@ public class AuthController {
         createdUser.setPhone(phone);
         createdUser.setGender(User.UserGender.valueOf(gender));
 
-        if (role!="extern"){
+        if (role != "extern") {
             createdUser.setCardStart(LocalDate.now());
-            //Par default 1 mois d'abonnement
+            // Par default 1 mois d'abonnement
             createdUser.setCardEnd(LocalDate.now().plusMonths(1));
-        }else{
-            //Pas d'abonnement
+        } else {
+            // Pas d'abonnement
             createdUser.setCardStart(null);
             createdUser.setCardEnd(null);
         }
-        
+
         User savedUser = userRepository.save(createdUser);
-          userRepository.save(savedUser);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username,password);
+        userRepository.save(savedUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = JwtProvider.generateToken(authentication);
-
 
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(token);
@@ -104,53 +102,50 @@ public class AuthController {
 
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> signin(@RequestBody Map<String, String> loginRequest) {
         String username = loginRequest.get("username");
         String password = loginRequest.get("password");
 
-        System.out.println(username+"-------"+password);
-        
-        Authentication authentication = authenticate(username,password);
+        System.out.println(username + "-------" + password);
+
+        Authentication authentication = authenticate(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         System.out.println(authentication);
         String token = JwtProvider.generateToken(authentication);
         AuthResponse authResponse = new AuthResponse();
         System.out.println(token);
-        
+
         String role = userService.getUserByUsername(username).getType().toString();
         authResponse.setMessage("Login success");
         authResponse.setJwt(token);
         authResponse.setRole(role);
         authResponse.setStatus(true);
 
-        return new ResponseEntity<>(authResponse,HttpStatus.OK);
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
-
-
 
     private Authentication authenticate(String username, String password) {
 
-        System.out.println(username+"---++----"+password);
+        System.out.println(username + "---++----" + password);
 
         UserDetails userDetails = customUserDetails.loadUserByUsername(username);
 
-        System.out.println("Sig in in user details"+ userDetails);
+        System.out.println("Sig in in user details" + userDetails);
 
-        if(userDetails == null) {
+        if (userDetails == null) {
             System.out.println("Sign in details - null" + userDetails);
 
             throw new BadCredentialsException("The username doesn't exist");
         }
-        //if(!passwordEncoder.matches(password,userDetails.getPassword())) {
-        if(!password.equals(userDetails.getPassword())) {
-            System.out.println("Sign in userDetails - password mismatch"+userDetails);
+        // if(!passwordEncoder.matches(password,userDetails.getPassword())) {
+        if (!password.equals(userDetails.getPassword())) {
+            System.out.println("Sign in userDetails - password mismatch" + userDetails);
 
             throw new BadCredentialsException("Invalid password");
 
         }
-        return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
     }
 

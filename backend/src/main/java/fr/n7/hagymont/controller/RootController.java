@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootController {
 
-    private final String WELCOME_MESSAGE = "Welcome to the Hagymont API!";
+    private final String WELCOME_MESSAGE = "Welcome to the Hagymont API! You can find the API's documentation at /docs";
 
     // Pour tout type de requête HTTP, afficher le message de bienvenue
     @RequestMapping("/")

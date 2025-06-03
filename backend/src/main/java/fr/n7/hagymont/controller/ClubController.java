@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.n7.hagymont.dto.ClubInfosDto;
+import fr.n7.hagymont.dto.ClubInfosDTO;
 import fr.n7.hagymont.model.Club;
 import fr.n7.hagymont.service.ClubService;
 
@@ -28,42 +29,55 @@ public class ClubController {
     private ClubService clubService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClubInfosDto> getClub(@PathVariable("id") Long clubId) {
-        Club club = clubService.getClubById(clubId);
-        return club != null ? ResponseEntity.ok(ClubInfosDto.toDto(club)) : ResponseEntity.notFound().build();
+    public ResponseEntity<ClubInfosDTO> getClub(@PathVariable Long id) {
+        Club club = clubService.getClubById(id);
+        if (club == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new ClubInfosDTO(club));
     }
 
     @GetMapping
-    public List<ClubInfosDto> getAllClubs(
+    public ResponseEntity<List<ClubInfosDTO>> getAllClubs(
             @RequestParam(required = false) String addressFilter) {
-        return clubService.getAllClubs(addressFilter).stream().map(c -> ClubInfosDto.toDto(c)).collect(Collectors.toList());
+        List<Club> clubs = clubService.getAllClubs(addressFilter);
+        List<ClubInfosDTO> clubInfos = clubs.stream()
+                .map(ClubInfosDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(clubInfos);
     }
 
     @GetMapping("/search")
-    public List<ClubInfosDto> searchClubs(@RequestParam(required = false) String query) {
-        return clubService.searchClubs(query).stream().map(c -> ClubInfosDto.toDto(c)).collect(Collectors.toList());
+    public ResponseEntity<List<ClubInfosDTO>> searchClubs(@RequestParam(required = false) String query) {
+        List<Club> clubs = clubService.searchClubs(query);
+        List<ClubInfosDTO> clubInfos = clubs.stream()
+                .map(ClubInfosDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(clubInfos);
     }
 
     @PostMapping
-    public ResponseEntity<ClubInfosDto> createClub(@RequestBody ClubInfosDto club) {
-        Club createdClub = clubService.createClub(ClubInfosDto.fromDto(club));
-        return ResponseEntity.status(201).body(ClubInfosDto.toDto(createdClub));
+    public ResponseEntity<ClubInfosDTO> createClub(@RequestBody ClubInfosDTO club) {
+        Club createdClub = clubService.createClub(ClubInfosDTO.fromDto(club));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ClubInfosDTO(createdClub));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClub(@PathVariable("id") Long clubId) {
-        return clubService.deleteClub(clubId)
-                ? ResponseEntity.ok("Club deleted")
-                : ResponseEntity.notFound().build();
+    public ResponseEntity<String> deleteClub(@PathVariable Long id) {
+        if (clubService.deleteClub(id)) {
+            return ResponseEntity.ok("Club deleted");
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ClubInfosDto> updateClub(
-            @PathVariable("id") Long clubId,
+    public ResponseEntity<ClubInfosDTO> updateClub(
+            @PathVariable Long id,
             @RequestBody Map<String, Object> updates) {
-        Club updatedClub = clubService.updateClub(clubId, updates);
-        return updatedClub != null
-                ? ResponseEntity.ok(ClubInfosDto.toDto(updatedClub))
-                : ResponseEntity.notFound().build();
+        Club updatedClub = clubService.updateClub(id, updates);
+        if (updatedClub == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new ClubInfosDTO(updatedClub));
     }
 }
