@@ -12,15 +12,13 @@ import Club from './pages/Club';
 import Course from './pages/Course';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Reserv from './reservation/Reserve/Reserve';
+import Reservation from './reservations/Reservation';
+import ProductEdit from './shop/components/ProductEdit';
 import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
-import ProductEdit from './shop/components/ProductEdit';
 import AdminRoute from './utils/AdminRoute';
-import Reservation from './reservations/Reservation';
-
-
-
 function App() {
   return (
     <ErrorBoundary>
@@ -35,8 +33,9 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/profile" element={<Profile />} />
 
-        {/* Club */}
+          <Route path="/reservation/:courseId" element={<Reserv />} />
 
+        {/* Club */}
         <Route path="/club" element={<Club />} />
 
         {/* Course */}

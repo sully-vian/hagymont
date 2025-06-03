@@ -10,6 +10,7 @@ import fr.n7.hagymont.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class ReservationService {
         // Valider l'existence de l'utilisateur et du cours
         String username = reservation.getUser();
         User user = Optional.of(userRepository.findByUsername(username))
-                        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Long courseId = reservation.getCourse().getId();
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
@@ -62,15 +63,27 @@ public class ReservationService {
         // Enregistrer la réservation
         createdReservation.setUser(user);
         createdReservation.setCourse(course);
+        createdReservation.setStatus(reservation.getStatus());
+        createdReservation.setNumParkingSpaces(0);// Set default parking spaces to 0 or adjust as needed
+        createdReservation.setDate(java.time.LocalDate.now());
         return reservationRepository.save(createdReservation);
     }
 
     // Supprimer une réservation
+    @Transactional
     public boolean deleteReservation(Long id) {
-        if (reservationRepository.existsById(id)) {
-            reservationRepository.deleteById(id);
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if (optionalReservation.isPresent()) {
+            Reservation reservation = optionalReservation.get();
+            Course course = reservation.getCourse();
+            course.setCapacity(course.getCapacity() + 1); // recover course capacity
+
+            reservationRepository.delete(reservation);
+            courseRepository.save(course);
+
             return true;
         }
         return false;
     }
+
 }

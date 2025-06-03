@@ -2,6 +2,7 @@ package fr.n7.hagymont.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,48 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.n7.hagymont.dto.CourseInfosDto;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
+import fr.n7.hagymont.repository.CourseRepository;
 import fr.n7.hagymont.service.CourseService;
+import fr.n7.hagymont.repository.ReservationRepository;
 
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
 
+    private final CourseService courseService;
+
+    private final CourseRepository courseRepository;
+
+    private final ReservationRepository reservationRepository;
+
     @Autowired
-    private CourseService courseService;
+    public CourseController(CourseService courseService, CourseRepository courseRepository, ReservationRepository reservationRepository) {
+        this.courseService = courseService;
+        this.courseRepository = courseRepository;
+        this.reservationRepository = reservationRepository;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseInfosDto> getCourseInfos(
+            @PathVariable Long id,
+            @RequestParam(required = false) String username // 👈 可选，前端传当前用户
+    ) {
+        Optional<Course> courseOpt = courseRepository.findById(id);
+        if (courseOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Course course = courseOpt.get();
+        CourseInfosDto dto = CourseInfosDto.toDto(course);
+
+        // 如果 username 被传入，尝试查找该用户是否预约过这个课程
+        if (username != null && !username.isEmpty()) {
+            reservationRepository.findByCourseIdAndUserUsername(id, username)
+                    .ifPresent(res -> dto.setReservationId(res.getId()));
+        }
+
+        return ResponseEntity.ok(dto);
+    }
 
     @GetMapping
     public List<CourseInfosDto> getAllCourses() {

@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+// Reservation.jsx
+import apiService from '../../utils/APIService.jsx';
+
+
+
+
 import {
   FaCalendarAlt,
   FaClock,
@@ -9,11 +16,14 @@ import {
   FaParking,
   FaUser
 } from "react-icons/fa";
-import apiService from "../../utils/APIService";
+
+
+
 
 const ClubCourses = ({ clubId, onBack }) => {
   const [courses, setCourses] = useState([]);
   const [clubInfo, setClubInfo] = useState(null);
+  const navigate = useNavigate();
 
   // Format course type for display
   const formatCourseType = (type) => {
@@ -39,8 +49,8 @@ const ClubCourses = ({ clubId, onBack }) => {
           ...course,
           startTime: course.startTime, 
           endTime: course.endTime,
-          coachUsername: course.coachUsername || "Unknown", 
-          roomType: course.room?.type || "Unknown" 
+          coachUsername: course.coach|| "Unknown", 
+          roomType: course.place?.type || "Unknown" 
         }));
         
         setCourses(processedCourses);
@@ -90,6 +100,8 @@ const ClubCourses = ({ clubId, onBack }) => {
       >
         ← Back to Club List
       </button>
+
+
 
       {/* Club info */}
       {clubInfo && (
@@ -156,6 +168,16 @@ const ClubCourses = ({ clubId, onBack }) => {
                 <FaEuroSign className="w-5 h-5 text-green-600" />
                 {course.price != null ? `${course.price.toFixed(2)} €` : "N/A"}
               </p>
+
+              {/* Reserve button */}
+              <div className="mt-4 text-right">
+                  <button
+                  className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition duration-200"
+                  onClick={() => navigate(`/reservation/${course.id}`)}
+                  >
+                  Reserve
+                </button>
+            </div>
             </div>
           ))}
         </div>
