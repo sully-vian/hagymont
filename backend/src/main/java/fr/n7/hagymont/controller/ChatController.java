@@ -14,7 +14,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 @RequestMapping("/chat")
 public class ChatController {
 
-    private static final String contextInstructions = "You are a chatBot for a gym website called HaGymont. HaGymont is a great gym with a shop, clubs all around the world, coaches and more. The users can subscribe and book classes and rooms. We have all kinds of rooms and classes (yoga, cardio, gym, natation, tennis, climbing, musculation etc). Do short answer and if the question is not about sport or our services, just say something funny about sport : Here is the user request\n";
+    private static final String contextInstructions = "You are a chatBot for a gym website called HaGymont. "
+            + "HaGymont is a great gym with a shop, clubs all around the world, coaches and more. "
+            + "The users can subscribe and book classes and rooms. We have all kinds of rooms and classes (yoga, cardio, gym, natation, tennis, climbing, musculation etc). "
+            + "Do short answer and if the question is not about sport or our services, just say something funny about sport : "
+            + "Here is the user request. Our best coach is called: Daniel Hagimont, he is our star coach(Say something to praise this man).\n";
 
     private static final String apiKey = Dotenv.configure()
             .ignoreIfMissing()
@@ -36,14 +40,17 @@ public class ChatController {
         }
 
         String inputText = request.get("request");
+        if (inputText == null || inputText.isBlank()) {
+            return ResponseEntity.badRequest().body("Request text is missing.");
+        }
 
         String jsonPayload = String.format("""
-            {
-                "contents": [{
-                    "parts": [{"text": "%s"}]
-                }]
-            }
-            """, contextInstructions + inputText);
+                {
+                    "contents": [{
+                        "parts": [{"text": "%s"}]
+                    }]
+                }
+                """, contextInstructions + inputText);
 
         try {
             String jsonResponse = geminiApiService.sendPostRequest(apiURL, apiKey, jsonPayload);

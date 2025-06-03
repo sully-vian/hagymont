@@ -1,92 +1,116 @@
 import { useState } from 'react';
-import apiService from "../utils/APIService"
+import catImg from '../assets/cat.png';
+import apiService from "../utils/APIService";
 
-
-
-function Closed({setOpened}){
-    return (
-        <div className="fixed right-4 bottom-4">
-            <button
-                onClick={() => setOpened(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-full shadow hover:bg-blue-600"
-                >
-                💬
-            </button>
-        </div>
-        
-    )
-};
-
-function Open({setOpened}){
-    const [request, setRequest] = useState("");
-    const [response, setResponse] = useState("Hi ! I'm an assistant, ask me anything.");
-
-    const handleWrite = (e) => {
-        setRequest(e.target.value);
-    }
-
-    const handleSubmit = () => {
-        apiService.postRequest("/chat", {request})
-        .then(response => {
-            setResponse(response.data);
-        })
-        .catch(error => {
-            setResponse("Sorry, I'm having some troubles now, ask me later.");
-        });
-    }
-
-    return (
-        <div className="bg-white border border-gray-300 shadow-lg rounded-lg flex flex-col overflow-hidden">
-          {/* Header avec bouton de fermeture */}
-          <div className="flex justify-between items-center px-3 py-2 bg-blue-500 text-white">
-            <span className="text-sm font-semibold">ChatBot</span>
-            <button onClick={() => setOpened(false)} className="text-white hover:text-gray-200 text-lg font-bold">
-              &times;
-            </button>
-          </div>
-
-          {/* Contenu du bot */}
-          <div className="flex flex-col gap-2 p-2 overflow-y-auto h-48">
-            <div className="flex items-start">
-              <div className="w-8 h-8 bg-gray-300 rounded-full mr-2" /> {/* avatar bot */}
-              <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm text-gray-800">
-                <p>{response}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Entrée utilisateur */}
-          <div className="flex items-center p-2 border-t border-gray-200">
-            <input
-              type="text"
-              onChange={handleWrite}
-              onClick={() => setRequest("")}
-              value={request}
-              placeholder="Your question..."
-              className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-400"
-            />
-            <button
-              onClick={handleSubmit}
-              className="ml-2 bg-blue-500 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-600"
-            >
-              ➤
-            </button>
-          </div>
-        </div>
-    );
-
-};
-
-function ChatBot() {
-const [opened, setOpened] = useState(false);
+function Closed({ setOpened }) {
   return (
-    <div className="fixed bottom-4 right-4 w-1/6 min-w-[250px] max-w-sm">
-        {opened ? 
-            <Open setOpened={setOpened} />
-        : <Closed setOpened={setOpened} />
-        }
+    <div className="fixed right-4 bottom-4">
+      <button
+        onClick={() => setOpened(true)}
+        className="relative bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 w-14 h-14 flex items-center justify-center text-2xl"
+        aria-label="Open Chat"
+      >
+        🐱
+        <span
+          className="absolute -top-2 left-1 w-0 h-0 border-l-transparent border-r-transparent border-b-blue-500"
+          style={{
+            borderLeftWidth: "15px",
+            borderRightWidth: "15px",
+            borderBottomWidth: "21px",
+            borderStyle: "solid",
+          }}
+        ></span>
+        <span
+          className="absolute -top-2 right-1 w-0 h-0 border-l-transparent border-r-transparent border-b-blue-500"
+          style={{
+            borderLeftWidth: "15px",
+            borderRightWidth: "15px",
+            borderBottomWidth: "21px",
+            borderStyle: "solid",
+          }}
+        ></span>
+      </button>
     </div>
   );
 }
 
-export default ChatBot ;
+function Open({ setOpened }) {
+  const [request, setRequest] = useState("");
+  const [response, setResponse] = useState("Hi! I’m your assistant cat Kiki 😼. Ask me anything.");
+  const [loading, setLoading] = useState(false);
+
+  const handleWrite = (e) => setRequest(e.target.value);
+
+  //Enter: send message, Shift+Enter: new line
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!request.trim()) return;
+
+    setLoading(true);
+    apiService.postRequest("/chat", { request })
+      .then(res => setResponse(res.data))
+      .catch(() => setResponse("Sorry, I'm having some troubles now🙀,ssk me later."))
+      .finally(() => setLoading(false));
+  };
+
+  return (
+    <div className="relative bg-white border border-gray-300 shadow-lg rounded-xl flex flex-col overflow-hidden w-64 min-h-[300px] animate-fade-in">
+      <div className="flex justify-between items-center px-4 py-2 bg-blue-500 text-white rounded-t-xl">
+        <span className="text-sm font-semibold flex items-center">
+          🐾 ChatCat
+        </span>
+        <button onClick={() => setOpened(false)} className="text-white hover:text-gray-200 text-lg font-bold">
+          &times;
+        </button>
+      </div>
+
+      <div className="flex items-start p-3 border-b border-gray-200">
+        <img
+          src={catImg}
+          alt="Cat Avatar"
+          className="w-12 h-12 rounded-full mr-3 object-cover"
+        />
+        <div className="bg-gray-100 rounded-lg p-3 max-w-xs transition-all duration-300 ease-in-out">
+          <p className="text-gray-800 text-sm whitespace-pre-wrap break-words">
+            {loading ? "Kiki is typing... 🐾🐾🐾" : response}
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center p-3 border-t border-gray-200">
+        <textarea
+          rows={1}
+          onChange={handleWrite}
+          onKeyDown={handleKeyDown}
+          value={request}
+          placeholder="Your question..."
+          className="flex-1 border border-gray-300 rounded-md px-3 py-1 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-blue-400"
+        />
+        <button
+          onClick={handleSubmit}
+          className="ml-1 bg-blue-500 text-white text-lg px-3 py-2 rounded-md hover:bg-blue-600 transition-transform active:scale-95"
+          aria-label="Send"
+        >
+          😸
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ChatBot() {
+  const [opened, setOpened] = useState(false);
+  return (
+    <div className="fixed bottom-4 right-4 w-64 min-w-[250px] max-w-sm z-50">
+      {opened ? <Open setOpened={setOpened} /> : <Closed setOpened={setOpened} />}
+    </div>
+  );
+}
+
+export default ChatBot;
