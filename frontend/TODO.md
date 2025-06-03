@@ -29,21 +29,18 @@
 - [ ] Calendrier cours créés (coach)
 - [ ] Page creation/modification cours
 - [ ] Page réservation salle
-- [ ] Page réservation cours
+- [x] Page réservation cours
 ## General
 - [ ] Extraire composants (pour éviter répetitions)
 - [ ] Creer des thèmes ? (couleurs etc)
 - [ ] Ajouter Route userConnected (si pas connecté retour /home)
 ## ChatBot
-- [ ] Faire une card ChatBot
-- [ ] Relier chat API
-## Citation 
-- [ ] Faire page citation
-- [ ] Relier avec API
+- [x] Faire une card ChatBot
+- [x] Relier chat API
 
 # TODO in Back 
 ## DTO
- - [ ] DTO reservationSalle
+ - [x] DTO reservationSalle
  - [x] DTO reservationCours
  - [ ] Enlever anciennes anotations JSonManagedRef
 ## Security 

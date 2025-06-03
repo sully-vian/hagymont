@@ -6,11 +6,13 @@ import Banner from '../course/Banner/Banner';
 import ChooseCourse from '../course/ChooseCourse/ChooseCourse';
 import Head from '../course/Head/Head';
 import ChatBot from '../chatBot/chatBot';
+import { useNavigate } from 'react-router-dom';
 
 const Course = () => {
+  const navigate = useNavigate();
 
-  const onCourseClick = (e) => {
-    //TODO aller sur page reservation cours
+  const onCourseClick = (courseId) => {
+    navigate(`/reservation/${courseId}`);
   }
 
 

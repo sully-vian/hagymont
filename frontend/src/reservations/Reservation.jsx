@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './Calendar.css';
+import ConfirmCard from '../components/ConfirmCard'
 
 import { enUS } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
@@ -55,38 +56,50 @@ function isCancelable(startTime) {
 
 function CancelButton({ reservationId, startTime }) {
   const cancelable = isCancelable(startTime);
+  const [showConfirm, setShowCorfirm] = useState(false);
 
-  const handleCancel = () => {
+  const handleTryDelete = () => {
     if (!cancelable) {
       showToast("Cannot cancel within 24 hours of course start time", "error");
       return;
     }
+    setShowCorfirm(true)
+  }
 
-    if (window.confirm("Are you sure you want to cancel this reservation?")) {
-      apiService.deleteRequest(`/reservations/${reservationId}`)
-        .then(() => {
-          showToast("Reservation cancelled successfully");
-          setTimeout(() => window.location.reload(), 1000);
-        })
-        .catch(err => {
-          console.error(err);
-          showToast("Failed to cancel: " + err.message, "error");
-        });
-    }
+  const handleCancel = () => {
+    apiService.deleteRequest(`/reservations/${reservationId}`)
+      .then(() => {
+        showToast("Reservation cancelled successfully");
+        setTimeout(() => window.location.reload(), 1000);
+      })
+      .catch(err => {
+        console.error(err);
+        showToast("Failed to cancel: " + err.message, "error");
+      });
   };
 
   return (
-    <button
-      onClick={handleCancel}
-      className={`ml-4 px-2 py-1 text-xs rounded ${
-        cancelable
-          ? "bg-red-500 hover:bg-red-600 text-white"
-          : "bg-gray-300 text-gray-600 cursor-not-allowed"
-      }`}
-      disabled={!cancelable}
-    >
-      Cancel
-    </button>
+    <div>
+      <button
+        onClick={handleTryDelete}
+        className={`ml-4 px-2 py-1 text-xs rounded ${
+          cancelable
+            ? "bg-red-500 hover:bg-red-600 text-white"
+            : "bg-gray-300 text-gray-600 cursor-not-allowed"
+        }`}
+        disabled={!cancelable}
+      >
+        Cancel
+      </button>
+      {showConfirm && <ConfirmCard
+        message = "Are you sure you want to cancel ?"
+        onConfirm = {handleCancel}
+        onCancel = {() => setShowCorfirm(false)}
+        confirmLabel = "Yes, I'm sure"
+        cancelLabel = "Actually no" 
+      />}
+    </div>
+    
   );
 }
 
