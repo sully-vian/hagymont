@@ -7,6 +7,7 @@ import Footer from '../club/Footer/Footer';
 import Head from '../club/Head/Head';
 import Navbar from '../components/Navbar/Navbar';
 import OurServices from '../club/OurServices/OurServices';
+import ChatBot from '../chatBot/chatBot';
 
 const Club = () => {
   const [selectedClubId, setSelectedClubId] = useState(null);
@@ -23,6 +24,7 @@ const Club = () => {
    return (
     <div className="relative min-h-screen">
       <Background />
+      <ChatBot/>
       <div className="relative z-10">
         <Navbar />
         <Head />

@@ -5,6 +5,7 @@ import Background from '../course/Background/Background';
 import Banner from '../course/Banner/Banner';
 import ChooseCourse from '../course/ChooseCourse/ChooseCourse';
 import Head from '../course/Head/Head';
+import ChatBot from '../chatBot/chatBot';
 
 const Course = () => {
 
@@ -16,6 +17,7 @@ const Course = () => {
    return (
     <div className="relative min-h-screen">
       <Background />
+      <ChatBot/>
       <div className="relative z-10">
         <Navbar />
         <Head />

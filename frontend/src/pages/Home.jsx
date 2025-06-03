@@ -1,3 +1,4 @@
+import ChatBot from '../chatBot/chatBot';
 import Banner from '../components/Banner/Banner';
 import Coach from '../components/Coach/Coach';
 import Footer from '../components/Footer/Footer';
@@ -31,6 +32,7 @@ const Home = () => {
     <div className="app-container">
       <Navbar />
       <Hero />
+      <ChatBot/>
 
       {/* Membership Section */}
       <div id="membership">

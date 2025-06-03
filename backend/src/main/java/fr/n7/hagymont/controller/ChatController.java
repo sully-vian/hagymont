@@ -1,0 +1,54 @@
+package fr.n7.hagymont.controller;
+
+import java.io.IOException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.n7.hagymont.dto.ClubInfosDto;
+import fr.n7.hagymont.model.Club;
+import fr.n7.hagymont.service.GeminiApiService;
+import io.github.cdimascio.dotenv.Dotenv;
+
+@RestController
+@RequestMapping("/chat")
+public class ChatController {
+    private static final String contextInstructions = "You are a chatBot for a gym website called HaGymont. HaGymont is a great gym with a shop, clubs all around the world, coaches and more. The users can subscribe and book classes and rooms. We have all kinds of rooms and classes (yoga, cardio, gym, natation, tennis, climbing, musculation etc). Do short answer and if the question is not about sport or our services, just say something funny about sport : Here is the user request\n";
+    private static final String apiURL = """
+            https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY
+            """.strip();
+    private static final String apiKey = Dotenv.load().get("GEMINI_API_KEY");
+
+    @Autowired
+    private GeminiApiService geminiApiService;
+
+    @PostMapping()
+    public ResponseEntity<String> getResponse(@RequestBody Map<String, String> request) {
+        String inputText = request.get("request");
+
+        String jsonPayload = String.format("""
+                {
+                    "contents": [{
+                        "parts": [{"text": "%s"}]
+                    }]
+                }
+                """, contextInstructions + request);
+
+        
+        try {
+            String jsonResponse = geminiApiService.sendPostRequest(apiURL, apiKey, jsonPayload);String outputText = geminiApiService.extractTextFromResponse(jsonResponse);
+            return ResponseEntity.ok(outputText);
+        } catch (IOException ex) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+}
