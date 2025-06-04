@@ -7,12 +7,12 @@ function Closed({ setOpened }) {
     <div className="fixed right-4 bottom-4">
       <button
         onClick={() => setOpened(true)}
-        className="relative bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 w-14 h-14 flex items-center justify-center text-2xl"
+        className="relative group inline-block bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 w-14 h-14 flex items-center justify-center text-2xl group inline-block"
         aria-label="Open Chat"
       >
         🐱
         <span
-          className="absolute -top-2 left-1 w-0 h-0 border-l-transparent border-r-transparent border-b-blue-500"
+          className="absolute -top-2 left-1 w-0 h-0 border-l-transparent border-r-transparent border-b-blue-500 group-hover:border-b-blue-600"
           style={{
             borderLeftWidth: "15px",
             borderRightWidth: "15px",
@@ -21,7 +21,7 @@ function Closed({ setOpened }) {
           }}
         ></span>
         <span
-          className="absolute -top-2 right-1 w-0 h-0 border-l-transparent border-r-transparent border-b-blue-500"
+          className="absolute -top-2 right-1 w-0 h-0 border-l-transparent border-r-transparent border-b-blue-500 group-hover:border-b-blue-600"
           style={{
             borderLeftWidth: "15px",
             borderRightWidth: "15px",
@@ -76,7 +76,7 @@ function Open({ setOpened }) {
           alt="Cat Avatar"
           className="w-12 h-12 rounded-full mr-3 object-cover"
         />
-        <div className="bg-gray-100 rounded-lg p-3 max-w-xs transition-all duration-300 ease-in-out">
+        <div className="bg-gray-100 rounded-lg p-3 max-w-xs max-h-40 overflow-y-auto transition-all duration-300 ease-in-out">
           <p className="text-gray-800 text-sm whitespace-pre-wrap break-words">
             {loading ? "Kiki is typing... 🐾🐾🐾" : response}
           </p>
