@@ -1,7 +1,5 @@
 package fr.n7.hagymont.service;
 
-import java.util.stream.Collectors;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -35,25 +33,24 @@ public class CourseService {
     }
 
     public List<Course> getCoursesByClubId(Long clubId) {
-        return courseRepository.findByClubId(clubId);
+        return courseRepository.findByRoomClubId(clubId);
     }
 
-    // Search courses, keyword matching for category/coach/room 
+    // Search courses, keyword matching for category/coach/room
     public List<Course> searchCourses(String query) {
         if (query == null || query.trim().isEmpty()) {
             return courseRepository.findAll();
         }
         String lowerQuery = query.toLowerCase().trim();
         return courseRepository.findAll().stream()
-                .filter(course
-                        -> course.getCategory().name().toLowerCase().contains(lowerQuery)
-                || (course.getCoach() != null && course.getCoach().getUsername().toLowerCase().contains(lowerQuery))
-                || (course.getRoom() != null && course.getRoom().getType().toLowerCase().contains(lowerQuery))
-                )
+                .filter(course -> course.getCategory().name().toLowerCase().contains(lowerQuery)
+                        || (course.getCoach() != null
+                                && course.getCoach().getUsername().toLowerCase().contains(lowerQuery))
+                        || (course.getRoom() != null && course.getRoom().getType().toLowerCase().contains(lowerQuery)))
                 .toList();
     }
 
-// Filter future courses
+    // Filter future courses
     public List<Course> chooseCourses(String keyword) {
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
         return searchCourses(keyword).stream()
@@ -77,7 +74,7 @@ public class CourseService {
     }
 
     public Optional<Course> getCourseById(Long id) {
-        return courseRepository.findCourseWithDetailsById(id);
+        return courseRepository.findById(id);
     }
 
     // POST /courses - Coach crée un nouveau cours

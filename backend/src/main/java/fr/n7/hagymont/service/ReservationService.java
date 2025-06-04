@@ -1,21 +1,22 @@
 package fr.n7.hagymont.service;
 
-import fr.n7.hagymont.model.Reservation;
-import fr.n7.hagymont.model.User;
-import fr.n7.hagymont.model.Course;
-import fr.n7.hagymont.repository.ReservationRepository;
-import fr.n7.hagymont.repository.UserRepository;
-import fr.n7.hagymont.repository.CourseRepository;
-import fr.n7.hagymont.exception.ResourceNotFoundException;
-import fr.n7.hagymont.dto.ReservationDTO;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import fr.n7.hagymont.dto.ReservationDTO;
+import fr.n7.hagymont.exception.DuplicateReservationException;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
+import fr.n7.hagymont.model.Course;
+import fr.n7.hagymont.model.Reservation;
+import fr.n7.hagymont.model.User;
+import fr.n7.hagymont.repository.CourseRepository;
+import fr.n7.hagymont.repository.ReservationRepository;
+import fr.n7.hagymont.repository.UserRepository;
 
 @Service
 public class ReservationService {
@@ -52,8 +53,9 @@ public class ReservationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         // 验证是否重复预约
-        if (reservationRepository.existsByUserAndCourse(user, course)) {
-            throw new IllegalStateException("Reservation already exists");
+        Optional<Reservation> existingReservation = reservationRepository.findByUserAndCourse(user, course);
+        if (existingReservation.isPresent()) {
+            throw new DuplicateReservationException(existingReservation.get());
         }
 
         // 检查课程容量

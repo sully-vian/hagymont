@@ -13,9 +13,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByUser_Username(String username);
 
-    Optional<Reservation> findByCourseIdAndUserUsername(Long courseId, String username);
+    Optional<Reservation> findByUserAndCourse(User user, Course course);
 
-    List<Reservation> findByid(Long id);
+    Optional<Reservation> findById(Long id);
 
     List<Reservation> findByStatus(String status);
 

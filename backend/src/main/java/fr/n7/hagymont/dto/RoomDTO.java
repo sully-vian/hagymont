@@ -3,7 +3,6 @@ package fr.n7.hagymont.dto;
 import fr.n7.hagymont.model.Club;
 import fr.n7.hagymont.model.Room;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class RoomDTO {

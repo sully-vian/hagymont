@@ -33,8 +33,11 @@ public class UserController {
     // GET /users - récupérer tous les utilisateurs
     @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system.")
     @GetMapping
-    public List<UserProfileDTO> getAllUsers() {
-        return userService.getAllUsers().stream().map(u -> new UserProfileDTO(u)).collect(Collectors.toList());
+    public ResponseEntity<List<UserProfileDTO>> getAllUsers() {
+        List<User> userList = userService.getAllUsers();
+        List<UserProfileDTO> userDTOs = userList.stream()
+                .map(UserProfileDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
     }
 
     // GET /users/{username} - récupérer un utilisateur par son nom d'utilisateur
@@ -73,7 +76,8 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
         try {
             User updatedUser = userService.updateUser(username, updates);
-            return ResponseEntity.ok(new UserProfileDTO(updatedUser));
+            UserProfileDTO userProfileDTO = new UserProfileDTO(updatedUser);
+            return ResponseEntity.ok(userProfileDTO);
         } catch (NotUniqueException e) {
             return ResponseEntity.status(HttpStatus.HTTP_VERSION_NOT_SUPPORTED).body(e.getMessage());
         } catch (ResourceNotFoundException e) {

@@ -3,6 +3,7 @@ package fr.n7.hagymont.controller;
 import fr.n7.hagymont.model.Reservation;
 import fr.n7.hagymont.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
+import fr.n7.hagymont.exception.DuplicateReservationException;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.dto.ReservationDTO;
 
@@ -24,21 +25,21 @@ public class ReservationController {
     // Get all reservations
     @Operation(summary = "Get all reservations", description = "Retrieve a list of all reservations.")
     @GetMapping
-    public List<ReservationDTO> getAllReservations() {
-        return reservationService.getAllReservations()
-                .stream()
-                .map(ReservationDTO::new)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ReservationDTO>> getAllReservations() {
+        List<Reservation> reservations = reservationService.getAllReservations();
+        List<ReservationDTO> reservationDTOs = reservations.stream()
+                .map(ReservationDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(reservationDTOs);
     }
 
     // Get all reservations for a specific user
     @Operation(summary = "Get reservations by user", description = "Retrieve all reservations made by a specific user.")
     @GetMapping("/user/{username}")
-    public List<ReservationDTO> getReservationsByUser(@PathVariable String username) {
-        return reservationService.getReservationsByUser(username)
-                .stream()
-                .map(ReservationDTO::new)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ReservationDTO>> getReservationsByUser(@PathVariable String username) {
+        List<Reservation> reservations = reservationService.getReservationsByUser(username);
+        List<ReservationDTO> reservationDTOs = reservations.stream()
+                .map(ReservationDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(reservationDTOs);
     }
 
     // Create a reservation
@@ -48,8 +49,10 @@ public class ReservationController {
         try {
             Reservation createdReservation = reservationService.createReservation(reservationDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(new ReservationDTO(createdReservation));
-        } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (DuplicateReservationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getReservation());
         }
     }
 
@@ -58,8 +61,9 @@ public class ReservationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteReservation(@PathVariable Long id) {
         boolean deleted = reservationService.deleteReservation(id);
-        return deleted
-                ? ResponseEntity.ok("Reservation canceled")
-                : ResponseEntity.notFound().build();
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Reservation canceled");
     }
 }

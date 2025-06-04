@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import fr.n7.hagymont.model.Product;
-import fr.n7.hagymont.model.Product.Category;
 import fr.n7.hagymont.repository.ProductRepository;
 
 @Service
@@ -39,7 +38,7 @@ public class ProductService {
         return productRepository.findByNameContaining(name);
     }
 
-    //Pour les admins
+    // Pour les admins
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
@@ -88,10 +87,9 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-
     public void storeProductImage(Long id, MultipartFile imageFile) {
 
-         try {
+        try {
             String filename = "product" + id + ".png";
             Path uploadPath = Paths.get(images_path);
             System.out.println(uploadPath.toAbsolutePath());
@@ -106,6 +104,5 @@ public class ProductService {
             throw new RuntimeException("Failed to store image file", e);
         }
     }
-
 
 }

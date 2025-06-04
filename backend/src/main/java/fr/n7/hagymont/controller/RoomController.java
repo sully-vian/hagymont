@@ -2,6 +2,7 @@ package fr.n7.hagymont.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,17 +48,17 @@ public class RoomController {
             @RequestParam(required = false) String typeFilter) {
         List<Room> allRooms = roomService.getAllRooms(typeFilter);
         List<RoomDTO> roomDTOs = allRooms.stream()
-                .map(RoomDTO::new)
-                .toList();
+                .map(RoomDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok(roomDTOs);
     }
 
     // POST /rooms - créer une nouvelle chambre (admin)
     @Operation(summary = "Create a new room", description = "Create a new room with the provided details.")
     @PostMapping
-    public ResponseEntity<Room> createRoom(@RequestBody Room room) {
+    public ResponseEntity<RoomDTO> createRoom(@RequestBody Room room) {
         Room createdRoom = roomService.createRoom(room);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRoom);
+        RoomDTO roomDTO = new RoomDTO(createdRoom);
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
     }
 
     // DELETE /rooms/{id} - Supprimer la chambre (admin)
@@ -77,7 +78,8 @@ public class RoomController {
             @RequestBody Map<String, Object> updates) {
         try {
             Room updatedRoom = roomService.updateRoom(id, updates);
-            return ResponseEntity.ok(updatedRoom);
+            RoomDTO roomDTO = new RoomDTO(updatedRoom);
+            return ResponseEntity.ok(roomDTO);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }

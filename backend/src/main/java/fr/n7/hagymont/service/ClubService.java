@@ -31,7 +31,7 @@ public class ClubService {
             return clubRepository.findAll();
         }
         String searchTerm = query.toLowerCase().trim();
-        return clubRepository.searchClubs(searchTerm);
+        return clubRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(searchTerm, searchTerm);
     }
 
     public Club createClub(Club club) {
