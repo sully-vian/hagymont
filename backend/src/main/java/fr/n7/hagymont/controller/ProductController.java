@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import fr.n7.hagymont.dto.ProductDTO;
 import fr.n7.hagymont.model.Product;
 import fr.n7.hagymont.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/products")
@@ -31,12 +32,17 @@ public class ProductController {
     private ProductService productService;
 
     // GET /products - récupérer tous les utilisateurs
+    @Operation(summary = "Get all products", description = "Retrieve a list of all products in the system.")
     @GetMapping
-    public List<ProductDTO> getAllUsers() {
-        return productService.getAllProducts().stream().map(p -> new ProductDTO(p)).collect(Collectors.toList());
+    public ResponseEntity<List<ProductDTO>> getAllUsers() {
+        List<Product> products = productService.getAllProducts();
+        List<ProductDTO> productDTOs = products.stream()
+                .map(ProductDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(productDTOs);
     }
 
     // GET /products/{id} - récupérer un produit par son id
+    @Operation(summary = "Get product by ID", description = "Retrieve a product by its ID.")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
@@ -48,6 +54,7 @@ public class ProductController {
 
     // GET /products/name?contains={chaine} - récupérer tous les produits contenant
     // une certaine chaine dans le name
+    @Operation(summary = "Get products containing a string in their name", description = "Retrieve products whose names contain a specific substring.")
     @GetMapping("/name")
     public ResponseEntity<List<ProductDTO>> getProductContaining(@RequestParam Map<String, String> customQuery) {
         String chaine = customQuery.get("contains");
@@ -59,6 +66,7 @@ public class ProductController {
     }
 
     // POST /products - créer un nouveau produit
+    @Operation(summary = "Create a new product", description = "Create a new product with the provided details.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDTO> createProduct(
             @RequestPart("product") ProductDTO productDTO,
@@ -72,6 +80,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ProductDTO(createdProduct));
     }
 
+    // DELETE /products/{id} - supprimer un produit par son id
+    @Operation(summary = "Delete product by ID", description = "Delete a product by its ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         boolean delete = productService.deleteProductById(id);
@@ -81,6 +91,8 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
+    // PATCH /products/{id} - mettre à jour un produit par son id
+    @Operation(summary = "Update product by ID", description = "Update product details by its ID.")
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDTO> updateProduct(
             @PathVariable Long id,

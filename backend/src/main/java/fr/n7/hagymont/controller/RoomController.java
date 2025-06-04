@@ -20,6 +20,7 @@ import fr.n7.hagymont.dto.RoomDTO;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Room;
 import fr.n7.hagymont.service.RoomService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/rooms")
@@ -29,6 +30,7 @@ public class RoomController {
     private RoomService roomService;
 
     // GET /rooms/{id} - User consulte une salle par son ID
+    @Operation(summary = "Get room by ID", description = "Retrieve a room by its ID.")
     @GetMapping("/{id}")
     public ResponseEntity<RoomDTO> getRoomById(@PathVariable Long id) {
         Room room = roomService.getRoomById(id);
@@ -39,6 +41,7 @@ public class RoomController {
     }
 
     // GET /rooms - User consulte toutes les salles existantes (filtre)
+    @Operation(summary = "Get all rooms", description = "Retrieve all rooms with optional type filter.")
     @GetMapping
     public ResponseEntity<List<RoomDTO>> getAllRooms(
             @RequestParam(required = false) String typeFilter) {
@@ -50,6 +53,7 @@ public class RoomController {
     }
 
     // POST /rooms - créer une nouvelle chambre (admin)
+    @Operation(summary = "Create a new room", description = "Create a new room with the provided details.")
     @PostMapping
     public ResponseEntity<Room> createRoom(@RequestBody Room room) {
         Room createdRoom = roomService.createRoom(room);
@@ -57,6 +61,7 @@ public class RoomController {
     }
 
     // DELETE /rooms/{id} - Supprimer la chambre (admin)
+    @Operation(summary = "Delete a room", description = "Delete a room by its ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteRoom(@PathVariable Long id) {
         boolean deleted = roomService.deleteRoom(id);
@@ -65,6 +70,7 @@ public class RoomController {
     }
 
     // PATCH /rooms/{id} - Modifier l'info (admin)
+    @Operation(summary = "Update room details", description = "Update the details of a room by its ID.")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateRoom(
             @PathVariable Long id,

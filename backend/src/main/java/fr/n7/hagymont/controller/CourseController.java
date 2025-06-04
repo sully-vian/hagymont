@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.n7.hagymont.dto.CourseInfosDTO;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
-import fr.n7.hagymont.repository.CourseRepository;
 import fr.n7.hagymont.service.CourseService;
 
 @RestController
@@ -30,44 +29,66 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
-    private CourseRepository courseRepository;
 
     @GetMapping
-    public List<CourseInfosDTO> getAllCourses() {
-        return courseService.getAllCourses().stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList());
+    public ResponseEntity<List<CourseInfosDTO>> getAllCourses() {
+        List<Course> courses = courseService.getAllCourses();
+        List<CourseInfosDTO> courseInfos = courses.stream()
+                .map(CourseInfosDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(courseInfos);
     }
 
     @GetMapping("/search")
-    public List<CourseInfosDTO> searchCourses(@RequestParam(required = false) String query) {
-        return courseService.searchCourses(query).stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList());
+    public ResponseEntity<List<CourseInfosDTO>> searchCourses(@RequestParam(required = false) String query) {
+        List<Course> courses = courseService.searchCourses(query);
+        if (courses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<CourseInfosDTO> courseInfos = courses.stream()
+                .map(CourseInfosDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(courseInfos);
     }
 
     // choose courses just for future courses
     @GetMapping("/choose")
-    public List<CourseInfosDTO> chooseCourses(@RequestParam(required = false) String keyword) {
-        return courseService.chooseCourses(keyword).stream().map(c -> new CourseInfosDTO(c))
-                .collect(Collectors.toList());
+    public ResponseEntity<List<CourseInfosDTO>> chooseCourses(@RequestParam(required = false) String keyword) {
+        List<Course> courses = courseService.chooseCourses(keyword);
+        if (courses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<CourseInfosDTO> courseInfos = courses.stream()
+                .map(CourseInfosDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(courseInfos);
     }
 
     @GetMapping("/by-club/{clubId}")
     public ResponseEntity<List<CourseInfosDTO>> getCoursesByClubId(@PathVariable Long clubId) {
         List<Course> courses = courseService.getCoursesByClubId(clubId);
-        return ResponseEntity.ok(courses.stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList()));
+        if (courses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<CourseInfosDTO> courseInfos = courses.stream()
+                .map(CourseInfosDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(courseInfos);
     }
 
     @GetMapping("/available/{category}")
-    public ResponseEntity<?> getAvailableCourses(@PathVariable String category) {
+    public ResponseEntity<List<CourseInfosDTO>> getAvailableCourses(@PathVariable String category) {
         List<Course> courses = courseService.getAvailableCourses(category.toUpperCase());
         if (courses.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No available courses found for category: " + category);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(courses.stream().map(c -> new CourseInfosDTO(c)).collect(Collectors.toList()));
+        List<CourseInfosDTO> courseInfos = courses.stream()
+                .map(CourseInfosDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(courseInfos);
     }
 
     @GetMapping("/coach/{coachUsername}")
-    public List<CourseInfosDTO> getCoursesByCoach(@PathVariable String coachUsername) {
-        return courseService.getCoursesByCoach(coachUsername).stream().map(c -> new CourseInfosDTO(c))
-                .collect(Collectors.toList());
+    public ResponseEntity<List<CourseInfosDTO>> getCoursesByCoach(@PathVariable String coachUsername) {
+        List<Course> courses = courseService.getCoursesByCoach(coachUsername);
+        List<CourseInfosDTO> courseInfos = courses.stream()
+                .map(CourseInfosDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(courseInfos);
     }
 
     @PostMapping
@@ -82,8 +103,10 @@ public class CourseController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
-        boolean deleted = courseService.deleteCourse(id);
-        return deleted ? ResponseEntity.ok("Course deleted") : ResponseEntity.notFound().build();
+        if (!courseService.deleteCourse(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Course deleted");
     }
 
     @GetMapping("/{id}")

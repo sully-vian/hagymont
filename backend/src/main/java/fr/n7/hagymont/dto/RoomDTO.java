@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class RoomDTO {
 
     private Long id;
     private String type;
     private ClubDTO club;
+
+    public RoomDTO() {
+    }
 
     public RoomDTO(Room room) {
         if (room == null) {
@@ -28,6 +30,9 @@ public class RoomDTO {
         private Long id;
         private String name;
         private String address;
+
+        public ClubDTO() {
+        }
 
         public ClubDTO(Club club) {
             if (club == null) {

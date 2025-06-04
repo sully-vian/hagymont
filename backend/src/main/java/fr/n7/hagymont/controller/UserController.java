@@ -21,6 +21,7 @@ import fr.n7.hagymont.exception.NotUniqueException;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/users")
@@ -30,12 +31,14 @@ public class UserController {
     private UserService userService;
 
     // GET /users - récupérer tous les utilisateurs
+    @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system.")
     @GetMapping
     public List<UserProfileDTO> getAllUsers() {
         return userService.getAllUsers().stream().map(u -> new UserProfileDTO(u)).collect(Collectors.toList());
     }
 
     // GET /users/{username} - récupérer un utilisateur par son nom d'utilisateur
+    @Operation(summary = "Get user by username", description = "Retrieve a user profile by username.")
     @GetMapping("/{username}")
     public ResponseEntity<UserProfileDTO> getUser(@PathVariable String username) {
         User user = userService.getUserByUsername(username);
@@ -46,12 +49,15 @@ public class UserController {
     }
 
     // POST /users - créer un nouvel utilisateur
+    @Operation(summary = "Create a new user", description = "Create a new user with the provided details.")
     @PostMapping
     public ResponseEntity<UserProfileDTO> createUser(@RequestBody UserProfileDTO userDTO) {
         User createdUser = userService.createUser(UserProfileDTO.fromDTO(userDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserProfileDTO(createdUser));
     }
 
+    // DELETE /users/{username} - supprimer un utilisateur par son nom d'utilisateur
+    @Operation(summary = "Delete user by username", description = "Delete a user by their username.")
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
         boolean delete = userService.deleteUserByUsername(username);
@@ -61,6 +67,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(username + " has not been found");
     }
 
+    // PATCH /users/{username} - m-à-j un utilisateur par son nom d'utilisateur
+    @Operation(summary = "Update user by username", description = "Update user details by username.")
     @PatchMapping("/{username}")
     public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
         try {

@@ -25,6 +25,9 @@ public class ProductDTO {
     private String colors;
     private String category;
 
+    public ProductDTO() {
+    }
+
     public ProductDTO(Product product) {
         if (product == null) {
             return;

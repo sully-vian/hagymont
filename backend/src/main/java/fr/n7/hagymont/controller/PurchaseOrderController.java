@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.PurchaseOrder;
 import fr.n7.hagymont.service.PurchaseOrderService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/purchase_order")
@@ -23,6 +24,7 @@ public class PurchaseOrderController {
     private PurchaseOrderService purchaseOrderService;
 
     // POST /purchase-orders - Ajouter un produit au panier
+    @Operation(summary = "Add product to basket", description = "Add a product to the user's basket by creating a purchase order.")
     @PostMapping
     public ResponseEntity<?> addProductToBasket(@RequestBody PurchaseOrder purchaseOrder) {
 
@@ -35,6 +37,7 @@ public class PurchaseOrderController {
     }
 
     // Modifier la quantité d'un produit dans le panier
+    @Operation(summary = "Update product quantity in basket", description = "Update the quantity of a product in the user's basket.")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateQuantity(
             @PathVariable Long id,
@@ -49,6 +52,7 @@ public class PurchaseOrderController {
     }
 
     // Retirer un produit du panier
+    @Operation(summary = "Remove product from basket", description = "Remove a product from the user's basket by its ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeProductFromBasket(@PathVariable Long id) {
         boolean deleted = purchaseOrderService.deletePurchaseOrder(id);

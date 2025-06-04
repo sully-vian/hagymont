@@ -4,41 +4,39 @@ import java.time.LocalDateTime;
 
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.model.Reservation;
-import fr.n7.hagymont.model.Room;
 
 public class ReservationDTO {
 
-    /* Json format :
+    /*
+     * Json format :
      *
-     * {id, 
-     * category, 
-     * startTime, 
-     * endTime, 
+     * {id,
+     * category,
+     * startTime,
+     * endTime,
      * capacity,
      * price,
      * place:{type,
-     *   club, 
-     *   address},
+     * club,
+     * address},
      * coach}
      */
     private Long id;
     private String user;
-    private CourseDto course;
+    private CourseDTO course;
     private String status;
 
     public ReservationDTO() {
     }
 
-    public static ReservationDTO toDto(Reservation reservation) {
+    public ReservationDTO(Reservation reservation) {
         if (reservation == null) {
-            return null;
+            return;
         }
-        ReservationDTO dto = new ReservationDTO();
-        dto.id = reservation.getId();
-        dto.user = reservation.getUser().getUsername();
-        dto.course = new CourseDto(reservation.getCourse());
-        dto.status = reservation.getStatus().toString();
-        return dto;
+        this.id = reservation.getId();
+        this.user = reservation.getUser().getUsername();
+        this.course = new CourseDTO(reservation.getCourse());
+        this.status = reservation.getStatus().toString();
     }
 
     public static Reservation fromDto(ReservationDTO dto) {
@@ -48,17 +46,17 @@ public class ReservationDTO {
         return reservation;
     }
 
-    public static class CourseDto {
+    public static class CourseDTO {
 
         private Long id;
         private String category;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
 
-        public CourseDto() {
+        public CourseDTO() {
         }
 
-        public CourseDto(Course course) {
+        public CourseDTO(Course course) {
             this.id = course.getId();
             this.category = course.getCategory().toString();
             this.startTime = course.getStartTime();
@@ -114,11 +112,11 @@ public class ReservationDTO {
         this.user = user;
     }
 
-    public CourseDto getCourse() {
+    public CourseDTO getCourse() {
         return course;
     }
 
-    public void setCourse(CourseDto course) {
+    public void setCourse(CourseDTO course) {
         this.course = course;
     }
 

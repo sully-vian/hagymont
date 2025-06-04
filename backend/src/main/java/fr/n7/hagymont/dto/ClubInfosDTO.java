@@ -23,6 +23,9 @@ public class ClubInfosDTO {
     private String address;
     private List<RoomDTO> rooms;
 
+    public ClubInfosDTO() {
+    }
+
     public ClubInfosDTO(Club club) {
         if (club == null) {
             return;
@@ -48,6 +51,9 @@ public class ClubInfosDTO {
 
         private Long id;
         private String type;
+
+        public RoomDTO() {
+        }
 
         public RoomDTO(Long id, String type) {
             this.id = id;

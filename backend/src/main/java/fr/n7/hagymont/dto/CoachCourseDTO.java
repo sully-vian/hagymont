@@ -16,6 +16,10 @@ public class CoachCourseDTO extends CourseInfosDTO {
 
     private List<UserDTO> users;
 
+    public CoachCourseDTO() {
+        super();
+    }
+
     public CoachCourseDTO(Course course) {
         super(course);
         this.users = course.getReservations().stream()
@@ -32,6 +36,9 @@ public class CoachCourseDTO extends CourseInfosDTO {
         private String lastName;
         private User.UserGender userGender;
         private User.UserType userType;
+
+        public UserDTO() {
+        }
 
         public UserDTO(User user) {
             if (user == null) {

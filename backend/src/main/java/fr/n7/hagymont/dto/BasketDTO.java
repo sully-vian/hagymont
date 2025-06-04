@@ -30,6 +30,9 @@ public class BasketDTO {
     private String user;
     private List<PurchaseDTO> purchases;
 
+    public BasketDTO() {
+    }
+
     public BasketDTO(OrderBasket basket) {
         if (basket == null) {
             return;
@@ -95,6 +98,9 @@ public class BasketDTO {
         private Long id;
         private int quantity;
         private ProductInfosDTO product;
+
+        public PurchaseDTO() {
+        }
 
         public PurchaseDTO(Long id, int quantity, ProductInfosDTO product) {
             this.id = id;

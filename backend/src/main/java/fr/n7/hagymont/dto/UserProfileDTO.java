@@ -33,6 +33,9 @@ public class UserProfileDTO {
     private LocalDate cardStart;
     private LocalDate cardEnd;
 
+    public UserProfileDTO() {
+    }
+
     public UserProfileDTO(User user) {
         if (user == null) {
             return;

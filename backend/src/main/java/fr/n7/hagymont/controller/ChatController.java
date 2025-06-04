@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,7 @@ public class ChatController {
 
     private static final String apiURL = String.format(
             "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=%s",
-            apiKey != null ? apiKey : "missing_key"
-    );
+            apiKey != null ? apiKey : "missing_key");
 
     @Autowired
     private GeminiApiService geminiApiService;
@@ -36,7 +36,7 @@ public class ChatController {
     @PostMapping
     public ResponseEntity<String> getResponse(@RequestBody Map<String, String> request) {
         if (apiKey == null || apiKey.equals("missing_key")) {
-            return ResponseEntity.status(500).body("GEMINI_API_KEY is missing.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GEMINI_API_KEY is missing.");
         }
 
         String inputText = request.get("request");
@@ -57,7 +57,7 @@ public class ChatController {
             String outputText = geminiApiService.extractTextFromResponse(jsonResponse);
             return ResponseEntity.ok(outputText);
         } catch (IOException ex) {
-            return ResponseEntity.status(500).body("Failed to contact Gemini API.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to contact Gemini API.");
         }
     }
 }

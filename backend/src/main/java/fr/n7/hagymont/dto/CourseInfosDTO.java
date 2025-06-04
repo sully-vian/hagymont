@@ -28,8 +28,11 @@ public class CourseInfosDTO {
     private LocalDateTime endTime;
     private Integer capacity;
     private Double price;
-    private PlaceDto place;
+    private PlaceDTO place;
     private String coach;
+
+    public CourseInfosDTO() {
+    }
 
     public CourseInfosDTO(Course course) {
         if (course == null) {
@@ -41,7 +44,7 @@ public class CourseInfosDTO {
         this.endTime = course.getEndTime();
         this.capacity = course.getCapacity();
         this.price = course.getPrice();
-        this.place = new PlaceDto(course.getRoom());
+        this.place = new PlaceDTO(course.getRoom());
         this.coach = course.getCoach().getUsername();
     }
 
@@ -56,12 +59,15 @@ public class CourseInfosDTO {
         return course;
     }
 
-    public static class PlaceDto {
+    public static class PlaceDTO {
         private String type;
         private String club;
         private String address;
 
-        public PlaceDto(Room room) {
+        public PlaceDTO() {
+        }
+
+        public PlaceDTO(Room room) {
             this.type = room.getType();
             this.club = room.getClub().getName();
             this.address = room.getClub().getAddress();
@@ -140,11 +146,11 @@ public class CourseInfosDTO {
         this.price = price;
     }
 
-    public PlaceDto getPlace() {
+    public PlaceDTO getPlace() {
         return place;
     }
 
-    public void setPlace(PlaceDto place) {
+    public void setPlace(PlaceDTO place) {
         this.place = place;
     }
 
