@@ -19,6 +19,9 @@ import ProductList from './shop/ProductList';
 import ProductPage from './shop/ProductPage';
 import Shop from './shop/Shop';
 import AdminRoute from './utils/AdminRoute';
+import AuthRoute from './utils/AuthRoute';
+import CoachRoute from './utils/CoachRoute';
+import EditCourse from './reservation/EditCourse';
 function App() {
   return (
     <ErrorBoundary>
@@ -31,15 +34,27 @@ function App() {
         {/* Authentication-related routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={
+          <AuthRoute>
+            <Profile />
+          </AuthRoute>} />
 
-          <Route path="/reservation/:courseId" element={<Reserv />} />
-
+        <Route path="/reservation/:courseId" element={
+        <AuthRoute>
+          <Reserv /> 
+        </AuthRoute>} />
+        
         {/* Club */}
         <Route path="/club" element={<Club />} />
 
         {/* Course */}
-        <Route path="/course" element={<Course />} />
+        <Route path="/course" element={<Course />}/>
+        <Route path="/course/edit" element={
+            <CoachRoute>
+              <EditCourse/>
+            </CoachRoute>}
+          />
+
         
         {/* Nested routes for products */}
         <Route path="/products" element={<Shop />}>
@@ -55,15 +70,25 @@ function App() {
         </Route>
 
         {/* Nested routes for basket */}
-        <Route path="/basket" element={<Basket />}>
+        <Route path="/basket" element={
+            <AuthRoute>
+              <Basket />
+            </AuthRoute>
+            }>
           <Route index element={<BasketList />} />
           <Route path="payment" element={<Payment />} />
           <Route path="review" element={<OrderReview />} />
         </Route>
 
-        <Route path="/orders" element={<Orders/>}/>
+        <Route path="/orders" element={
+          <AuthRoute>
+            <Orders/>
+          </AuthRoute>}/>
 
-        <Route path="/calendar" element={<Reservation/>}/>
+        <Route path="/calendar" element={
+          <AuthRoute>
+            <Reservation/>
+          </AuthRoute>}/>
 
         {/* Default redirection and 404 handling */}
         <Route path="/error" element={<ErrorPage />} />

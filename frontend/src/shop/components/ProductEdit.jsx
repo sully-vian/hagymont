@@ -140,11 +140,11 @@ function ProductEdit() {
                 onChange={handleChanges}
                 className={`form-control ${errors.category ? 'is-invalid' : ''}`}
                 >
-                <option value="">-- Select --</option>
-                <option value="equipement">equipement</option>
-                <option value="clothe">clothe</option>
-                <option value="accessory">accessory</option>
-                <option value="nutrition">nutrition</option>
+                    <option value="">-- Select --</option>
+                    <option value="equipement">equipement</option>
+                    <option value="clothe">clothe</option>
+                    <option value="accessory">accessory</option>
+                    <option value="nutrition">nutrition</option>
                 </select>
                 {errors.category && <div className="invalid-feedback">{errors.category}</div>}
             </div>
