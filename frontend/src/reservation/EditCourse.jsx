@@ -105,7 +105,7 @@ function EditCourse() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Category*</label>
                     <select
                         name="category"
-                        value={courseTypes.indexOf(courseForm.category}
+                        value={courseForm.category}
                         onChange={handleChanges}
                         className={`form-control ${errors.category ? 'is-invalid' : ''}`}
                     >
