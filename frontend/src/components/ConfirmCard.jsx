@@ -8,13 +8,17 @@ function ConfirmCard({message, onConfirm, onCancel, confirmLabel = "Confirm", ca
         </p>
         <div className="flex justify-end gap-2">
           <button
-            onClick={onCancel}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel()}}
             className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
           >
             {cancelLabel}
           </button>
           <button
-            onClick={onConfirm}
+            onClick={(e) => {
+              e.stopPropagation();
+              onConfirm()}}
             className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
           >
             {confirmLabel}

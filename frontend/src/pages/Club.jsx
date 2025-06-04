@@ -24,7 +24,7 @@ const Club = () => {
    return (
     <div className="relative min-h-screen">
       <Background />
-      <ChatBot/>
+      
       <div className="relative z-10">
         <Navbar />
         <Head />

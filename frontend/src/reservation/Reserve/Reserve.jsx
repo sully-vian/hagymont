@@ -33,6 +33,7 @@ function Reserve() {
   const [showRedirectButton, setShowRedirectButton] = useState(false);
   const navigate = useNavigate();
   const username = SessionService.getUsername();
+  const isCoach = SessionService.getRole() === 'coach';
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -50,7 +51,11 @@ function Reserve() {
   }, [courseId]);
 
   const handleReserve = async () => {
-    if (!course || !username) return;
+    if (!username){
+      navigate("/login");
+      return;
+    }
+    if (!course) return;
     try {
       const reservationDto = {
         user: username,
@@ -154,13 +159,21 @@ function Reserve() {
             )}
 
             <div className="text-center mt-8">
-              <button
+              {isCoach && username===course.coach ? 
+              (<button
+                onClick={() => navigate("/course/edit", { state: { course } })}
+                className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50"
+                disabled={reservationSuccess || course.capacity === 0}
+              >
+                Modify course
+              </button>)
+              : (<button
                 onClick={handleReserve}
                 className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50"
                 disabled={reservationSuccess || course.capacity === 0}
               >
                 {reservationSuccess ? 'Reservation Confirmed' : 'Reserve This Course'}
-              </button>
+              </button>)}
             </div>
           </div>
         </div>

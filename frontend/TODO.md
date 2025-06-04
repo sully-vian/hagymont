@@ -42,7 +42,7 @@
 ## DTO
  - [x] DTO reservationSalle
  - [x] DTO reservationCours
- - [ ] Enlever anciennes anotations JSonManagedRef
+ - [x] Enlever anciennes anotations JSonManagedRef
 ## Security 
  - [ ] Remettre sécurité
  - [ ] Ajouter annotations admin/coach...

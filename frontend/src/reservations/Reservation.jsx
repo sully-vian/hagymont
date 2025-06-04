@@ -81,7 +81,9 @@ function CancelButton({ reservationId, startTime }) {
   return (
     <div>
       <button
-        onClick={handleTryDelete}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleTryDelete()}}
         className={`ml-4 px-2 py-1 text-xs rounded ${
           cancelable
             ? "bg-red-500 hover:bg-red-600 text-white"
@@ -103,13 +105,15 @@ function CancelButton({ reservationId, startTime }) {
   );
 }
 
-function CustomAgendaEvent({ event }) {
+function CustomAgendaEvent({ event}) {
+  const bgColor = event.status ? (event.status === 'confirmed' ? 'bg-blue-600' : 'bg-gray-400') : 'bg-purple-400';
   if (!event || !event.start || !event.end) {
     return <div className="text-red-600">Invalid reservation event</div>;
   }
 
   return (
-    <div className={`p-3 mb-2 rounded-md ${event.status === "confirmed" ? "bg-blue-600" : "bg-gray-400"} text-white shadow-md`}>
+    <div className={`p-3 mb-2 rounded-md ${bgColor} text-white shadow-md`}
+      >
       <div className="flex justify-between items-center">
         <span className="font-semibold">
           {format(event.start, 'dd/MM/yyyy')} : {format(event.start, 'HH:mm')} - {format(event.end, 'HH:mm')} ❯
@@ -122,10 +126,11 @@ function CustomAgendaEvent({ event }) {
 }
 
 function CustomMonthEvent({ event }) {
-  const bgColor = event.status === 'confirmed' ? 'bg-blue-600' : 'bg-gray-400';
+  const bgColor = event.status ? (event.status === 'confirmed' ? 'bg-blue-600' : 'bg-gray-400') : 'bg-purple-400';
 
   return (
-    <div className={`p-1.5 rounded-md ${bgColor} text-white shadow-sm`}>
+    <div className={`p-1.5 rounded-md ${bgColor} text-white shadow-sm`}
+      >
       <div className="text-xs font-semibold">
         {format(event.start, 'HH:mm')} - {format(event.end, 'HH:mm')}
       </div>
@@ -139,10 +144,13 @@ function Reservation() {
   const [view, setView] = useState(Views.MONTH);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [rawReservations, setRawReservations] = useState([]);
+  const [rawCourses, setRawCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const username = SessionService.getUsername();
+  const isCoach = SessionService.getRole()=="coach";
+  const [seeCourses, setSeeCourses] = useState(false);
 
   const parseDate = (dateString) => {
     try {
@@ -153,7 +161,7 @@ function Reservation() {
     }
   };
 
-  const courses = useMemo(() => {
+  const reservations = useMemo(() => {
     return rawReservations
       .filter(res => res && res.course && res.course.startTime && res.course.endTime)
       .map(res => ({
@@ -166,6 +174,16 @@ function Reservation() {
       }));
   }, [rawReservations]);
 
+  const courses = useMemo(() => {
+    return rawCourses
+      .map(c => ({
+        title: formatTitle(c.category),
+        start: parseDate(c.startTime),
+        end: parseDate(c.endTime),
+        courseId: c.id,
+      }));
+  }, [rawCourses]);
+
   useEffect(() => {
     setIsLoading(true);
     setError(null);
@@ -175,7 +193,22 @@ function Reservation() {
       return;
     }
 
-    apiService.getRequest(`/reservations/user/${username}`)
+    if (isCoach) {
+      apiService.getRequest(`/courses/coach/${username}`)
+      .then(response => {
+        setRawCourses(response.data || []);
+      })
+      .catch(err => {
+        console.error('Error fetching reservations:', err);
+        setError(err.message || 'Failed to load reservations');
+        navigate('/error', { state: err.status || 500 });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+    }
+    else{
+      apiService.getRequest(`/reservations/user/${username}`)
       .then(response => {
         setRawReservations(response.data || []);
       })
@@ -187,10 +220,16 @@ function Reservation() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [navigate, username]);
+    }
+  }, [username]);
 
   const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+
+  const handleSeeCourse = (event) => {
+    const page = isCoach ? `/reservation/${event.courseId}` : `/reservation/${event.reservationId}`;
+    navigate(page);
+  }
 
   if (isLoading) {
     return (
@@ -220,9 +259,14 @@ function Reservation() {
   return (
     <div>
       <Navbar />
+      
       <div className="relative mt-6 max-w-6xl mx-auto bg-white/90 backdrop-blur-md rounded-2xl w-full shadow-xl overflow-hidden">
-        <div className="mb-5 flex justify-center font-extrabold text-5xl text-purple-700 pt-6">
-          <p>YOUR COURSES</p>
+        <div className="mb-5 flex justify-between items-center font-extrabold text-5xl text-purple-700 pt-6 max-w-6xl mx-auto w-full px-4">
+          <p>{seeCourses ? "YOUR COURSES" : "YOUR RESERVATIONS"}</p>
+          {isCoach ? 
+          (<button className="ml-6 px-4 py-2 text-sm font-semibold rounded-md bg-purple-600 hover:bg-purple-700 text-white transition"
+            onClick={() => setSeeCourses(!seeCourses)}
+          >Change view</button>) : (<></>)}
         </div>
 
         <div className="mb-4 flex justify-center space-x-4">
@@ -259,8 +303,8 @@ function Reservation() {
         <div className="bg-gray-100 rounded-xl shadow-md p-4 font-sans font-bold mb-6">
           <Calendar
             localizer={localizer}
-            events={courses}
-            messages={{ event: 'My reservations' }}
+            events={seeCourses ? courses : reservations}
+            messages={{ event: (seeCourses ? 'My courses' : 'My reservations') }}
             startAccessor="start"
             endAccessor="end"
             style={{ height: 700 }}
@@ -268,6 +312,7 @@ function Reservation() {
             view={view}
             date={currentDate}
             onNavigate={setCurrentDate}
+            onSelectEvent={handleSeeCourse}
             components={{
               agenda: { event: CustomAgendaEvent },
               month: { event: CustomMonthEvent },
