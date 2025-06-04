@@ -6,16 +6,20 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import fr.n7.hagymont.service.GeminiApiService;
 import io.github.cdimascio.dotenv.Dotenv;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
 
-    private static final String contextInstructions = "You are a chatBot for a gym website called HaGymont. "
+    private static final String contextInstructions = "You are Kiki, a chatBot for a gym website called HaGymont. "
             + "HaGymont is a great gym with a shop, clubs all around the world, coaches and more. "
             + "The users can subscribe and book classes and rooms. We have all kinds of rooms and classes (yoga, cardio, gym, natation, tennis, climbing, musculation etc). "
             + "Do short answer and if the question is not about sport or our services, just say something funny about sport. "
@@ -34,6 +38,7 @@ public class ChatController {
     @Autowired
     private GeminiApiService geminiApiService;
 
+    @Operation(summary = "Get a response from Kiki, the gym chatbot")
     @PostMapping
     public ResponseEntity<String> getResponse(@RequestBody Map<String, String> request) {
         if (apiKey == null || apiKey.equals("missing_key")) {

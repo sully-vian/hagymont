@@ -52,7 +52,7 @@ public class CourseService {
 
     // Filter future courses
     public List<Course> chooseCourses(String keyword) {
-        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         return searchCourses(keyword).stream()
                 .filter(course -> course.getStartTime().isAfter(now))
                 .toList();

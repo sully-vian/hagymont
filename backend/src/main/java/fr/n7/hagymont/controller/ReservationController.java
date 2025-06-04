@@ -1,19 +1,25 @@
 package fr.n7.hagymont.controller;
 
-import fr.n7.hagymont.model.Reservation;
-import fr.n7.hagymont.service.ReservationService;
-import io.swagger.v3.oas.annotations.Operation;
-import fr.n7.hagymont.exception.DuplicateReservationException;
-import fr.n7.hagymont.exception.ResourceNotFoundException;
-import fr.n7.hagymont.dto.ReservationDTO;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import fr.n7.hagymont.dto.ReservationDTO;
+import fr.n7.hagymont.exception.DuplicateReservationException;
+import fr.n7.hagymont.exception.ResourceNotFoundException;
+import fr.n7.hagymont.model.Reservation;
+import fr.n7.hagymont.service.ReservationService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/reservations")

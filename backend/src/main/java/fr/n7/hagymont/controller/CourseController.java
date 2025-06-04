@@ -22,6 +22,7 @@ import fr.n7.hagymont.dto.CourseInfosDTO;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.service.CourseService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/courses")
@@ -30,6 +31,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @Operation(summary = "Get all courses", description = "Retrieve a list of all courses.")
     @GetMapping
     public ResponseEntity<List<CourseInfosDTO>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
@@ -38,6 +40,7 @@ public class CourseController {
         return ResponseEntity.ok(courseInfos);
     }
 
+    @Operation(summary = "Search courses", description = "Search for courses where the category, coach, or room contains the query.")
     @GetMapping("/search")
     public ResponseEntity<List<CourseInfosDTO>> searchCourses(@RequestParam(required = false) String query) {
         List<Course> courses = courseService.searchCourses(query);
@@ -50,6 +53,7 @@ public class CourseController {
     }
 
     // choose courses just for future courses
+    @Operation(summary = "Choose courses", description = "Retrieve a list of future courses, optionally filtered by keyword.")
     @GetMapping("/choose")
     public ResponseEntity<List<CourseInfosDTO>> chooseCourses(@RequestParam(required = false) String keyword) {
         List<Course> courses = courseService.chooseCourses(keyword);
@@ -61,6 +65,7 @@ public class CourseController {
         return ResponseEntity.ok(courseInfos);
     }
 
+    @Operation(summary = "Get courses by club ID", description = "Retrieve a list of courses for a specific club.")
     @GetMapping("/by-club/{clubId}")
     public ResponseEntity<List<CourseInfosDTO>> getCoursesByClubId(@PathVariable Long clubId) {
         List<Course> courses = courseService.getCoursesByClubId(clubId);
@@ -72,6 +77,7 @@ public class CourseController {
         return ResponseEntity.ok(courseInfos);
     }
 
+    @Operation(summary = "Get available courses by category", description = "Retrieve a list of available courses filtered by category.")
     @GetMapping("/available/{category}")
     public ResponseEntity<List<CourseInfosDTO>> getAvailableCourses(@PathVariable String category) {
         List<Course> courses = courseService.getAvailableCourses(category.toUpperCase());
@@ -83,6 +89,7 @@ public class CourseController {
         return ResponseEntity.ok(courseInfos);
     }
 
+    @Operation(summary = "Get courses by coach username", description = "Retrieve a list of courses taught by a specific coach.")
     @GetMapping("/coach/{coachUsername}")
     public ResponseEntity<List<CourseInfosDTO>> getCoursesByCoach(@PathVariable String coachUsername) {
         List<Course> courses = courseService.getCoursesByCoach(coachUsername);
@@ -91,6 +98,7 @@ public class CourseController {
         return ResponseEntity.ok(courseInfos);
     }
 
+    @Operation(summary = "Create a new course", description = "Create a new course with the provided details.")
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody Course course) {
         try {
@@ -101,6 +109,7 @@ public class CourseController {
         }
     }
 
+    @Operation(summary = "Delete a course", description = "Delete a course by its ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
         if (!courseService.deleteCourse(id)) {
@@ -109,6 +118,7 @@ public class CourseController {
         return ResponseEntity.ok("Course deleted");
     }
 
+    @Operation(summary = "Get course by ID", description = "Retrieve details of a specific course by its ID.")
     @GetMapping("/{id}")
     public ResponseEntity<CourseInfosDTO> getCourseById(@PathVariable Long id) {
         Optional<Course> courseOpt = courseService.getCourseById(id);
@@ -118,6 +128,7 @@ public class CourseController {
         return ResponseEntity.ok(new CourseInfosDTO(courseOpt.get()));
     }
 
+    @Operation(summary = "Update a course", description = "Update an existing course with the provided details.")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         try {

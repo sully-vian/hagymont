@@ -22,6 +22,7 @@ import fr.n7.hagymont.model.User;
 import fr.n7.hagymont.repository.UserRepository;
 import fr.n7.hagymont.service.UserService;
 import fr.n7.hagymont.service.UserServiceImplementation;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/auth")
@@ -40,6 +41,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "User signup", description = "Create a new user account.")
     @PostMapping("/signup")
     public ResponseEntity<?> createUserHandler(@RequestBody Map<String, String> signupRequest) {
         String username = signupRequest.get("username");
@@ -102,6 +104,7 @@ public class AuthController {
 
     }
 
+    @Operation(summary = "User login", description = "Authenticate a user and return a JWT token.")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> signin(@RequestBody Map<String, String> loginRequest) {
         String username = loginRequest.get("username");

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -24,6 +25,7 @@ public class CustomErrorController implements ErrorController {
         this.errorAttributes = errorAttributes;
     }
 
+    @Operation(summary = "Handle errors", description = "Custom error handling for the application.")
     @RequestMapping("/error")
     public ResponseEntity<Map<String, Object>> handleError(HttpServletRequest request) {
         // récupérer les détails de l'erreur
