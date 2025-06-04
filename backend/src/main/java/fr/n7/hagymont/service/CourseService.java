@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.n7.hagymont.dto.CourseInfosDTO;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.model.Room;
@@ -78,19 +79,19 @@ public class CourseService {
     }
 
     // POST /courses - Coach crée un nouveau cours
-    public Course createCourse(Course course) throws ResourceNotFoundException {
-        // Vérifier si la salle et le coach existent
-        String coachUsername = course.getCoach().getUsername();
-        System.out.println(coachUsername);
-        Long roomId = course.getRoom().getId();
-        validateRoom(roomId);
-        validateCoach(coachUsername);
-        Optional<User> coachOpt = Optional.of(userRepository.findByUsername(coachUsername));
-        User coach = coachOpt.orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
-        course.setCoach(coach);
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new ResourceNotFoundException("Room not found: " + roomId));
+    public Course createCourse(CourseInfosDTO courseInfosDTO) throws ResourceNotFoundException {
+
+        Room room = roomRepository.findById(courseInfosDTO.getPlace().getRoomId()).orElse(null);
+        User coach = userRepository.findByUsername(courseInfosDTO.getCoachUsername());
+
+        Course course = new Course();
+        course.setCategory((courseInfosDTO.getCategory()));
+        course.setStartTime(courseInfosDTO.getStartTime());
+        course.setEndTime(courseInfosDTO.getEndTime());
+        course.setCapacity(courseInfosDTO.getCapacity());
+        course.setPrice(courseInfosDTO.getPrice());
         course.setRoom(room);
+        course.setCoach(coach);
 
         return courseRepository.save(course);
     }
@@ -142,22 +143,5 @@ public class CourseService {
         }
 
         return courseRepository.save(course);
-    }
-
-    // Valider l'existence de la salle
-    private void validateRoom(Long id) throws ResourceNotFoundException {
-        if (!roomRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Room not found with ID: " + id);
-        }
-    }
-
-    // Valider l'existence du coach and son type
-    private void validateCoach(String username) {
-        User coach = userRepository.findByUsername(username);
-        if (!(coach == null)) {
-            if (coach.getType() != User.UserType.coach) {
-                throw new IllegalArgumentException("this user is not a coach");
-            }
-        }
     }
 }

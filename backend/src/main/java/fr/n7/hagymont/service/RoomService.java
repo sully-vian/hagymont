@@ -2,6 +2,7 @@ package fr.n7.hagymont.service;
 
 import fr.n7.hagymont.model.Room;
 import fr.n7.hagymont.model.Club;
+import fr.n7.hagymont.dto.RoomDTO;
 import fr.n7.hagymont.exception.ResourceNotFoundException;
 import fr.n7.hagymont.repository.RoomRepository;
 import fr.n7.hagymont.repository.ClubRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class RoomService {
@@ -17,7 +19,7 @@ public class RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private ClubRepository clubRepository;  //FK
+    private ClubRepository clubRepository; // FK
 
     public Room getRoomById(Long roomId) {
         return roomRepository.findById(roomId).orElse(null);
@@ -30,7 +32,11 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Room createRoom(Room room) {
+    public Room createRoom(RoomDTO roomDTO) {
+        Room room = new Room();
+        Optional<Club> club = clubRepository.findById(roomDTO.getClub().getId());
+        room.setClub(club.get());
+        room.setType(roomDTO.getType());
         return roomRepository.save(room);
     }
 
@@ -42,13 +48,13 @@ public class RoomService {
         return false;
     }
 
-    public Room updateRoom(Long roomId, Map<String, Object> updates) throws ResourceNotFoundException{
+    public Room updateRoom(Long roomId, Map<String, Object> updates) throws ResourceNotFoundException {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found with ID: " + roomId));
         for (Map.Entry<String, Object> entry : updates.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-        
+
             switch (key) {
                 case "type":
                     room.setType((String) value);

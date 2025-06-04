@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import fr.n7.hagymont.model.Course;
 import fr.n7.hagymont.model.Room;
+import fr.n7.hagymont.model.Course.Category;
 
 public class CourseInfosDTO {
 
@@ -23,13 +24,13 @@ public class CourseInfosDTO {
      */
 
     private Long id;
-    private String category;
+    private Category category;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Integer capacity;
     private Double price;
     private PlaceDTO place;
-    private String coach;
+    private String coachUsername;
 
     public CourseInfosDTO() {
     }
@@ -39,30 +40,20 @@ public class CourseInfosDTO {
             return;
         }
         this.id = course.getId();
-        this.category = course.getCategory().toString();
+        this.category = course.getCategory();
         this.startTime = course.getStartTime();
         this.endTime = course.getEndTime();
         this.capacity = course.getCapacity();
         this.price = course.getPrice();
         this.place = new PlaceDTO(course.getRoom());
-        this.coach = course.getCoach().getUsername();
-    }
-
-    public static Course fromDto(CourseInfosDTO dto) {
-        Course course = new Course();
-        course.setId(dto.id);
-        course.setCategory(Course.Category.valueOf(dto.category));
-        course.setStartTime(dto.startTime);
-        course.setEndTime(dto.endTime);
-        course.setCapacity(dto.capacity);
-        course.setPrice(dto.price);
-        return course;
+        this.coachUsername = course.getCoach().getUsername();
     }
 
     public static class PlaceDTO {
         private String type;
         private String club;
         private String address;
+        private Long roomId;
 
         public PlaceDTO() {
         }
@@ -71,6 +62,7 @@ public class CourseInfosDTO {
             this.type = room.getType();
             this.club = room.getClub().getName();
             this.address = room.getClub().getAddress();
+            this.roomId = room.getId();
         }
 
         public String getType() {
@@ -96,6 +88,14 @@ public class CourseInfosDTO {
         public void setAddress(String address) {
             this.address = address;
         }
+
+        public Long getRoomId() {
+            return roomId;
+        }
+
+        public void setRoomId(Long roomId) {
+            this.roomId = roomId;
+        }
     }
 
     public Long getId() {
@@ -106,11 +106,11 @@ public class CourseInfosDTO {
         this.id = id;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -154,11 +154,11 @@ public class CourseInfosDTO {
         this.place = place;
     }
 
-    public String getCoach() {
-        return coach;
+    public String getCoachUsername() {
+        return coachUsername;
     }
 
-    public void setCoach(String coach) {
-        this.coach = coach;
+    public void setCoachUsername(String coach) {
+        this.coachUsername = coach;
     }
 }

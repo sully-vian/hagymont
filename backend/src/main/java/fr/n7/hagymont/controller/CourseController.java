@@ -100,10 +100,10 @@ public class CourseController {
 
     @Operation(summary = "Create a new course", description = "Create a new course with the provided details.")
     @PostMapping
-    public ResponseEntity<?> createCourse(@RequestBody Course course) {
+    public ResponseEntity<?> createCourse(@RequestBody CourseInfosDTO courseInfosDTO) {
         try {
-            Course createdCourse = courseService.createCourse(course);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new CourseInfosDTO(createdCourse));
+            courseService.createCourse(courseInfosDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(courseInfosDTO);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }

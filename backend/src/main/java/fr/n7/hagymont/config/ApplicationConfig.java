@@ -19,20 +19,19 @@ import jakarta.servlet.http.HttpServletRequest;
 @EnableMethodSecurity(prePostEnabled = true)
 public class ApplicationConfig {
 
-    @SuppressWarnings("deprecation")
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                //.requestMatchers("/products/**")
-                                //.authenticated()
+                                // .requestMatchers("/products/**")
+                                // .authenticated()
                                 .anyRequest().permitAll())
-                //.addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+                // .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        //.httpBasic(Customizer.withDefaults())
-        //.formLogin(Customizer.withDefaults());
+        // .httpBasic(Customizer.withDefaults())
+        // .formLogin(Customizer.withDefaults());
         return http.build();
     }
 
@@ -53,11 +52,9 @@ public class ApplicationConfig {
         };
 
     }
-    /* 
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-     */
+    // @Bean
+    // PasswordEncoder passwordEncoder() {
+    // return new BCryptPasswordEncoder();
+    // }
 }

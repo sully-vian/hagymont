@@ -55,9 +55,8 @@ public class RoomController {
     // POST /rooms - créer une nouvelle chambre (admin)
     @Operation(summary = "Create a new room", description = "Create a new room with the provided details.")
     @PostMapping
-    public ResponseEntity<RoomDTO> createRoom(@RequestBody Room room) {
-        Room createdRoom = roomService.createRoom(room);
-        RoomDTO roomDTO = new RoomDTO(createdRoom);
+    public ResponseEntity<RoomDTO> createRoom(@RequestBody RoomDTO roomDTO) {
+        roomService.createRoom(roomDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
     }
 
