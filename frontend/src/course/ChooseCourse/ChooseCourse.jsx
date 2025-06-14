@@ -266,7 +266,7 @@ const ChooseCourse = ({ onCourseClick }) => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-500">🧑‍🏫 {course.coach}</p>
+                      <p className="text-sm text-gray-500">🧑‍🏫 {course.coachUsername}</p>
                       <p className="text-sm text-gray-500">🧍 {course.capacity} spots</p>
                     </div>
                   </div>

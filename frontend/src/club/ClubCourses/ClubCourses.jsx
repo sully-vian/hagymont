@@ -49,7 +49,7 @@ const ClubCourses = ({ clubId, onBack }) => {
           ...course,
           startTime: course.startTime, 
           endTime: course.endTime,
-          coachUsername: course.coach|| "Unknown", 
+          coachUsername: course.coachUsername || "Unknown", 
           roomType: course.place?.type || "Unknown" 
         }));
         
