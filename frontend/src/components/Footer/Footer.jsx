@@ -99,12 +99,12 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Right - Important Links */}
+              {/* Right - Important Links */}
             <div className="py-8 px-4">
               <h1 className="text-xl font-bold text-justify sm:text-left mb-3">
                 Important Links
               </h1>
-              <ul className="flex flex-col gap-3">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {FooterLinks.map((link) => (
                   <li
                     key={link.title}

@@ -30,7 +30,6 @@ function Reserve() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reservationSuccess, setReservationSuccess] = useState(false);
-  // const [showRedirectButton, setShowRedirectButton] = useState(false);
   const navigate = useNavigate();
   const username = SessionService.getUsername();
   const isCoach = SessionService.getRole() === 'coach';
@@ -51,7 +50,7 @@ function Reserve() {
   }, [courseId]);
 
   const handleReserve = async () => {
-    if (!username){
+    if (!username) {
       navigate("/login");
       return;
     }
@@ -70,7 +69,6 @@ function Reserve() {
           ...prevCourse,
           capacity: prevCourse.capacity - 1,
         }));
-        // setShowRedirectButton(true); 
       } else {
         throw new Error('Reservation failed');
       }
@@ -80,8 +78,21 @@ function Reserve() {
   };
 
   const handleRedirect = () => {
-    navigate('/calendar'); // 手动跳转至日历页面
+    navigate('/calendar');
   };
+
+  // 修改 handleEditCourse 函数，添加日志
+const handleEditCourse = () => {
+  console.log("Passing course data:", course); // 确认数据存在
+  navigate("/course/edit", { 
+    state: { 
+      course: {
+        ...course,
+        place: course.place || { id: null } // 确保 place 不为 undefined
+      }
+    }
+  });
+};
 
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent error={error} navigate={navigate} />;
@@ -159,21 +170,22 @@ function Reserve() {
             )}
 
             <div className="text-center mt-8">
-              {isCoach && username===course.coach ? 
-              (<button
-                onClick={() => navigate("/course/edit", { state: { course } })}
-                className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50"
-                disabled={reservationSuccess || course.capacity === 0}
-              >
-                Modify course
-              </button>)
-              : (<button
-                onClick={handleReserve}
-                className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50"
-                disabled={reservationSuccess || course.capacity === 0}
-              >
-                {reservationSuccess ? 'Reservation Confirmed' : 'Reserve This Course'}
-              </button>)}
+              {isCoach && username === course.coachUsername ? (
+                <button
+                  onClick={handleEditCourse}
+                  className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700"
+                >
+                  Modify course
+                </button>
+              ) : (
+                <button
+                  onClick={handleReserve}
+                  className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50"
+                  disabled={reservationSuccess || course.capacity === 0}
+                >
+                  {reservationSuccess ? 'Reservation Confirmed' : 'Reserve This Course'}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -182,7 +194,8 @@ function Reserve() {
   );
 }
 
-// 复用组件定义（与之前保持一致）
+
+
 const DateSection = ({ icon, label, value }) => (
   <div className="flex items-center p-4 bg-gray-50 rounded-lg">
     {React.createElement(icon, { className: 'text-blue-500 text-xl mr-3' })}

@@ -2,6 +2,7 @@ import BannerImg from "../../assets/1.png";
 import Image1 from "../../assets/3.png";
 import Image2 from "../../assets/4.png";
 import Image3 from "../../assets/5.png";
+import './RotateBanner.css'; // 确保路径正确
 
 const FoodData = [
   {
@@ -30,20 +31,18 @@ const FoodData = [
 const TopList = () => {
   return (
     <div className="container py-14">
-      {/* header section */}
       <div className="flex justify-between items-center mb-12">
-        {/* Text Section */}
         <div className="w-1/2 text-left">
           <h1 className="text-4xl font-semibold">Fitness Meals</h1>
           <p className="text-lg text-center">Our top list</p>
         </div>
 
-        {/* Banner image */}
+        {/* 直接用导入的 BannerImg */}
         <div className="w-1/2">
           <img
             src={BannerImg}
             alt="Fitness Meals Banner"
-            className="w-full object-cover rounded-xl"
+            className="w-full object-cover rounded-xl rotate-banner"
           />
         </div>
       </div>

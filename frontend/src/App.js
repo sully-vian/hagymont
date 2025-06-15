@@ -12,6 +12,7 @@ import Club from './pages/Club';
 import Course from './pages/Course';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import EditCourse from './reservation/EditCourse';
 import Reserv from './reservation/Reserve/Reserve';
 import Reservation from './reservations/Reservation';
 import ProductEdit from './shop/components/ProductEdit';
@@ -21,7 +22,6 @@ import Shop from './shop/Shop';
 import AdminRoute from './utils/AdminRoute';
 import AuthRoute from './utils/AuthRoute';
 import CoachRoute from './utils/CoachRoute';
-import EditCourse from './reservation/EditCourse';
 function App() {
   return (
     <ErrorBoundary>
@@ -49,11 +49,13 @@ function App() {
 
         {/* Course */}
         <Route path="/course" element={<Course />}/>
-        <Route path="/course/edit" element={
-            <CoachRoute>
-              <EditCourse/>
-            </CoachRoute>}
-          />
+        <Route path="/course/edit" 
+        element={
+        <CoachRoute>
+          <EditCourse/>
+          </CoachRoute>
+        }
+        />
 
         
         {/* Nested routes for products */}

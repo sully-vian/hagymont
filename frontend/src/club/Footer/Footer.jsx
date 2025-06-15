@@ -43,8 +43,6 @@ const Footer = () => {
   return (
     <>
       <div className="dark:bg-gray-950 py-10 relative overflow-hidden">
-
-
         <div className="container max-w-4xl mx-auto px-4">
           <div className="grid md:grid-cols-2 py-5 bg-white/80 backdrop-blur-sm rounded-t-xl px-4 sm:px-10">
             {/* Left - Logo and contact info */}
@@ -58,9 +56,8 @@ const Footer = () => {
               </h1>
 
               <p className="mt-2 text-xl font-extrabold tracking-widest bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(0,255,255,0.7)]">
-                  The New Future of Health
+                The New Future of Health
               </p>
-
 
               <div className="flex items-center gap-3 mt-4">
                 <FaLocationArrow />
@@ -97,7 +94,7 @@ const Footer = () => {
               <h1 className="text-xl font-bold text-justify sm:text-left mb-3">
                 Important Links
               </h1>
-              <ul className="flex flex-col gap-3">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {FooterLinks.map((link) => (
                   <li
                     key={link.title}
